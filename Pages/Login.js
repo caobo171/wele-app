@@ -10,16 +10,11 @@
 import React from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { View , TouchableOpacity , ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
 
-import UserProfile from './UserProfile'
-import PodcastDetail from './PodcastDetail'
-
-import { createStackNavigator } from 'react-navigation-stack';
-
-
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 
 import styled from 'styled-components';
@@ -62,201 +57,72 @@ const RECENT_PODCASTS = [
   },
 ]
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.View`
+  margin-top: 20px;
   height: 100%;
   width: 100%;
-  color: yellow;
+  flex-direction: column;
 `;
 
-const HeaderWrapper = styled.View`
-  background-color: white;
-  height: 32px;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding: 0;
-  
-`;
-const StyledBodyWrapper = styled.View`
-  background-color: white;
-  flex: 9;
-  align-items: flex-start;
-`;
-
-
-const StyledSection = styled.View`
+const StyledLogoImage = styled.Image`
   width: 100%;
-  margin: 0 ;
-  background-color: white;
-`;
-
-const StyledSectionTitle = styled.Text`
-  color: black;
-  font-size: ${props=> props.position === 'top' ? '24px' : '20px' } ;
-  font-weight: ${props=> props.position === 'top' ? 'bold' : '900' } ;
-  padding-bottom: 16px;
-  margin: ${props=> props.position === 'top' ? '-12px' : '28px' } 10px 0px 10px; 
-  border-bottom-width: 1px;
-  border-color: #d4d4d4;
-`;
-
-const StyledSectionContent = styled.View``;
-
-const StyledPodcastWrapper = styled.View`
-  background-color: white;
-  height:  ${props=> props.size === 'big' ? '200px' : (props.size === 'medium' ? '180px' : '160px') } ;
-  width: 100%;
-  flex-direction: row;
-  margin: 0;
-  border-bottom-width: 1px;
-  border-style: solid;
-  border-color: #d4d4d4;
-  padding-top: 10px;
-`;
-
-const StyledPodcastContent = styled.View`
-  flex: 3;
-  padding: 20px 10px 10px 10px ;
-`;
-
-const StyledImageWrapper = styled.View`
-  flex: 2;
-`;
-
-const StyledPodcastImage = styled.Image`
-  height: 90px;
-  width: 120px;
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 30px;
+  flex: 1;
 `;
 
-const Title = styled.Text`
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 16px;
-`;
 
-const DescriptionMain = styled.Text`
-  font-size : 12px;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
+const StyledButtonWrapper = styled.View`
+    flex: 1;
 
-const StyleSmallText = styled.Text`
-  color: #a8a8a8;
 `
 
-const DescriptionSub = styled.Text`
-  color: #787878;
-  font-size: 10px;
-`;
+const StyledButton= styled.View`
+flex-direction: row;
+width: 70%;
+background-color: #4267b2;
+margin-left: auto;
+margin-right: auto;
+height: 40px;
+`
 
 const StyledFeatherIcon = styled(FeatherIcon)`
-  font-size: 28px;
-  color: #a8a8a8;
-  margin: 4px 20px 0px 0px;
-`;
+    margin: auto;
+    text-align: center;
+    font-size: 24px;
+    flex: 1;
+    color: #d1d1d1;
+`
 
-const TrimText = text => {
-  return text.substr(0, Math.min(text.length, 60)) + '...';
-};
-const Home = (props) => {
+const StyledText = styled.Text`
+    flex: 5;
+    text-align: center;
+    padding: 8px 5px 10px 0px;
+    letter-spacing: 1px;
+    font-weight: 800;
+    font-size: 16px;
+    color: #d1d1d1;
+`
+
+const Login = (props) => {
   return (
     <Wrapper>
-      <HeaderWrapper>
-        <TouchableOpacity onPress={()=>{
-          console.log('check props', props);
-          props.navigation.navigate('UserProfile');
-          console.log('okkk')}}>
-          <View>
-            <StyledFeatherIcon name={'settings'}/>
-          </View>
-        </TouchableOpacity>
-      </HeaderWrapper>
-      <StyledBodyWrapper>
-        <StyledSection>
-          <StyledSectionTitle position="top">Podcast this week</StyledSectionTitle>
-          <StyledSectionContent>
-            {FAKEDATA.map(e => {
-              return (
-                <TouchableOpacity key={e.key} onPress = {()=>{
-                  props.navigation.navigate('PodcastDetail')
-                }}>
-                    <StyledPodcastWrapper size="big" >
-                      <StyledPodcastContent>
-                        <Title>{e.name}</Title>
-                        <DescriptionMain>{TrimText(e.description)}</DescriptionMain>
-                        <DescriptionSub>
-                          {e.source} <StyleSmallText>dẫn bởi </StyleSmallText>{e.narrator}
-                        </DescriptionSub>
-                      </StyledPodcastContent>
-                      <StyledImageWrapper>
-                        <StyledPodcastImage
-                          resizeMode= {"contain"}
-                          source={{ uri: e.imageUrl }}
-                        />
-                      </StyledImageWrapper>
-      
-                    </StyledPodcastWrapper>
-                </TouchableOpacity>
-  
-              );
-            })}
-          </StyledSectionContent>
-        </StyledSection>
+        <StyledLogoImage
+            resizeMode={"contain"}
+            source={{ uri: 'https://external.fhan5-7.fna.fbcdn.net/safe_image.php?d=AQDMvQfI0WkUxIgV&w=540&h=282&url=https%3A%2F%2Fstatic.wixstatic.com%2Fmedia%2F29b9a8_05dd638ec28a4b26826c557f0bc92d7f%257Emv2.jpg&cfs=1&upscale=1&fallback=news_d_placeholder_publisher&_nc_hash=AQATC3dBf1z-fyYw' }}
+        />
+        <StyledButtonWrapper>
+            <StyledButton>
+                <StyledFeatherIcon name={'facebook'}/>
+                <StyledText>Login With Facebook</StyledText>
+            </StyledButton>
+        </StyledButtonWrapper>
 
-        <StyledSection>
-          <StyledSectionTitle position="normal">Recently Played</StyledSectionTitle>
-          <StyledSectionContent>
-            {RECENT_PODCASTS.map(e => {
-              return (
-                <TouchableOpacity key={e.key} onPress = {()=>{
-                  props.navigation.navigate('PodcastDetail')
-                }}>
-                  <StyledPodcastWrapper size="medium" >
-                    <StyledPodcastContent>
-                      <Title>{e.name}</Title>
-                      <DescriptionMain>{TrimText(e.description)}</DescriptionMain>
-                      <DescriptionSub>
-                        {e.source} <StyleSmallText>dẫn bởi </StyleSmallText>{e.narrator}
-                      </DescriptionSub>
-                    </StyledPodcastContent>
-                    <StyledImageWrapper>
-                      <StyledPodcastImage
-                        resizeMode= {"contain"}
-                        source={{ uri: e.imageUrl }}
-                      />
-                    </StyledImageWrapper>
-    
-                  </StyledPodcastWrapper>
-                </TouchableOpacity>
-
-              );
-            })}
-          </StyledSectionContent>
-        </StyledSection>
-
-
-      </StyledBodyWrapper>
     </Wrapper>
   );
 };
 
-const HomeContainer = createStackNavigator({
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        header: null,
-      }
-    },
-    UserProfile: {
-      screen: UserProfile,
 
-    },
-    PodcastDetail: {
-      screen : PodcastDetail, 
-    },
-}, {
-  initialRouteName : 'Home'
-})
-export default HomeContainer;
+export default Login;
