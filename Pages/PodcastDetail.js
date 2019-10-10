@@ -11,6 +11,8 @@ import React , {useState} from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import DocumentPicker from 'react-native-document-picker';
+
 
 import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
 
@@ -20,7 +22,7 @@ import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
 import styled from 'styled-components';
 
 const PODCAST = {
-    
+
     key: 1,
     name: '[ESL 40063] Yelling at Children',
     description: `Pre-Beginner Course quay trở lại sau hai tuần vắng bóng rồi đây. Bài nghe thứ 4 của series, chúng ta hãy cùng nghe một đoạn trích nói về việc “YELLING AT CHILDREN” (la mắng trẻ em). Giáo dục con trẻ chưa bao giờ được xem là dễ dàng. Để giúp trẻ nghe lời, hiểu và làm những điều đúng cần rất nhiều sự kiên nhẫn và bình tĩnh từ bố mẹ và người lớn. Việc cha mẹ quát mắng con là A COMMON SITUATION (một tình huống phổ biến) ở nhiều gia đình trên thế giới. Nhiều bậc phụ huynh RAISE THEIR VOICES (lên giọng) hay quát tháo con cái họ khi họ FELL ANGRY OR AFRAID OR FRUSTRATED (cảm thấy giận dữ, sợ hãi hay chán nản). Việc la mắng con trẻ sẽ tốt khi ở mức độ vừa phải và cho trẻ con thấy việc HAVE EMOTIONS (biểu lộ cảm xúc) là hoàn toàn ổn. Nó chỉ không tốt khi khiến trẻ FEEL SHAME (cảm thấy xấu hổ).
@@ -150,10 +152,36 @@ const StyledText = styled.Text`
 const PodcastDetail = (props) => {
 
   const [isBrief, setIsBrief] = useState(true)
+
+  const onPressPlayHandle = async ()=>{
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size
+      );
+
+      await props.navigation.navigate('Player',{
+        audioUrl: res.uri, 
+      })
+
+
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  }
   return (
     <Wrapper>
       <HeaderWrapper>
-        <TouchableOpacity onPress={() => { 
+        <TouchableOpacity onPress={() => {
           props.navigation.navigate('Home')
         }}>
           <View>
@@ -177,9 +205,9 @@ const PodcastDetail = (props) => {
                     <DescriptionInfo>
                         {PODCAST.source} <StyleSmallText>dẫn bởi </StyleSmallText>{PODCAST.narrator}
                     </DescriptionInfo>
-                    <TouchableOpacity onPress={()=> props.navigation.navigate('Player')}>
+                    <TouchableOpacity onPress={onPressPlayHandle}>
                       <StyledPlayButton>
-                          <StyledText>Play</StyledText>
+                          <StyledText >Play</StyledText>
                       </StyledPlayButton>
                     </TouchableOpacity>
 
@@ -191,7 +219,7 @@ const PodcastDetail = (props) => {
                     { isBrief ? trimText(reFormatText(PODCAST.description)) :  reFormatText(PODCAST.description) }
 
                     </DescriptionMain>
-    
+
                     <TouchableOpacity>
                         <StyledReadmore onPress={()=> setIsBrief(!isBrief)}>{isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
                     </TouchableOpacity>

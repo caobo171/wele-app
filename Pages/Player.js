@@ -7,13 +7,14 @@
  * @flow
  */
 
-import React , {useState} from 'react';
+import React , {useState , useEffect} from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-import FeatherIcon from 'react-native-vector-icons/Feather'
-import Slider from '@react-native-community/slider'
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import Slider from '@react-native-community/slider';
 import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
+import TrackPlayer, { useTrackPlayerProgress , useTrackPlayerEvents , TrackPlayerEvents } from 'react-native-track-player';
 
 
 
@@ -21,7 +22,7 @@ import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
 import styled from 'styled-components';
 
 const PODCAST = {
-    
+
     key: 1,
     name: '[ESL 40063] Yelling at Children',
     description: `Pre-Beginner Course quay trở lại sau hai tuần vắng bóng rồi đây. Bài nghe thứ 4 của series, chúng ta hãy cùng nghe một đoạn trích nói về việc “YELLING AT CHILDREN” (la mắng trẻ em). Giáo dục con trẻ chưa bao giờ được xem là dễ dàng. Để giúp trẻ nghe lời, hiểu và làm những điều đúng cần rất nhiều sự kiên nhẫn và bình tĩnh từ bố mẹ và người lớn. Việc cha mẹ quát mắng con là A COMMON SITUATION (một tình huống phổ biến) ở nhiều gia đình trên thế giới. Nhiều bậc phụ huynh RAISE THEIR VOICES (lên giọng) hay quát tháo con cái họ khi họ FELL ANGRY OR AFRAID OR FRUSTRATED (cảm thấy giận dữ, sợ hãi hay chán nản). Việc la mắng con trẻ sẽ tốt khi ở mức độ vừa phải và cho trẻ con thấy việc HAVE EMOTIONS (biểu lộ cảm xúc) là hoàn toàn ổn. Nó chỉ không tốt khi khiến trẻ FEEL SHAME (cảm thấy xấu hổ).
@@ -30,8 +31,8 @@ const PODCAST = {
         Chúc cả nhà một tuần vui vẻ và tràn đầy năng lượng!`,
     source: 'Spotlight',
     narrator: 'Le Dieu Huong',
-    imageUrl: 'https://scontent.fhan5-4.fna.fbcdn.net/v/t1.0-9/70250807_2865993873415542_3327755512937709568_n.jpg?_nc_cat=104&_nc_oc=AQk2O6URyALOwDThGhXMZSzIA2kDDHOGaqSBI16nXRupykDDebtyGh9A7jR_iZ5oca8&_nc_ht=scontent.fhan5-4.fna&oh=40f0a049ecbb6aacc816902c494d59c7&oe=5E20C26F'
-}
+    imageUrl: 'https://scontent.fhan5-4.fna.fbcdn.net/v/t1.0-9/70250807_2865993873415542_3327755512937709568_n.jpg?_nc_cat=104&_nc_oc=AQk2O6URyALOwDThGhXMZSzIA2kDDHOGaqSBI16nXRupykDDebtyGh9A7jR_iZ5oca8&_nc_ht=scontent.fhan5-4.fna&oh=40f0a049ecbb6aacc816902c494d59c7&oe=5E20C26F',
+};
 
 const Wrapper = styled.View`
   height: 100%;
@@ -93,24 +94,24 @@ const StyledAntDesignIcon = styled(EntypoIcon)`
 
 const StyledHeaderText = styled.Text`
   margin: auto;
-`
+`;
 
 const StyledDescriptionWrapper = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1;
     width: 100%;
-`
+`;
 
 const StyleInfo = styled.View`
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-`
+`;
 
 const StyleSmallText = styled.Text`
   color: #a8a8a8;
-`
+`;
 
 const DescriptionSub = styled.Text`
   color: #787878;
@@ -121,7 +122,7 @@ const StyledNameText = styled.Text`
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 12px;
-`
+`;
 
 const StyledSlider = styled(Slider)`
   margin-left: auto;
@@ -130,7 +131,7 @@ const StyledSlider = styled(Slider)`
   width: 100%;
   font-size: 5px;
   height: 10px;
-`
+`;
 
 const StyledViewTimeIndicator = styled.View`
   justify-content: space-between;
@@ -138,12 +139,12 @@ const StyledViewTimeIndicator = styled.View`
   width: 94%;
   margin-left: auto;
   margin-right: auto;
-`
+`;
 
 const StyledTime = styled.Text`
   font-size: 12px;
   color: #919191;
-`
+`;
 
 const StyledFeatureButtonGroup = styled.View`
   flex-direction: row;
@@ -151,23 +152,23 @@ const StyledFeatureButtonGroup = styled.View`
   margin-left: auto;
   margin-right: auto;
   justify-content: space-around;
-`
+`;
 
 const StyledPlayBackButton = styled.View`
   position: relative;
-`
+`;
 
 const StyledFeatherIcon = styled(FeatherIcon)`
   font-size: 28px;
   color: black;
   margin: 8px 10px 8px 10px;
-`
+`;
 
 const StyledEntypoIcon = styled(EntypoIcon)`
   font-size: 52px;
   color: #e3e3e3;
   
-`
+`;
 
 const StyledBadge = styled.Text`
   font-size: 12px;
@@ -177,7 +178,7 @@ const StyledBadge = styled.Text`
   left: 8px;
   width: 20px;
   position: absolute;
-`
+`;
 
 const StyledButtonText = styled.Text`;
   width: 32px;
@@ -186,28 +187,51 @@ const StyledButtonText = styled.Text`;
   height: 32px;
   font-weight: bold;
   font-size: 20px;
-`
+`;
 
 const StyledPlayButton = styled.View`
   background-color:#545454;
   border-radius: 50;
-`
+`;
 
 const Player = (props) => {
 
 
+  useEffect(() => {
+    TrackPlayer.addEventListener('playback-state',(data)=>{
+      console.log('check data', data)
+    })
+
+    TrackPlayer.setupPlayer().then(async () => {
+
+      // Adds a track to the queue
+      await TrackPlayer.add({
+          id: 'trackId',
+          url: props.navigation.getParam('audioUrl'),
+          title: 'Track Title',
+          artist: 'Track Artist',
+          artwork: 'linhtinh',
+      });
+
+      // Starts playing it
+      TrackPlayer.play();
+
+  });
+
+  }, [ ]);
+
   return (
     <Wrapper>
       <HeaderWrapper>
-        <TouchableOpacity onPress={() => { 
-          props.navigation.navigate('PodcastDetail')
+        <TouchableOpacity onPress={() => {
+          props.navigation.navigate('PodcastDetail');
         }}>
             <StyledAntDesignIcon name={'chevron-thin-down'} />
         </TouchableOpacity>
         <StyledHeaderText>We EnJoy Learning English</StyledHeaderText>
 
-        <TouchableOpacity onPress={() => { 
-          props.navigation.navigate('Home')
+        <TouchableOpacity onPress={() => {
+          props.navigation.navigate('Home');
         }}>
             <StyledAntDesignIcon name={'dots-three-vertical'} />
         </TouchableOpacity>
@@ -218,7 +242,7 @@ const Player = (props) => {
           <StyledContent>
                 <StyledInfoWrapper size="big" >
                     <StyledPodcastImage
-                        resizeMode={"contain"}
+                        resizeMode={'contain'}
                         source={{ uri: PODCAST.imageUrl }}
                     />
                     <StyleInfo>
@@ -240,8 +264,8 @@ const Player = (props) => {
                   thumbTintColor = "#919191"
                 />
                 <StyledViewTimeIndicator>
-                  <StyledTime>3:55</StyledTime>
-                  <StyledTime>11:07</StyledTime>
+                  <StyledTime>3:33</StyledTime>
+                  <StyledTime>4:22</StyledTime>
                 </StyledViewTimeIndicator>
 
 
@@ -249,7 +273,7 @@ const Player = (props) => {
                     <TouchableOpacity>
                       <StyledButtonText>1x</StyledButtonText>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress = {()=> TrackPlayer.stop()}>
                       <StyledPlayButton>
                         <StyledEntypoIcon name="triangle-right"/>
                       </StyledPlayButton>

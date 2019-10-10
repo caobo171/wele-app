@@ -163,6 +163,7 @@ const StyledBillboardHeader = styled.View`
 
 const StyledBillboardContent = styled.ScrollView`
   flex: 2.5;
+  padding: 20px ;
 `;
 
 
@@ -191,6 +192,7 @@ const StyledOrderIndicator = styled.Text`
 const StyledUserNameWrapper = styled.View`
   flex: 8;
   flex-direction: column;
+  margin-left: 12px;
 `;
 
 const StyledName = styled.Text`
