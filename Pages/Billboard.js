@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -8,88 +9,274 @@
 
 import React from 'react';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import LinearGradient from 'react-native-linear-gradient';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { View , TouchableOpacity , ScrollView , Text } from 'react-native';
 
-import styled from 'styled-components'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-const FAKEDATA = [
+
+
+
+import styled from 'styled-components';
+const USERS = [
+  { id: 1,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
   {
-    name: '[ESL 40063] Yelling at Children', 
-    description: `Pre-Beginner Course quay trở lại sau hai tuần vắng bóng rồi đây. Bài nghe thứ 4 của series, chúng ta hãy cùng nghe một đoạn trích nói về việc “YELLING AT CHILDREN” (la mắng trẻ em). Giáo dục con trẻ chưa bao giờ được xem là dễ dàng. Để giúp trẻ nghe lời, hiểu và làm những điều đúng cần rất nhiều sự kiên nhẫn và bình tĩnh từ bố mẹ và người lớn. Việc cha mẹ quát mắng con là A COMMON SITUATION (một tình huống phổ biến) ở nhiều gia đình trên thế giới. Nhiều bậc phụ huynh RAISE THEIR VOICES (lên giọng) hay quát tháo con cái họ khi họ FELL ANGRY OR AFRAID OR FRUSTRATED (cảm thấy giận dữ, sợ hãi hay chán nản). Việc la mắng con trẻ sẽ tốt khi ở mức độ vừa phải và cho trẻ con thấy việc HAVE EMOTIONS (biểu lộ cảm xúc) là hoàn toàn ổn. Nó chỉ không tốt khi khiến trẻ FEEL SHAME (cảm thấy xấu hổ).
-    Đôi khi một người hét lớn lên để nói với thế giới rằng anh ấy POWERFUL AND IN CONTROL (có uy quyền và nắm quyền kiểm soát). Các bạn có tưởng tượng cảnh mình đứng trên nóc một tòa cao ốc hay trên đỉnh núi và hét lớn không? Rất thú vị phải không nào? Các mems hãy hét lên “I CAN DO IT! I CAN LEARN ENGLISH! I ENJOY LEARNING ENGLISH!” thật mạnh mẽ nhé :D.
-    Các new members cùng gõ toàn bộ bài nghe vào file word rồi gửi đính kèm về weenjoylearningenglish@gmail.com với tiêu đề "ESL 40063 Tên bạn" nhé.
-    Chúc cả nhà một tuần vui vẻ và tràn đầy năng lượng!`,
-    source : 'Spotlight',
-    narrator: 'Le Dieu Huong'
+    id: 2,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+  {
+    id: 3,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+  {
+    id: 4,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+  {
+    id: 5,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+  {
+    id: 6,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+  {
+    id: 7,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+  {
+    id: 8,
+    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
+    name: 'Nguyễn Văn Cao',
+  },
+];
 
-  }
-]
 
-const Wrapper = styled.View`
-  height: 100%;
-  width: 100%;
+const Wrapper = styled(LinearGradient)`
+  margin-top: 5px;
+  height: 99%;
+  width: 96%;
   color: yellow;
-`
+  margin : auto;
+`;
 
 const HeaderWrapper = styled.View`
-background-color: black;
-height: 40px;
-flex-direction: row;
-padding: 0;
-margin: 0;
+  background-color: white;
+  height: 32px;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0;
+  
+`;
+const StyledBodyWrapper = styled.View`
+  background-color: white;
+  flex: 9;
+  align-items: flex-start;
+`;
 
+
+const StyledSection = styled.View`
+  width: 100%;
+  margin: 0 ;
+  background-color: white;
+`;
+
+const StyledSectionTitle = styled.Text`
+  color: black;
+  font-size: ${props=> props.position === 'top' ? '24px' : '20px' } ;
+  font-weight: ${props=> props.position === 'top' ? 'bold' : '900' } ;
+  padding-bottom: 16px;
+  margin: ${props=> props.position === 'top' ? '-12px' : '28px' } 10px 0px 10px; 
+  border-bottom-width: 1px;
+  border-color: #d4d4d4;
+`;
+
+const StyledSectionContent = styled.View``;
+
+const StyledPodcastWrapper = styled.View`
+  background-color: white;
+  height:  ${props=> props.size === 'big' ? '200px' : (props.size === 'medium' ? '180px' : '160px') } ;
+  width: 100%;
+  flex-direction: row;
+  margin: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: #d4d4d4;
+  padding-top: 10px;
+`;
+
+const StyledPodcastContent = styled.View`
+  flex: 3;
+  padding: 20px 10px 10px 10px ;
+`;
+
+const StyledImageWrapper = styled.View`
+  flex: 2;
+`;
+
+const StyledPodcastImage = styled.Image`
+  height: 40px;
+  width: 40px;
+  border-radius: 50;
+  flex: 2;
+`;
+
+const Title = styled.Text`
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 16px;
+`;
+
+const DescriptionMain = styled.Text`
+  font-size : 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+`;
+
+const StyleSmallText = styled.Text`
+  color: #a8a8a8;
+`;
+
+const DescriptionSub = styled.Text`
+  color: #787878;
+  font-size: 10px;
+`;
+
+const StyledBillboardHeader = styled.View`
+  flex: 1;
+  padding-top: 20px;
+  justify-content: center;
+  flex-direction: row;
+
+`;
+
+const StyledBillboardContent = styled.ScrollView`
+  flex: 2.5;
+`;
+
+
+const StyledUserSection = styled.View`
+  height: 58px;
+  width: 100%;
+  flex-direction: row;
+`;
+
+const StyledOrderIndicator = styled.Text`
+  text-align: center;
+  flex: 0.5;
+  margin-left: 5px;
+  padding-top: 8px;
+  margin-right: 5px;
+
+  border-bottom-width: 4px;
+  border-color: #bababa;
+  margin-bottom: 24px;
+
+  font-size: 12px;
+  font-weight: bold;
+  color: ${props => props.color} ;
+`;
+
+const StyledUserNameWrapper = styled.View`
+  flex: 8;
+  flex-direction: column;
+`;
+
+const StyledName = styled.Text`
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1px;
+
+`;
+
+const StyledSubDescription = styled.Text`
+  font-size: 12px;
+  color: #757575;
+`;
+
+
+
+const StyledEntypoIcon = styled(EntypoIcon)`
+  font-size: 16px;
+  color: #a8a8a8;
+  margin: 8px 10px 8px 10px;
+`;
+
+const StyledActionButtonGroup = styled.View`
+  flex: 2;
+`;
+
+const StyledHeaderImage = styled.Image`
+  width: ${props => props.width}px;
+  height: ${props=> props.height}px;
+  margin: 16px;
 `
-const BodyWrapper = styled.View`
-background-color: blue;
-flex: 9;
-align-items: flex-start;
-`
-const StyledHeaderIcon = styled(Icon)`
 
-    margin: 0 ;
-    font-size: 20;
-    padding: 5px 10px 5px 10px;
-    height: 100%;
-    text-align-vertical: center;
-    color: white;
-`
+const renderColor = (index)=>{
+  switch (index){
+    case 0:
+      return 'blue';
+    case 1:
+      return 'green';
+    case 2:
+      return 'red';
+    default:
+      return  'grey';
+  }
+};
 
-const StyledHeaderTitle = styled.Text`
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    text-align-vertical: center;
-    font-size: 20;
-    margin-left: 20px;
-    font-weight: bold;
-    color: white;
-`
-
-const BillBoard = () => {
-
+const Billboard = (props) => {
   return (
-    <Wrapper>
+    <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0,0.3,0.5]}>
+        <StyledBillboardHeader>
+          <StyledHeaderImage resizeMode={'contain'} source ={ require('../assets/cup.png') } width={64} height={72}/>
+          <StyledHeaderImage resizeMode={'contain'} source ={ require('../assets/cup.png') } width={92} height={112}/>
+          <StyledHeaderImage resizeMode={'contain'} source ={ require('../assets/cup.png') } width={52} height={80} />
+        </StyledBillboardHeader> 
+        <StyledBillboardContent>
+          {
+            USERS.map( (user,index)=> {
+              return (
+                <StyledUserSection key={user.id}>
+                  <StyledOrderIndicator color={renderColor(index)}>
+                        {index + 1}
+                  </StyledOrderIndicator>
+                  <StyledPodcastImage
+                    resizeMode={'contain'}
+                    source = {{
+                      uri: user.avatar,
+                    }}
+                  />
+                  <StyledUserNameWrapper>
+                      <StyledName>{user.name}</StyledName>
+                      <StyledSubDescription>Beginner</StyledSubDescription>
+                  </StyledUserNameWrapper>
+                  <StyledActionButtonGroup>
+                      <TouchableOpacity onPress={() => {
+                          props.navigation.navigate('PodcastDetail');
+                        }}>
+                            <StyledEntypoIcon name={'dots-three-vertical'} />
+                        </TouchableOpacity>
+                  </StyledActionButtonGroup>
+                </StyledUserSection>
 
-      <BodyWrapper></BodyWrapper>
+              );
+            })
+          }
+        </StyledBillboardContent>
     </Wrapper>
   );
 };
 
-
-export default BillBoard;
+export default Billboard;

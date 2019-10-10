@@ -7,7 +7,10 @@ import Home from './Pages/Home';
 import Billboard from './Pages/Billboard';
 import {createAppContainer} from 'react-navigation';
 
-import Login from './Pages/Login'
+import Login from './Pages/Login';
+import {createStackNavigator} from 'react-navigation-stack';
+
+import Player from './Pages/Player';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -49,6 +52,32 @@ const TabNavigator = createBottomTabNavigator(
   },
 );
 
-const AppContainer = createAppContainer(TabNavigator);
+const OutSideNavigator = createStackNavigator({
+  Player: {
+    screen: Player,
+  },
+});
+
+const RootNavigator = createStackNavigator(
+  {
+    OutSideNavigator: {
+      screen: OutSideNavigator,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    TabNavigator: {
+      screen: TabNavigator,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    initialRouteName: 'TabNavigator',
+  },
+);
+
+const AppContainer = createAppContainer(RootNavigator);
 
 export default AppContainer;

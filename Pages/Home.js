@@ -16,6 +16,7 @@ import { View , TouchableOpacity , ScrollView } from 'react-native';
 
 import UserProfile from './UserProfile'
 import PodcastDetail from './PodcastDetail'
+import Player from './Player'
 
 import { createStackNavigator } from 'react-navigation-stack';
 

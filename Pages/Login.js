@@ -106,6 +106,8 @@ const StyledText = styled.Text`
     color: #d1d1d1;
 `
 
+
+
 const Login = (props) => {
   return (
     <Wrapper>

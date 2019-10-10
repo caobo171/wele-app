@@ -50,7 +50,7 @@ const StyledBodyWrapper = styled.View`
   background-color: white;
   flex: 9;
   align-items: flex-start;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 10px 10px 20px;
 `;
 
 
@@ -104,7 +104,7 @@ const DescriptionMain = styled.Text`
     color: #7a7a7a;
     letter-spacing: 1px;
     font-size: 12px;
-    margin-bottom: 20px;
+
 `
 
 const StyleSmallText = styled.Text`
@@ -128,6 +128,7 @@ const StyledDescriptionWrapper = styled.View`
 const StyledReadmore = styled.Text`
     font-size: 12px;
     font-weight: bold;
+    margin-bottom: 20px;
 `;
 
 const StyledPlayButton = styled.View`
@@ -176,10 +177,12 @@ const PodcastDetail = (props) => {
                     <DescriptionInfo>
                         {PODCAST.source} <StyleSmallText>dẫn bởi </StyleSmallText>{PODCAST.narrator}
                     </DescriptionInfo>
+                    <TouchableOpacity onPress={()=> props.navigation.navigate('Player')}>
+                      <StyledPlayButton>
+                          <StyledText>Play</StyledText>
+                      </StyledPlayButton>
+                    </TouchableOpacity>
 
-                    <StyledPlayButton>
-                        <StyledText>Play</StyledText>
-                    </StyledPlayButton>
                 </StyledUserWrapper>
 
                 <StyledDescriptionWrapper>
