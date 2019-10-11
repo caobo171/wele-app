@@ -7,7 +7,7 @@ import Home from './Pages/Home';
 import Billboard from './Pages/Billboard';
 import {createAppContainer} from 'react-navigation';
 
-import Login from './Pages/Login';
+import Login from './Pages/Login2';
 import {createStackNavigator} from 'react-navigation-stack';
 
 import Player from './Pages/Player';
@@ -89,4 +89,4 @@ const RootNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(RootNavigator);
 
-export default AppContainer;
+export default Login;
