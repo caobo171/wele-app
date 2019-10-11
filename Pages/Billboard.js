@@ -71,59 +71,6 @@ const Wrapper = styled(LinearGradient)`
   margin : auto;
 `;
 
-const HeaderWrapper = styled.View`
-  background-color: white;
-  height: 32px;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding: 0;
-  
-`;
-const StyledBodyWrapper = styled.View`
-  background-color: white;
-  flex: 9;
-  align-items: flex-start;
-`;
-
-
-const StyledSection = styled.View`
-  width: 100%;
-  margin: 0 ;
-  background-color: white;
-`;
-
-const StyledSectionTitle = styled.Text`
-  color: black;
-  font-size: ${props=> props.position === 'top' ? '24px' : '20px' } ;
-  font-weight: ${props=> props.position === 'top' ? 'bold' : '900' } ;
-  padding-bottom: 16px;
-  margin: ${props=> props.position === 'top' ? '-12px' : '28px' } 10px 0px 10px; 
-  border-bottom-width: 1px;
-  border-color: #d4d4d4;
-`;
-
-const StyledSectionContent = styled.View``;
-
-const StyledPodcastWrapper = styled.View`
-  background-color: white;
-  height:  ${props=> props.size === 'big' ? '200px' : (props.size === 'medium' ? '180px' : '160px') } ;
-  width: 100%;
-  flex-direction: row;
-  margin: 0;
-  border-bottom-width: 1px;
-  border-style: solid;
-  border-color: #d4d4d4;
-  padding-top: 10px;
-`;
-
-const StyledPodcastContent = styled.View`
-  flex: 3;
-  padding: 20px 10px 10px 10px ;
-`;
-
-const StyledImageWrapper = styled.View`
-  flex: 2;
-`;
 
 const StyledPodcastImage = styled.Image`
   height: 40px;
@@ -132,26 +79,6 @@ const StyledPodcastImage = styled.Image`
   flex: 2;
 `;
 
-const Title = styled.Text`
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 16px;
-`;
-
-const DescriptionMain = styled.Text`
-  font-size : 12px;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
-
-const StyleSmallText = styled.Text`
-  color: #a8a8a8;
-`;
-
-const DescriptionSub = styled.Text`
-  color: #787878;
-  font-size: 10px;
-`;
 
 const StyledBillboardHeader = styled.View`
   flex: 1;

@@ -11,11 +11,15 @@ import React , {useState} from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import DocumentPicker from 'react-native-document-picker';
+
 
 
 import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
-
+import TrackPlayer, {
+  useTrackPlayerProgress,
+  usePlaybackState,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
 
 
 
@@ -149,34 +153,13 @@ const StyledText = styled.Text`
     letter-spacing: 3px;
     color: #ededed;
 `
+
 const PodcastDetail = (props) => {
 
   const [isBrief, setIsBrief] = useState(true)
 
   const onPressPlayHandle = async ()=>{
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.audio],
-      });
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size
-      );
-
-      await props.navigation.navigate('Player',{
-        audioUrl: res.uri, 
-      })
-
-
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else {
-        throw err;
-      }
-    }
+    await props.navigation.navigate('Player')
   }
   return (
     <Wrapper>

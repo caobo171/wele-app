@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React , {useState , useEffect} from 'react';
+import React , {useState , useEffect , useCallback} from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -19,6 +19,8 @@ import TrackPlayer, {
   usePlaybackState,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
+import DocumentPicker from 'react-native-document-picker';
+import AsyncStorage from '@react-native-community/async-storage'
 
 
 
@@ -156,9 +158,10 @@ const StyledFeatureButtonGroup = styled.View`
   margin-left: auto;
   margin-right: auto;
   justify-content: space-around;
+  align-items: center;
 `;
 
-const StyledPlayBackButton = styled.View`
+const StyledPlayBackButton = styled(TouchableOpacity)`
   position: relative;
 `;
 
@@ -169,9 +172,9 @@ const StyledFeatherIcon = styled(FeatherIcon)`
 `;
 
 const StyledEntypoIcon = styled(EntypoIcon)`
-  font-size: 52px;
+  font-size: ${props=> props.size === 'small' ? '28px' : '42px'};
   color: #e3e3e3;
-  
+  text-align: center;
 `;
 
 const StyledBadge = styled.Text`
@@ -182,6 +185,7 @@ const StyledBadge = styled.Text`
   left: 8px;
   width: 20px;
   position: absolute;
+
 `;
 
 const StyledButtonText = styled.Text`;
@@ -190,40 +194,157 @@ const StyledButtonText = styled.Text`;
   margin-top: 10px;
   height: 32px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
 `;
 
-const StyledPlayButton = styled.View`
+const StyledPlayButton = styled(TouchableOpacity)`
   background-color:#545454;
   border-radius: 50;
+  padding: 8px;
 `;
 
+let timer = null;
+
+
+const convertTime = (second)=>{
+  const roundedSecond = Math.round(second);
+  const rSecond = roundedSecond % 60;
+  return `${(roundedSecond - rSecond) / 60 }:` + `${rSecond}`.padStart(2,'0');
+};
+
+
 const Player = (props) => {
-
-  const progress = useTrackPlayerProgress();
-
-  useEffect(() => {
-    TrackPlayer.addEventListener('playback-state',(data)=>{
-      console.log('check data', data);
-    });
-
-    TrackPlayer.setupPlayer().then(async () => {
-
-      // Adds a track to the queue
-      await TrackPlayer.add({
-          id: 'trackId',
-          url: props.navigation.getParam('audioUrl'),
-          title: 'Track Title',
-          artist: 'Track Artist',
-          artwork: 'linhtinh',
-      });
-
-      // Starts playing it
-      TrackPlayer.play();
-
+  const [ progress , setProgress ] = useState({
+    position: 0,
+    duration: 0,
   });
 
-  }, [props.navigation]);
+  const [state, setState] = useState(0);
+
+  const [speed, setSpeed] = useState(0)
+  const [playback, setPlayback ] = useState(0)
+
+  useEffect(() => {
+    AsyncStorage.getItem('@speed').then(value => {
+        setSpeed(value ? Number(value) : 1)
+        AsyncStorage.getItem('@playback').then(value=> {
+            setPlayback( value ? Number(value) : 5 )
+        })
+    })
+
+    try {
+      DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      }).then((res )=>{
+        try {
+          TrackPlayer.setupPlayer().then(async () => {
+    
+            await TrackPlayer.updateOptions({
+              stopWithApp: true,
+              capabilities:[
+                TrackPlayer.CAPABILITY_PAUSE,
+                TrackPlayer.CAPABILITY_SEEK_TO,
+                TrackPlayer.CAPABILITY_STOP,
+                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+                TrackPlayer.CAPABILITY_SET_RATING,
+              ],
+              compactCapabilities:[
+                TrackPlayer.CAPABILITY_PAUSE,
+                TrackPlayer.CAPABILITY_SEEK_TO,
+                TrackPlayer.CAPABILITY_STOP,
+                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+                TrackPlayer.CAPABILITY_SET_RATING,
+              ],
+            });
+    
+            TrackPlayer.addEventListener('playback-state', (event)=>{
+              switch (event.state){
+                case TrackPlayer.STATE_PLAYING:
+                    setState(1);
+                    break;
+                default:
+                  setState(0);
+              }
+            });
+    
+            // Adds a track to the queue
+            await TrackPlayer.add({
+                id: 'trackId',
+                url: res.uri,
+                title: 'Track Title',
+                artist: 'Track Artist',
+                artwork: 'linhtinh',
+            });
+    
+            // Starts playing it
+            TrackPlayer.play();
+    
+          });
+        } catch (err){
+          console.log('check err', err);
+        }
+      })
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+
+    try {
+      timer = setInterval(async ()=>{
+        const data = {
+          position : await TrackPlayer.getPosition(),
+          duration: await TrackPlayer.getDuration(),
+        };
+        if (data.position !== progress.position){
+          setProgress(data);
+        }
+
+      }, 1000 );
+    } catch (err){
+      console.log('check err', err);
+    }
+
+    return ()=>{
+      timer && clearInterval(timer);
+    };
+  }, []);
+
+  const onPausePlayHandle = useCallback(()=> {
+    console.log('check ');
+    if (state === 1){
+      TrackPlayer.pause();
+    } else {
+      TrackPlayer.play();
+    }
+  }, [state]);
+
+  const onSlideCompleHandle = (value)=>{
+    TrackPlayer.seekTo(value).then(()=>{
+      setProgress({
+        ...progress,
+        position: value,
+      });
+    });
+  };
+
+  const fastForwardHandle = async ()=>{
+      const rate = await TrackPlayer.getRate()
+      TrackPlayer.setRate(rate * speed)
+  }
+
+  const fastBackwardHandle = async ()=>{
+    const rate = await TrackPlayer.getRate()
+    TrackPlayer.setRate(rate / speed)
+  }
+
+  const onPlayBackHandle =  ()=>{
+     TrackPlayer.seekTo(Math.max(0, progress.position - playback))
+  }
 
   return (
     <Wrapper>
@@ -262,33 +383,42 @@ const Player = (props) => {
                 <StyledDescriptionWrapper>
 
                 <StyledSlider
+                  onSlidingComplete = {onSlideCompleHandle}
                   minimumValue={0}
-                  maximumValue={1}
+                  maximumValue={progress.duration}
                   minimumTrackTintColor= "#919191"
                   maximumTrackTintColor="#e3e3e3"
                   thumbTintColor = "#919191"
+                  value = { progress.position }
                 />
                 <StyledViewTimeIndicator>
-                  <StyledTime>3:33</StyledTime>
-                  <StyledTime>4:22</StyledTime>
+                  <StyledTime>{convertTime(progress.position)}</StyledTime>
+                  <StyledTime>{convertTime(progress.duration)}</StyledTime>
                 </StyledViewTimeIndicator>
 
 
                 <StyledFeatureButtonGroup>
-                    <TouchableOpacity>
-                      <StyledButtonText>1x</StyledButtonText>
+                    <TouchableOpacity onPress = {()=>{props.navigation.navigate('SettingRates')}}>
+                      <StyledButtonText>{`${speed.toString()}x`}</StyledButtonText>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress = {()=> TrackPlayer.stop()}>
-                      <StyledPlayButton>
-                        <StyledEntypoIcon name="triangle-right"/>
+
+                      <StyledPlayButton onPress = {fastBackwardHandle}>
+                        <StyledEntypoIcon size ={'small'} name="controller-fast-backward"/>
                       </StyledPlayButton>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <StyledPlayBackButton>
+        
+                      <StyledPlayButton  onPress ={onPausePlayHandle}>
+                        <StyledEntypoIcon name={state === 1 ? 'controller-paus' : 'controller-play'}/>
+                      </StyledPlayButton>
+
+                      <StyledPlayButton onPress = {fastForwardHandle}>
+                        <StyledEntypoIcon size ={'small'} name="controller-fast-forward"/>
+                      </StyledPlayButton>
+
+
+                      <StyledPlayBackButton onPress = {onPlayBackHandle}>
                           <StyledFeatherIcon name="corner-up-left"/>
-                          <StyledBadge>15 </StyledBadge>
+                          <StyledBadge>{playback} </StyledBadge>
                       </StyledPlayBackButton>
-                    </TouchableOpacity>
 
                 </StyledFeatureButtonGroup>
                 </StyledDescriptionWrapper>

@@ -11,6 +11,7 @@ import Login from './Pages/Login';
 import {createStackNavigator} from 'react-navigation-stack';
 
 import Player from './Pages/Player';
+import SettingRates from './Pages/SettingRates';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -52,11 +53,19 @@ const TabNavigator = createBottomTabNavigator(
   },
 );
 
-const OutSideNavigator = createStackNavigator({
-  Player: {
-    screen: Player,
+const OutSideNavigator = createStackNavigator(
+  {
+    Player: {
+      screen: Player,
+    },
+    SettingRates: {
+      screen: SettingRates,
+    },
   },
-});
+  {
+    initialRouteName: 'SettingRates',
+  },
+);
 
 const RootNavigator = createStackNavigator(
   {
@@ -74,7 +83,7 @@ const RootNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'TabNavigator',
+    initialRouteName: 'OutSideNavigator',
   },
 );
 
