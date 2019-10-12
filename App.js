@@ -83,10 +83,10 @@ const RootNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'OutSideNavigator',
+    initialRouteName: 'TabNavigator',
   },
 );
 
 const AppContainer = createAppContainer(RootNavigator);
 
-export default Login;
+export default AppContainer;
