@@ -964,6 +964,11 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-firebase/auth@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-6.0.1.tgz#839f50b6da886554afaae5b0acb6336ff4ec52b6"
+  integrity sha512-gya8TFZTFW93PQz9BOWormBnFzQMvE5clWP2flbx0qyN0PbdGbb+DjrrTSQKB/YgNxqgObot3m5n+gINa1Vcmg==
+
 "@react-navigation/core@^3.5.1":
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.5.1.tgz#7a2339fca3496979305fb3a8ab88c2ca8d8c214d"
