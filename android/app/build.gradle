@@ -119,6 +119,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+
+        // very important
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -173,6 +177,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-track-player')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

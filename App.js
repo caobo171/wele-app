@@ -1,67 +1,93 @@
-/**
- * Sample React Native App with Firebase
- * https://github.com/invertase/react-native-firebase
- *
- * @format
- * @flow
- */
+import React from 'react';
+import {StyleSheet, Text, View, Image} from 'react-native';
 
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Home from './Pages/Home';
+import Billboard from './Pages/Billboard';
+import {createAppContainer} from 'react-navigation';
 
-import firebase from '@react-native-firebase/app';
+import Login from './Pages/Login2';
+import {createStackNavigator} from 'react-navigation-stack';
 
-// TODO(you): import any additional firebase services that you require for your app, e.g for auth:
-//    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
-//       run linking commands - this happens automatically at build time now
-//    2) rebuild your app via `yarn run run:android` or `yarn run run:ios`
-//    3) import the package here in your JavaScript code: `import '@react-native-firebase/auth';`
-//    4) The Firebase Auth service is now available to use here: `firebase.auth().currentUser`
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\nCmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\nShake or press menu button for dev menu',
-});
+import Player from './Pages/Player'
+import SettingRates from './Pages/SettingRates';
 
-const firebaseCredentials = Platform.select({
-  ios: 'https://invertase.link/firebase-ios',
-  android: 'https://invertase.link/firebase-android',
-});
-
-type Props = {};
-
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native + Firebase!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        {!firebase.apps.length && (
-          <Text style={styles.instructions}>
-            {`\nYou currently have no Firebase apps registered, this most likely means you've not downloaded your project credentials. Visit the link below to learn more. \n\n ${firebaseCredentials}`}
-          </Text>
-        )}
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+const TabNavigator = createBottomTabNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="home" color={tintColor} size={24} />
+        ),
+      },
+    },
+    BillBoard: {
+      screen: Billboard,
+      tabBarOptions: {
+        visible: false,
+      },
+      navigationOptions: {
+        tabBarLabel: 'BillBoard',
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="bar-chart" color={tintColor} size={24} />
+        ),
+      },
+    },
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  {
+    tabBarOptions: {
+      activeTintColor: 'black',
+      inactiveTintColor: 'grey',
+      style: {
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+        shadowOffset: {width: 5, height: 3},
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        elevation: 5,
+      },
+    },
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+);
+
+const OutSideNavigator = createStackNavigator(
+  {
+    Player: {
+      screen: Player,
+    },
+    SettingRates: {
+      screen: SettingRates,
+    },
   },
-});
+  {
+    initialRouteName: 'SettingRates',
+  },
+);
+
+const RootNavigator = createStackNavigator(
+  {
+    OutSideNavigator: {
+      screen: OutSideNavigator,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    TabNavigator: {
+      screen: TabNavigator,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    initialRouteName: 'TabNavigator',
+  },
+);
+
+const AppContainer = createAppContainer(RootNavigator);
+
+export default Login;
