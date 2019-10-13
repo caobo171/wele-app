@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "703244105810",
+    "firebase_url": "https://wele-app.firebaseio.com",
+    "project_id": "wele-app",
+    "storage_bucket": "wele-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703244105810:android:1c27a009ff46970bb4878b",
+        "android_client_info": {
+          "package_name": "com.wele"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703244105810-l95v3q95okk63g992kpggnt07cesjohp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wele",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjmBAA0GJxH3UNmO0mO9cArWfK31NHulA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
