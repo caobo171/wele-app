@@ -127,7 +127,7 @@ const SettingRates = (props) => {
             <StyledValueColumn>
                 {
                     [ 0.5 , 0.8, 1, 1.2, 1.5, 2].map(number=>{
-                        return <StyledNumberView onPress={()=> handleSetSpeed(number)}>
+                        return <StyledNumberView  key={number} onPress={()=> handleSetSpeed(number)}>
                             { speed === number && <StyledAntDesignIcon name="check"/>}
                             <StyledNumberText check={speed === number}>
                                 {number}x
@@ -139,7 +139,7 @@ const SettingRates = (props) => {
             <StyledValueColumn>
                 {
                     [ 5 , 10 , 15, 20, 25, 30 ].map(number=>{
-                        return <StyledNumberView onPress={()=> handleSetPlayback(number)}>
+                        return <StyledNumberView  key={number} onPress={()=> handleSetPlayback(number)}>
                             { playback === number && <StyledAntDesignIcon name="check"/>}
                             <StyledNumberText check={playback === number}>
                                 {number}s

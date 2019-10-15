@@ -7,13 +7,13 @@
  * @flow
  */
 
-import React , {useState , useEffect , useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Slider from '@react-native-community/slider';
-import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
 import TrackPlayer, {
   useTrackPlayerProgress,
   usePlaybackState,
@@ -29,15 +29,15 @@ import styled from 'styled-components';
 
 const PODCAST = {
 
-    key: 1,
-    name: '[ESL 40063] Yelling at Children',
-    description: `Pre-Beginner Course quay trở lại sau hai tuần vắng bóng rồi đây. Bài nghe thứ 4 của series, chúng ta hãy cùng nghe một đoạn trích nói về việc “YELLING AT CHILDREN” (la mắng trẻ em). Giáo dục con trẻ chưa bao giờ được xem là dễ dàng. Để giúp trẻ nghe lời, hiểu và làm những điều đúng cần rất nhiều sự kiên nhẫn và bình tĩnh từ bố mẹ và người lớn. Việc cha mẹ quát mắng con là A COMMON SITUATION (một tình huống phổ biến) ở nhiều gia đình trên thế giới. Nhiều bậc phụ huynh RAISE THEIR VOICES (lên giọng) hay quát tháo con cái họ khi họ FELL ANGRY OR AFRAID OR FRUSTRATED (cảm thấy giận dữ, sợ hãi hay chán nản). Việc la mắng con trẻ sẽ tốt khi ở mức độ vừa phải và cho trẻ con thấy việc HAVE EMOTIONS (biểu lộ cảm xúc) là hoàn toàn ổn. Nó chỉ không tốt khi khiến trẻ FEEL SHAME (cảm thấy xấu hổ).
+  key: 1,
+  name: '[ESL 40063] Yelling at Children',
+  description: `Pre-Beginner Course quay trở lại sau hai tuần vắng bóng rồi đây. Bài nghe thứ 4 của series, chúng ta hãy cùng nghe một đoạn trích nói về việc “YELLING AT CHILDREN” (la mắng trẻ em). Giáo dục con trẻ chưa bao giờ được xem là dễ dàng. Để giúp trẻ nghe lời, hiểu và làm những điều đúng cần rất nhiều sự kiên nhẫn và bình tĩnh từ bố mẹ và người lớn. Việc cha mẹ quát mắng con là A COMMON SITUATION (một tình huống phổ biến) ở nhiều gia đình trên thế giới. Nhiều bậc phụ huynh RAISE THEIR VOICES (lên giọng) hay quát tháo con cái họ khi họ FELL ANGRY OR AFRAID OR FRUSTRATED (cảm thấy giận dữ, sợ hãi hay chán nản). Việc la mắng con trẻ sẽ tốt khi ở mức độ vừa phải và cho trẻ con thấy việc HAVE EMOTIONS (biểu lộ cảm xúc) là hoàn toàn ổn. Nó chỉ không tốt khi khiến trẻ FEEL SHAME (cảm thấy xấu hổ).
         Đôi khi một người hét lớn lên để nói với thế giới rằng anh ấy POWERFUL AND IN CONTROL (có uy quyền và nắm quyền kiểm soát). Các bạn có tưởng tượng cảnh mình đứng trên nóc một tòa cao ốc hay trên đỉnh núi và hét lớn không? Rất thú vị phải không nào? Các mems hãy hét lên “I CAN DO IT! I CAN LEARN ENGLISH! I ENJOY LEARNING ENGLISH!” thật mạnh mẽ nhé :D.
         Các new members cùng gõ toàn bộ bài nghe vào file word rồi gửi đính kèm về weenjoylearningenglish@gmail.com với tiêu đề "ESL 40063 Tên bạn" nhé.
         Chúc cả nhà một tuần vui vẻ và tràn đầy năng lượng!`,
-    source: 'Spotlight',
-    narrator: 'Le Dieu Huong',
-    imageUrl: 'https://scontent.fhan5-4.fna.fbcdn.net/v/t1.0-9/70250807_2865993873415542_3327755512937709568_n.jpg?_nc_cat=104&_nc_oc=AQk2O6URyALOwDThGhXMZSzIA2kDDHOGaqSBI16nXRupykDDebtyGh9A7jR_iZ5oca8&_nc_ht=scontent.fhan5-4.fna&oh=40f0a049ecbb6aacc816902c494d59c7&oe=5E20C26F',
+  source: 'Spotlight',
+  narrator: 'Le Dieu Huong',
+  imageUrl: 'https://scontent.fhan5-4.fna.fbcdn.net/v/t1.0-9/70250807_2865993873415542_3327755512937709568_n.jpg?_nc_cat=104&_nc_oc=AQk2O6URyALOwDThGhXMZSzIA2kDDHOGaqSBI16nXRupykDDebtyGh9A7jR_iZ5oca8&_nc_ht=scontent.fhan5-4.fna&oh=40f0a049ecbb6aacc816902c494d59c7&oe=5E20C26F',
 };
 
 const Wrapper = styled.View`
@@ -172,7 +172,7 @@ const StyledFeatherIcon = styled(FeatherIcon)`
 `;
 
 const StyledEntypoIcon = styled(EntypoIcon)`
-  font-size: ${props=> props.size === 'small' ? '28px' : '42px'};
+  font-size: ${props => props.sizeMode === 'small' ? '28px' : '42px'};
   color: #e3e3e3;
   text-align: center;
 `;
@@ -206,86 +206,96 @@ const StyledPlayButton = styled(TouchableOpacity)`
 let timer = null;
 
 
-const convertTime = (second)=>{
+const convertTime = (second) => {
   const roundedSecond = Math.round(second);
   const rSecond = roundedSecond % 60;
-  return `${(roundedSecond - rSecond) / 60 }:` + `${rSecond}`.padStart(2,'0');
+  return `${(roundedSecond - rSecond) / 60}:` + `${rSecond}`.padStart(2, '0');
 };
 
 
-const Player = (props) => {
-  const [ progress , setProgress ] = useState({
-    position: 0,
-    duration: 0,
-  });
+class Player extends React.Component {
 
-  const [state, setState] = useState(0);
+  static navigationOptions = {
+    header: null,
+    tabBarVisible: false,
+  }; 
 
-  const [speed, setSpeed] = useState(0)
-  const [playback, setPlayback ] = useState(0)
+  constructor(props) {
+    super(props)
 
-  useEffect(() => {
-    AsyncStorage.getItem('@speed').then(value => {
-        setSpeed(value ? Number(value) : 1)
-        AsyncStorage.getItem('@playback').then(value=> {
-            setPlayback( value ? Number(value) : 5 )
-        })
-    })
+    this.state = {
+      position: 0,
+      duration: 0,
+      state: 0,
+      sliding: false,
+      speed: 0,
+      playback: 0
+    }
+  }
 
+  async componentDidMount() {
+
+    const speed = await AsyncStorage.getItem('@speed')
+    const playback = await AsyncStorage.getItem('@playback')
     try {
-      DocumentPicker.pick({
+      const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio],
-      }).then((res )=>{
-        try {
-          TrackPlayer.setupPlayer().then(async () => {
-    
-            await TrackPlayer.updateOptions({
-              stopWithApp: true,
-              capabilities:[
-                TrackPlayer.CAPABILITY_PAUSE,
-                TrackPlayer.CAPABILITY_SEEK_TO,
-                TrackPlayer.CAPABILITY_STOP,
-                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-                TrackPlayer.CAPABILITY_SET_RATING,
-              ],
-              compactCapabilities:[
-                TrackPlayer.CAPABILITY_PAUSE,
-                TrackPlayer.CAPABILITY_SEEK_TO,
-                TrackPlayer.CAPABILITY_STOP,
-                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-                TrackPlayer.CAPABILITY_SET_RATING,
-              ],
-            });
-    
-            TrackPlayer.addEventListener('playback-state', (event)=>{
-              switch (event.state){
-                case TrackPlayer.STATE_PLAYING:
-                    setState(1);
-                    break;
-                default:
-                  setState(0);
-              }
-            });
-    
-            // Adds a track to the queue
-            await TrackPlayer.add({
-                id: 'trackId',
-                url: res.uri,
-                title: 'Track Title',
-                artist: 'Track Artist',
-                artwork: 'linhtinh',
-            });
-    
-            // Starts playing it
-            TrackPlayer.play();
-    
-          });
-        } catch (err){
-          console.log('check err', err);
-        }
       })
+      try {
+
+        await TrackPlayer.setupPlayer()
+        await TrackPlayer.updateOptions({
+          stopWithApp: true,
+          capabilities: [
+            TrackPlayer.CAPABILITY_PAUSE,
+            TrackPlayer.CAPABILITY_SEEK_TO,
+            TrackPlayer.CAPABILITY_STOP,
+            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+            TrackPlayer.CAPABILITY_SET_RATING,
+          ],
+          compactCapabilities: [
+            TrackPlayer.CAPABILITY_PAUSE,
+            TrackPlayer.CAPABILITY_SEEK_TO,
+            TrackPlayer.CAPABILITY_STOP,
+            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+            TrackPlayer.CAPABILITY_SET_RATING,
+          ],
+        });
+
+        TrackPlayer.addEventListener('playback-state', (event) => {
+          switch (event.state) {
+            case TrackPlayer.STATE_PLAYING:
+              this.setState({state: 1});
+              break;
+            default:
+              this.setState({state: 0});
+          }
+        });
+
+        // Adds a track to the queue
+        await TrackPlayer.add({
+          id: 'trackId',
+          url: res.uri,
+          title: 'Track Title',
+          artist: 'Track Artist',
+          artwork: 'linhtinh',
+        });
+
+        // Starts playing it
+        await TrackPlayer.play();
+
+        this.setState({ 
+          speed: speed ? Number(speed) : 1 , 
+          playback: playback ? Number(playback) : 5 
+        })
+
+
+      } catch (err) {
+        console.log('check err', err);
+      }
+
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
@@ -295,146 +305,150 @@ const Player = (props) => {
     }
 
     try {
-      timer = setInterval(async ()=>{
-        const data = {
-          position : await TrackPlayer.getPosition(),
-          duration: await TrackPlayer.getDuration(),
-        };
-        if (data.position !== progress.position){
-          setProgress(data);
+      timer = setInterval(async () => {
+        const duration = await TrackPlayer.getDuration()
+        const  position = await TrackPlayer.getPosition()
+        if ( position !== this.state.position && !this.state.sliding) {
+          console.log('check vao day roi ', this.state.sliding)
+          this.setState({position, duration});
         }
 
-      }, 1000 );
-    } catch (err){
+      }, 1000);
+    } catch (err) {
       console.log('check err', err);
     }
+  }
 
-    return ()=>{
-      timer && clearInterval(timer);
-    };
-  }, []);
-
-  const onPausePlayHandle = useCallback(()=> {
-    console.log('check ');
-    if (state === 1){
+  onPausePlayHandle = () => {
+    if (this.state.state === 1) {
       TrackPlayer.pause();
     } else {
       TrackPlayer.play();
     }
-  }, [state]);
+  }
 
-  const onSlideCompleHandle = (value)=>{
-    TrackPlayer.seekTo(value).then(()=>{
-      setProgress({
-        ...progress,
+  onSlideCompleHandle = (value) => {
+    TrackPlayer.seekTo(value).then(() => {
+      this.setState({
         position: value,
-      });
+        sliding: false
+      })
+
     });
   };
 
-  const fastForwardHandle = async ()=>{
-      const rate = await TrackPlayer.getRate()
-      TrackPlayer.setRate(rate * speed)
-  }
-
-  const fastBackwardHandle = async ()=>{
+  fastForwardHandle = async () => {
     const rate = await TrackPlayer.getRate()
-    TrackPlayer.setRate(rate / speed)
+    TrackPlayer.setRate(rate * this.state.speed)
   }
 
-  const onPlayBackHandle =  ()=>{
-     TrackPlayer.seekTo(Math.max(0, progress.position - playback))
+  fastBackwardHandle = async () => {
+
+    const rate = await TrackPlayer.getRate()
+    TrackPlayer.setRate(rate / this.state.speed)
   }
 
-  return (
-    <Wrapper>
-      <HeaderWrapper>
-        <TouchableOpacity onPress={() => {
-          props.navigation.navigate('PodcastDetail');
-        }}>
+  onPlayBackHandle = () => {
+
+    const {position, playback} = this.state
+    TrackPlayer.seekTo(Math.max(0, position - playback))
+  }
+
+  onSlideStartHandle = () => {
+
+    this.setState({sliding: true})
+  }
+
+  render() {
+
+    const {  position, duration, state, sliding, speed, playback} = this.state
+    return (
+      <Wrapper>
+        <HeaderWrapper>
+          <TouchableOpacity onPress={() => {
+            this.props.navigation.navigate('PodcastDetail');
+          }}>
             <StyledAntDesignIcon name={'chevron-thin-down'} />
-        </TouchableOpacity>
-        <StyledHeaderText>We EnJoy Learning English</StyledHeaderText>
+          </TouchableOpacity>
+          <StyledHeaderText>We EnJoy Learning English</StyledHeaderText>
 
-        <TouchableOpacity onPress={() => {
-          props.navigation.navigate('Home');
-        }}>
+          <TouchableOpacity onPress={() => {
+            this.props.navigation.navigate('Home');
+          }}>
             <StyledAntDesignIcon name={'dots-three-vertical'} />
-        </TouchableOpacity>
-      </HeaderWrapper>
+          </TouchableOpacity>
+        </HeaderWrapper>
 
 
-      <StyledBodyWrapper>
+        <StyledBodyWrapper>
           <StyledContent>
-                <StyledInfoWrapper size="big" >
-                    <StyledPodcastImage
-                        resizeMode={'contain'}
-                        source={{ uri: PODCAST.imageUrl }}
-                    />
-                    <StyleInfo>
-                      <StyledNameText>{PODCAST.name}</StyledNameText>
-                      <DescriptionSub>
-                            {PODCAST.source} <StyleSmallText>dẫn bởi </StyleSmallText>{PODCAST.narrator}
-                      </DescriptionSub>
-                    </StyleInfo>
+            <StyledInfoWrapper size="big" >
+              <StyledPodcastImage
+                resizeMode={'contain'}
+                source={{ uri: PODCAST.imageUrl }}
+              />
+              <StyleInfo>
+                <StyledNameText>{PODCAST.name}</StyledNameText>
+                <DescriptionSub>
+                  {PODCAST.source} <StyleSmallText>dẫn bởi </StyleSmallText>{PODCAST.narrator}
+                </DescriptionSub>
+              </StyleInfo>
 
-                </StyledInfoWrapper>
+            </StyledInfoWrapper>
 
-                <StyledDescriptionWrapper>
+            <StyledDescriptionWrapper>
 
-                <StyledSlider
-                  onSlidingComplete = {onSlideCompleHandle}
-                  minimumValue={0}
-                  maximumValue={progress.duration}
-                  minimumTrackTintColor= "#919191"
-                  maximumTrackTintColor="#e3e3e3"
-                  thumbTintColor = "#919191"
-                  value = { progress.position }
-                />
-                <StyledViewTimeIndicator>
-                  <StyledTime>{convertTime(progress.position)}</StyledTime>
-                  <StyledTime>{convertTime(progress.duration)}</StyledTime>
-                </StyledViewTimeIndicator>
-
-
-                <StyledFeatureButtonGroup>
-                    <TouchableOpacity onPress = {()=>{props.navigation.navigate('SettingRates')}}>
-                      <StyledButtonText>{`${speed.toString()}x`}</StyledButtonText>
-                    </TouchableOpacity>
-
-                      <StyledPlayButton onPress = {fastBackwardHandle}>
-                        <StyledEntypoIcon size ={'small'} name="controller-fast-backward"/>
-                      </StyledPlayButton>
-        
-                      <StyledPlayButton  onPress ={onPausePlayHandle}>
-                        <StyledEntypoIcon name={state === 1 ? 'controller-paus' : 'controller-play'}/>
-                      </StyledPlayButton>
-
-                      <StyledPlayButton onPress = {fastForwardHandle}>
-                        <StyledEntypoIcon size ={'small'} name="controller-fast-forward"/>
-                      </StyledPlayButton>
+              <StyledSlider
+                onSlidingComplete={this.onSlideCompleHandle}
+                onSlidingStart = {this.onSlideStartHandle}
+                minimumValue={0}
+                maximumValue={duration}
+                minimumTrackTintColor="#919191"
+                maximumTrackTintColor="#e3e3e3"
+                thumbTintColor="#919191"
+                value={position}
+              />
+              <StyledViewTimeIndicator>
+                <StyledTime>{convertTime(position)}</StyledTime>
+                <StyledTime>{convertTime(duration)}</StyledTime>
+              </StyledViewTimeIndicator>
 
 
-                      <StyledPlayBackButton onPress = {onPlayBackHandle}>
-                          <StyledFeatherIcon name="corner-up-left"/>
-                          <StyledBadge>{playback} </StyledBadge>
-                      </StyledPlayBackButton>
+              <StyledFeatureButtonGroup>
+                <TouchableOpacity onPress={() => { this.props.navigation.navigate('SettingRates') }}>
+                  <StyledButtonText>{`${speed.toString()}x`}</StyledButtonText>
+                </TouchableOpacity>
 
-                </StyledFeatureButtonGroup>
-                </StyledDescriptionWrapper>
+                <StyledPlayButton onPress={this.fastBackwardHandle}>
+                  <StyledEntypoIcon sizeMode={'small'} name="controller-fast-backward" />
+                </StyledPlayButton>
+
+                <StyledPlayButton onPress={this.onPausePlayHandle}>
+                  <StyledEntypoIcon name={state === 1 ? 'controller-paus' : 'controller-play'} />
+                </StyledPlayButton>
+
+                <StyledPlayButton onPress={this.fastForwardHandle}>
+                  <StyledEntypoIcon sizeMode={'small'} name="controller-fast-forward" />
+                </StyledPlayButton>
+
+
+                <StyledPlayBackButton onPress={this.onPlayBackHandle}>
+                  <StyledFeatherIcon name="corner-up-left" />
+                  <StyledBadge>{playback} </StyledBadge>
+                </StyledPlayBackButton>
+
+              </StyledFeatureButtonGroup>
+            </StyledDescriptionWrapper>
 
           </StyledContent>
-      </StyledBodyWrapper>
+        </StyledBodyWrapper>
 
 
-    </Wrapper>
-  );
-};
+      </Wrapper>
+    );
+  }
+}
 
-Player.navigationOptions = {
-  header: null,
-  tabBarVisible: false,
-};
 
 export default Player;
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React , { useState, useEffect} from 'react';
 
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,12 +6,17 @@ import Home from './Pages/Home';
 import Billboard from './Pages/Billboard';
 import {createAppContainer} from 'react-navigation';
 
-import Login from './Pages/Login2';
+import Login from './Pages/Login';
 import {createStackNavigator} from 'react-navigation-stack';
 
 
 import Player from './Pages/Player'
 import SettingRates from './Pages/SettingRates';
+
+import {
+  firebase
+} from "@react-native-firebase/auth";
+import { useAsyncStorage } from '@react-native-community/async-storage';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -88,6 +92,24 @@ const RootNavigator = createStackNavigator(
   },
 );
 
+
+const MainAppScreen = ()=>{
+
+  const [currentUser, setCurrentUser] = useState(null)
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser
+    console.log('check currentUser', currentUser)
+
+    setCurrentUser(currentUser)
+ }, [])
+ return (
+   <React.Fragment>
+     {currentUser ? (<AppContainer/>) :  (<Login/>)}
+   </React.Fragment>
+ )
+ 
+}
+
 const AppContainer = createAppContainer(RootNavigator);
 
-export default Login;
+export default MainAppScreen
