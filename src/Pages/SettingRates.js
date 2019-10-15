@@ -21,7 +21,6 @@ import { View , TouchableOpacity , ScrollView , Text } from 'react-native';
 
 
 import styled from 'styled-components';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 const Wrapper = styled(LinearGradient)`
