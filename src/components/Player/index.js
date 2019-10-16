@@ -9,20 +9,21 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import Slider from '@react-native-community/slider';
-import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
 import TrackPlayer, {
   useTrackPlayerProgress,
   usePlaybackState,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
+
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import styled from 'styled-components';
+
+import ActionButtons from "./ActionButtons";
+import Header from "./Header";
+import Info from "./Info";
+import PlayerSlider from "./Slider";
 
 const PODCAST = {
 
@@ -43,15 +44,6 @@ const Wrapper = styled.View`
   color: yellow;
 `;
 
-const HeaderWrapper = styled.View`
-  background-color: white;
-  height: 32px;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 0;
-  align-items: center;
-  
-`;
 const StyledBodyWrapper = styled.View`
   background-color: white;
   height: 100%;
@@ -69,36 +61,6 @@ const StyledContent = styled.View`
 `;
 
 
-
-const StyledInfoWrapper = styled.View`
-  width: 100%;
-  flex-direction: column;
-  border-style: solid;
-  border-color: #d4d4d4;
-  flex: 1.5;
-`;
-
-
-const StyledPodcastImage = styled.Image`
-  height: 200;
-  width: 96%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;
-
-const StyledAntDesignIcon = styled(EntypoIcon)`
-  font-size: 16px;
-  color: #a8a8a8;
-  margin: 8px 10px 8px 10px;
-`;
-
-
-const StyledHeaderText = styled.Text`
-  margin: auto;
-`;
-
 const StyledDescriptionWrapper = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
@@ -106,109 +68,7 @@ const StyledDescriptionWrapper = styled.View`
     width: 100%;
 `;
 
-const StyleInfo = styled.View`
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const StyleSmallText = styled.Text`
-  color: #a8a8a8;
-`;
-
-const DescriptionSub = styled.Text`
-  color: #787878;
-  font-size: 10px;
-`;
-
-const StyledNameText = styled.Text`
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 12px;
-`;
-
-const StyledSlider = styled(Slider)`
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 12px;
-  width: 100%;
-  font-size: 5px;
-  height: 10px;
-`;
-
-const StyledViewTimeIndicator = styled.View`
-  justify-content: space-between;
-  flex-direction: row;
-  width: 94%;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const StyledTime = styled.Text`
-  font-size: 12px;
-  color: #919191;
-`;
-
-const StyledFeatureButtonGroup = styled.View`
-  flex-direction: row;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const StyledPlayBackButton = styled(TouchableOpacity)`
-  position: relative;
-`;
-
-const StyledFeatherIcon = styled(FeatherIcon)`
-  font-size: 28px;
-  color: black;
-  margin: 8px 10px 8px 10px;
-`;
-
-const StyledEntypoIcon = styled(EntypoIcon)`
-  font-size: ${props => props.sizeMode === 'small' ? '28px' : '42px'};
-  color: #e3e3e3;
-  text-align: center;
-`;
-
-const StyledBadge = styled.Text`
-  font-size: 12px;
-  font-weight: bold;
-  border-radius: 50;
-  top: 24px;
-  left: 8px;
-  width: 20px;
-  position: absolute;
-
-`;
-
-const StyledButtonText = styled.Text`;
-  width: 32px;
-  text-align:center;
-  margin-top: 10px;
-  height: 32px;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-const StyledPlayButton = styled(TouchableOpacity)`
-  background-color:#545454;
-  border-radius: 50;
-  padding: 8px;
-`;
-
 let timer = null;
-
-
-const convertTime = (second) => {
-  const roundedSecond = Math.round(second);
-  const rSecond = roundedSecond % 60;
-  return `${(roundedSecond - rSecond) / 60}:` + `${rSecond}`.padStart(2, '0');
-};
-
 
 class Player extends React.Component {
 
@@ -264,6 +124,8 @@ class Player extends React.Component {
         TrackPlayer.addEventListener('playback-state', (event) => {
           switch (event.state) {
             case TrackPlayer.STATE_PLAYING:
+            case TrackPlayer.STATE_NONE: 
+            case TrackPlayer.STATE_BUFFERING:
               this.setState({state: 1});
               break;
             default:
@@ -304,9 +166,8 @@ class Player extends React.Component {
     try {
       timer = setInterval(async () => {
         const duration = await TrackPlayer.getDuration()
-        const position = await TrackPlayer.getPosition()
+        const  position = await TrackPlayer.getPosition()
         if ( position !== this.state.position && !this.state.sliding) {
-          console.log('check vao day roi ', this.state.sliding)
           this.setState({position, duration});
         }
 
@@ -352,89 +213,43 @@ class Player extends React.Component {
   }
 
   onSlideStartHandle = () => {
-
     this.setState({sliding: true})
   }
 
-  render() {
+
+
+  render( ) {
 
     const {  position, duration, state, sliding, speed, playback} = this.state
     return (
       <Wrapper>
-        <HeaderWrapper>
-          <TouchableOpacity onPress={() => {
-            this.props.navigation.navigate('PodcastDetail');
-          }}>
-            <StyledAntDesignIcon name={'chevron-thin-down'} />
-          </TouchableOpacity>
-          <StyledHeaderText>We EnJoy Learning English</StyledHeaderText>
-
-          <TouchableOpacity onPress={() => {
-            this.props.navigation.navigate('Home');
-          }}>
-            <StyledAntDesignIcon name={'dots-three-vertical'} />
-          </TouchableOpacity>
-        </HeaderWrapper>
-
-
+        <Header {...this.props }/>
         <StyledBodyWrapper>
           <StyledContent>
-            <StyledInfoWrapper size="big" >
-              <StyledPodcastImage
-                resizeMode={'contain'}
-                source={{ uri: PODCAST.imageUrl }}
-              />
-              <StyleInfo>
-                <StyledNameText>{PODCAST.name}</StyledNameText>
-                <DescriptionSub>
-                  {PODCAST.source} <StyleSmallText>dẫn bởi </StyleSmallText>{PODCAST.narrator}
-                </DescriptionSub>
-              </StyleInfo>
-
-            </StyledInfoWrapper>
-
+            <Info
+                imageUrl = {PODCAST.imageUrl}
+                source = {PODCAST.source}
+                name = {PODCAST.name}
+                narrator = {PODCAST.narrator}
+            />
             <StyledDescriptionWrapper>
-
-              <StyledSlider
-                onSlidingComplete={this.onSlideCompleHandle}
-                onSlidingStart = {this.onSlideStartHandle}
-                minimumValue={0}
-                maximumValue={duration}
-                minimumTrackTintColor="#919191"
-                maximumTrackTintColor="#e3e3e3"
-                thumbTintColor="#919191"
-                value={position}
-              />
-              <StyledViewTimeIndicator>
-                <StyledTime>{convertTime(position)}</StyledTime>
-                <StyledTime>{convertTime(duration)}</StyledTime>
-              </StyledViewTimeIndicator>
-
-
-              <StyledFeatureButtonGroup>
-                <TouchableOpacity onPress={() => { this.props.navigation.navigate('SettingRates') }}>
-                  <StyledButtonText>{`${speed.toString()}x`}</StyledButtonText>
-                </TouchableOpacity>
-
-                <StyledPlayButton onPress={this.fastBackwardHandle}>
-                  <StyledEntypoIcon sizeMode={'small'} name="controller-fast-backward" />
-                </StyledPlayButton>
-
-                <StyledPlayButton onPress={this.onPausePlayHandle}>
-                  <StyledEntypoIcon name={state === 1 ? 'controller-paus' : 'controller-play'} />
-                </StyledPlayButton>
-
-                <StyledPlayButton onPress={this.fastForwardHandle}>
-                  <StyledEntypoIcon sizeMode={'small'} name="controller-fast-forward" />
-                </StyledPlayButton>
-
-
-                <StyledPlayBackButton onPress={this.onPlayBackHandle}>
-                  <StyledFeatherIcon name="corner-up-left" />
-                  <StyledBadge>{playback} </StyledBadge>
-                </StyledPlayBackButton>
-
-              </StyledFeatureButtonGroup>
+                <PlayerSlider
+                    duration = { duration }
+                    position = { position }
+                    onSlidingComplete = { this.onSlideCompleHandle }
+                    onSlidingStart = { this.onSlideStartHandle }
+                />
+                <ActionButtons
+                    openSettings = {()=>{
+                        this.props.navigation.navigate('SettingRates')
+                    }}
+                    speed = {speed}
+                    state = { state}
+                    playback = { playback }
+                    fastForwardHandle = {this.fastBackwardHandle}
+                    onPlayBackHandle = {this.onPlayBackHandle}
+                    onPausePlayHandle = {this.onPausePlayHandle}
+                />
             </StyledDescriptionWrapper>
 
           </StyledContent>

@@ -9,17 +9,11 @@
 
 import React , {useState} from 'react';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-
+import { connect } from "react-redux";
 
 
 import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
-import TrackPlayer, {
-  useTrackPlayerProgress,
-  usePlaybackState,
-  useTrackPlayerEvents,
-} from 'react-native-track-player';
 
 
 
@@ -222,5 +216,7 @@ PodcastDetail.navigationOptions = {
   header: null
 };
 
-export default PodcastDetail;
+
+
+export default connect(PodcastDetail);
 

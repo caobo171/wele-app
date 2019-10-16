@@ -9,11 +9,13 @@ import { createAppContainer } from "react-navigation";
 import Login from "./src/Pages/Login";
 import { createStackNavigator } from "react-navigation-stack";
 
-import Player from "./src/Pages/Player";
+import Player from "./src/components/Player/index";
 import SettingRates from "./src/Pages/SettingRates";
 
 import { firebase } from "@react-native-firebase/auth";
-import { useAsyncStorage } from "@react-native-community/async-storage";
+
+import store from "./src/redux/store";
+import { Provider } from "react-redux";
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -98,9 +100,11 @@ const MainAppScreen = () => {
     setCurrentUser(currentUser);
   }, []);
   return (
-    <React.Fragment>
-      {currentUser ? <AppContainer /> : <Login />}
-    </React.Fragment>
+    <Provider store={store}>
+      <React.Fragment>
+        {currentUser ? <AppContainer /> : <Login />}
+      </React.Fragment>
+    </Provider>
   );
 };
 
