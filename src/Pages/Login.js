@@ -7,25 +7,12 @@
  * @flow
  */
 
-import React , { useEffect , useState } from 'react'
-import {
-  View,
-  Button,
-  TouchableOpacity
-} from "react-native";
-import {
-  LoginButton,
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager
-} from "react-native-fbsdk";
+import React from 'react'
+import { TouchableOpacity } from "react-native";
+import { AccessToken } from "react-native-fbsdk";
 
-import {
-  LoginManager
-} from "react-native-fbsdk";
-import {
-  firebase
-} from "@react-native-firebase/auth";
+import { LoginManager } from "react-native-fbsdk";
+import { firebase } from "@react-native-firebase/auth";
 
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 
@@ -51,7 +38,6 @@ const StyledLogoImage = styled.Image`
 
 const StyledButtonWrapper = styled.View`
     flex: 1;
-
 `
 
 const StyledButton= styled(TouchableOpacity)`
@@ -90,8 +76,6 @@ const Login =  (props) => {
         "public_profile",
         "email"
       ]);
-
-      console.log("check result", result);
 
       if (result.isCancelled) {
         throw new Error("User cancelled the login process");

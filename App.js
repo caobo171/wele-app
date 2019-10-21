@@ -5,7 +5,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import Home from "./src/Pages/Home";
 import Billboard from "./src/Pages/Billboard";
 import { createAppContainer } from "react-navigation";
-
 import Login from "./src/Pages/Login";
 import { createStackNavigator } from "react-navigation-stack";
 

@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
-import playerReducer from "./playerReducer"
+import podcast from "./podcastReducer"
+
 
 
 const rootReducer = combineReducers({
-    playerReducer
+  podcast,
 });
 
 export default rootReducer;

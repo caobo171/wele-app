@@ -7,13 +7,15 @@
  * @flow
  */
 
-import React , {useState} from 'react';
+import React , {useState , useEffect } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { connect } from "react-redux";
 
+import { getPodcast } from "../redux/actions/podcast"
 
-import { View, TouchableOpacity, ScrollView , Text } from 'react-native';
+
+import { View, TouchableOpacity } from 'react-native';
 
 
 
@@ -152,64 +154,75 @@ const PodcastDetail = (props) => {
 
   const [isBrief, setIsBrief] = useState(true)
 
+
+  useEffect(() => {
+
+    console.log('check aaaaaaa', props)
+    props.getPodcast(PODCAST)
+  }, [])
+
   const onPressPlayHandle = async ()=>{
     await props.navigation.navigate('Player')
   }
-  return (
-    <Wrapper>
-      <HeaderWrapper>
-        <TouchableOpacity onPress={() => {
-          props.navigation.navigate('Home')
-        }}>
-          <View>
-            <StyledAntDesignIcon name={'arrowleft'} />
-          </View>
-        </TouchableOpacity>
-      </HeaderWrapper>
-
-
-      <StyledBodyWrapper>
-          <StyledContent>
-                <StyledUserWrapper size="big" >
-                    <StyledPodcastImage
-                        resizeMode={"stretch"}
-                        source={{ uri: PODCAST.imageUrl }}
-                    />
-                    <StyledName>
-                        {PODCAST.name}
-                    </StyledName>
-
-                    <DescriptionInfo>
-                        {PODCAST.source} <StyleSmallText>dẫn bởi </StyleSmallText>{PODCAST.narrator}
-                    </DescriptionInfo>
-                    <TouchableOpacity onPress={onPressPlayHandle}>
-                      <StyledPlayButton>
-                          <StyledText >Play</StyledText>
-                      </StyledPlayButton>
-                    </TouchableOpacity>
-
-                </StyledUserWrapper>
-
-                <StyledDescriptionWrapper>
-                    <DescriptionMain>
-                    {/* { trimText(reFormatText(PODCAST.description)) } */}
-                    { isBrief ? trimText(reFormatText(PODCAST.description)) :  reFormatText(PODCAST.description) }
-
-                    </DescriptionMain>
-
-                    <TouchableOpacity>
-                        <StyledReadmore onPress={()=> setIsBrief(!isBrief)}>{isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
-                    </TouchableOpacity>
-
-
-                </StyledDescriptionWrapper>
-
-          </StyledContent>
-      </StyledBodyWrapper>
-
-
-    </Wrapper>
-  );
+  return <React.Fragment>
+    {
+      props.podcast && (
+        <Wrapper>
+          <HeaderWrapper>
+            <TouchableOpacity onPress={() => {
+              props.navigation.navigate('Home')
+            }}>
+              <View>
+                <StyledAntDesignIcon name={'arrowleft'} />
+              </View>
+            </TouchableOpacity>
+          </HeaderWrapper>
+    
+    
+          <StyledBodyWrapper>
+              <StyledContent>
+                    <StyledUserWrapper size="big" >
+                        <StyledPodcastImage
+                            resizeMode={"stretch"}
+                            source={{ uri: props.podcast.imageUrl }}
+                        />
+                        <StyledName>
+                            {props.podcast.name}
+                        </StyledName>
+    
+                        <DescriptionInfo>
+                            {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator}
+                        </DescriptionInfo>
+                        <TouchableOpacity onPress={onPressPlayHandle}>
+                          <StyledPlayButton>
+                              <StyledText >Play</StyledText>
+                          </StyledPlayButton>
+                        </TouchableOpacity>
+    
+                    </StyledUserWrapper>
+    
+                    <StyledDescriptionWrapper>
+                        <DescriptionMain>
+                        {/* { trimText(reFormatText(PODCAST.description)) } */}
+                        { isBrief ? trimText(reFormatText(props.podcast.description)) :  reFormatText(props.podcast.description) }
+    
+                        </DescriptionMain>
+    
+                        <TouchableOpacity>
+                            <StyledReadmore onPress={()=> setIsBrief(!isBrief)}>{isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
+                        </TouchableOpacity>
+    
+    
+                    </StyledDescriptionWrapper>
+    
+              </StyledContent>
+          </StyledBodyWrapper>
+    
+    
+        </Wrapper>
+      )
+    }
+  </React.Fragment>
 };
 
 PodcastDetail.navigationOptions = {
@@ -217,6 +230,22 @@ PodcastDetail.navigationOptions = {
 };
 
 
+function mapStateToProps (state) {
+  return {
+    podcast: state.podcast.currentPodcast,
+    list: state.podcast.listPodcast,
+  }
+}
 
-export default connect(PodcastDetail);
+
+
+function mapDispatchToProps (dispatch) {
+  return {
+    getPodcast: (podcast)=> dispatch(getPodcast(podcast))
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastDetail);
 

@@ -7,18 +7,14 @@
  * @flow
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Slider from '@react-native-community/slider';
-import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
-import TrackPlayer, {
-  useTrackPlayerProgress,
-  usePlaybackState,
-  useTrackPlayerEvents,
-} from 'react-native-track-player';
+import { TouchableOpacity } from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-community/async-storage'
 

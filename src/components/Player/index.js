@@ -7,13 +7,9 @@
  * @flow
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 
-import TrackPlayer, {
-  useTrackPlayerProgress,
-  usePlaybackState,
-  useTrackPlayerEvents,
-} from 'react-native-track-player';
+import TrackPlayer  from 'react-native-track-player';
 
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-community/async-storage'

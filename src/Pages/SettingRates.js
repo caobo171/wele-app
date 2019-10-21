@@ -9,13 +9,11 @@
 
 import React, {useEffect , useState , useCallback} from 'react';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { View , TouchableOpacity , ScrollView , Text } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 
 
