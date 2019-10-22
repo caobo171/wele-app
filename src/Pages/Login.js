@@ -15,9 +15,10 @@ import { LoginManager } from "react-native-fbsdk";
 import { firebase } from "@react-native-firebase/auth";
 
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
-
+import { connect } from "react-redux";
 
 import styled from 'styled-components';
+import { setCurrentUser } from '../redux/actions/userActions';
 
 const Wrapper = styled.View`
   margin-top: 20px;
@@ -91,7 +92,12 @@ const Login =  (props) => {
         data.accessToken
       );
 
-      await firebase.auth().signInWithCredential(credential);
+      const user = await firebase.auth().signInWithCredential(credential);
+      props.setCurrentUser({
+        displayName: user.displayName,
+        email: user.email,
+        photoURL : user.photoURL
+      })
   }
 
   return (
@@ -112,4 +118,18 @@ const Login =  (props) => {
 };
 
 
-export default Login;
+const mapStateToProps = (state)=>{
+  return {
+    currentUser : state.user.currentUser
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentUser : user => dispatch(setCurrentUser(user))
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

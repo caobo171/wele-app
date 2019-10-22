@@ -4,7 +4,7 @@ import {
   SEARCH_PODCASTS,
   GET_RECENT_PODCAST,
   GET_PODCASTS_THIS_WEEK
-} from "../actions/podcast";
+} from "../actions/podcastActions";
 
 const initState = {
   currentPodcast: null,

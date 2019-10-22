@@ -1,20 +1,20 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from "react";
 
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Home from "./src/Pages/Home";
-import Billboard from "./src/Pages/Billboard";
+import Home from "./Pages/Home";
+import Billboard from "./Pages/Billboard";
 import { createAppContainer } from "react-navigation";
-import Login from "./src/Pages/Login";
+import Login from "./Pages/Login";
+import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation-stack";
-
-import Player from "./src/components/Player/index";
-import SettingRates from "./src/Pages/SettingRates";
-
+import Player from "./components/Player/index";
+import SettingRates from "./Pages/SettingRates";
 import { firebase } from "@react-native-firebase/auth";
-
-import store from "./src/redux/store";
-import { Provider } from "react-redux";
+import { setCurrentUser } from "./redux/actions/userActions";
+import useAsync from "react-use/lib/useAsync";
+import LoadingComponent from "./components/Loading/Loading";
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -90,23 +90,44 @@ const RootNavigator = createStackNavigator(
   }
 );
 
-const MainAppScreen = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-  useEffect(() => {
-    const currentUser = firebase.auth().currentUser;
-    console.log("check currentUser", currentUser);
+const MainAppScreen = (props) => {
+  const state = useAsync(async ()=>{
+    const rawUser = await firebase.auth().currentUser;
 
-    setCurrentUser(currentUser);
-  }, []);
+    if(rawUser){
+      const user = {
+        displayName: rawUser.displayName,
+        email: rawUser.email,
+        photoURL : rawUser.photoURL
+      }
+      props.setCurrentUser(user)
+      return user
+    }
+    props.setCurrentUser(user)
+    return null
+  }, [])
+
   return (
-    <Provider store={store}>
       <React.Fragment>
-        {currentUser ? <AppContainer /> : <Login />}
+        {state.loading ? <LoadingComponent/> : 
+        props.currentUser ? <AppContainer/> : <Login/>
+        }
       </React.Fragment>
-    </Provider>
   );
 };
 
+const mapStateToProps = (state)=>{
+  return {
+    currentUser : state.user.currentUser
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentUser : user => dispatch(setCurrentUser(user))
+  }
+}
+
 const AppContainer = createAppContainer(RootNavigator);
 
-export default MainAppScreen;
+export default connect(mapStateToProps, mapDispatchToProps )(MainAppScreen);

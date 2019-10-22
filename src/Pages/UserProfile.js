@@ -7,15 +7,15 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-
-
-
+import { connect } from "react-redux";
+import { firebase } from "@react-native-firebase/auth";
 
 import styled from 'styled-components';
+import { logOut } from "../redux/actions/userActions"
 
 
 
@@ -84,11 +84,22 @@ const StyledName = styled.Text`
   font-weight: 800; 
 `
 
+const StyledLogOutButton = styled.TouchableOpacity`
+  width: 80%;
+  margin: auto;
+`
+
+const StyledText = styled.Text`
+  font-weight: bold; 
+  letter-spacing: 1px;
+`
+
 
 const UserProfile = (props) => {
 
-  const [user, setUser]
-
+  const logOutHandle = async ()=>{
+    await props.logOut()
+  }
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -109,14 +120,18 @@ const UserProfile = (props) => {
             <StyledUserWrapper size="big" >
               <StyledPodcastImage
                 resizeMode={"contain"}
-                source={{ uri: USER.avatar }}
+                source={{ uri: props.currentUser.photoURL }}
               />
               <StyledName>
-                {USER.name}
+                {props.currentUser.displayName}
               </StyledName>
             </StyledUserWrapper>
           </StyledSectionContent>
         </StyledSection>
+
+        <StyledLogOutButton onPress = {logOutHandle}>
+          <StyledText>Log out</StyledText>
+        </StyledLogOutButton>
       </StyledBodyWrapper>
 
 
@@ -124,8 +139,20 @@ const UserProfile = (props) => {
   );
 };
 
+const mapStateToProps = (state)=>{
+  return {
+    currentUser : state.user.currentUser
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logOut : ()=> dispatch(logOut())
+  }
+}
+
 UserProfile.navigationOptions = {
   header: null
 };
 
-export default UserProfile;
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

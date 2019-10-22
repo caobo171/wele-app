@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import UserProfile from './UserProfile'
 import PodcastDetail from './PodcastDetail'
 import PodcastThumbnail from '../components/Podcast/PodcastThumbnail'
-import { getPodcastThisWeek } from '../redux/actions/podcast'
+import { getPodcastThisWeek } from '../redux/actions/podcastActions'
 
 
 import { createStackNavigator } from 'react-navigation-stack';
@@ -73,7 +73,7 @@ const Home = (props) => {
 
   const state = useAsync(async ()=>{
     await props.getPodcastThisWeek()
-  })
+  },[])
 
   return <React.Fragment>
     { state.loading? 

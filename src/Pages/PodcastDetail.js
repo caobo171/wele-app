@@ -12,7 +12,7 @@ import React , {useState , useEffect } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { connect } from "react-redux";
 
-import { getPodcast } from "../redux/actions/podcast"
+import { getPodcast } from "../redux/actions/podcastActions"
 
 
 import { View, TouchableOpacity } from 'react-native';
