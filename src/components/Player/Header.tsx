@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 import EntypoIcon from "react-native-vector-icons/Entypo";
 
@@ -23,7 +23,11 @@ const StyledHeaderText = styled.Text`
   margin: auto;
 `;
 
-const Header = props => {
+interface Props {
+  navigation: any
+}
+
+const Header = (props: Props) => {
   return (
     <HeaderWrapper>
       <TouchableOpacity

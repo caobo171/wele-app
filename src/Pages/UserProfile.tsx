@@ -7,15 +7,16 @@
  * @flow
  */
 
-import React, { useState } from 'react';
+import React  from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { connect } from "react-redux";
-import { firebase } from "@react-native-firebase/auth";
 
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { logOut } from "../redux/actions/userActions"
+import { NavigationScreenProp } from 'react-navigation';
+import UserType from 'src/models/User';
 
 
 
@@ -49,7 +50,7 @@ const StyledSection = styled.View`
 
 const StyledSectionContent = styled.View``;
 
-const StyledUserWrapper = styled.View`
+const StyledUserWrapper = styled.View<{size:'big'|'medium'|'small'}>`
   background-color: white;
   height:  ${props => props.size === 'big' ? '240px' : (props.size === 'medium' ? '180px' : '160px')} ;
   width: 100%;
@@ -61,8 +62,8 @@ const StyledUserWrapper = styled.View`
 
 
 const StyledPodcastImage = styled.Image`
-  height: 140;
-  width: 140;
+  height: 100;
+  width: 100;
   border-radius: 70;
   margin-top: 10px;
   margin-left: auto;
@@ -95,7 +96,13 @@ const StyledText = styled.Text`
 `
 
 
-const UserProfile = (props) => {
+interface Props{
+  logOut: ()=> void,
+  navigation: NavigationScreenProp<any,any>,
+  currentUser : UserType
+}
+
+const UserProfile = (props: Props) => {
 
   const logOutHandle = async ()=>{
     await props.logOut()
@@ -139,13 +146,13 @@ const UserProfile = (props) => {
   );
 };
 
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state: any)=>{
   return {
     currentUser : state.user.currentUser
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
     logOut : ()=> dispatch(logOut())
   }

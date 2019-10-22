@@ -7,37 +7,22 @@
  * @flow
  */
 
-import React , {useState , useEffect } from 'react';
+import React , {useState  } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+//@ts-ignore
 import { connect } from "react-redux";
-
-import { getPodcast } from "../redux/actions/podcastActions"
-
-
 import { View, TouchableOpacity } from 'react-native';
 
 
 
-import styled from 'styled-components';
-
-const PODCAST = {
-
-    key: 1,
-    name: '[ESL 40063] Yelling at Children',
-    description: `Pre-Beginner Course quay trở lại sau hai tuần vắng bóng rồi đây. Bài nghe thứ 4 của series, chúng ta hãy cùng nghe một đoạn trích nói về việc “YELLING AT CHILDREN” (la mắng trẻ em). Giáo dục con trẻ chưa bao giờ được xem là dễ dàng. Để giúp trẻ nghe lời, hiểu và làm những điều đúng cần rất nhiều sự kiên nhẫn và bình tĩnh từ bố mẹ và người lớn. Việc cha mẹ quát mắng con là A COMMON SITUATION (một tình huống phổ biến) ở nhiều gia đình trên thế giới. Nhiều bậc phụ huynh RAISE THEIR VOICES (lên giọng) hay quát tháo con cái họ khi họ FELL ANGRY OR AFRAID OR FRUSTRATED (cảm thấy giận dữ, sợ hãi hay chán nản). Việc la mắng con trẻ sẽ tốt khi ở mức độ vừa phải và cho trẻ con thấy việc HAVE EMOTIONS (biểu lộ cảm xúc) là hoàn toàn ổn. Nó chỉ không tốt khi khiến trẻ FEEL SHAME (cảm thấy xấu hổ).
-        Đôi khi một người hét lớn lên để nói với thế giới rằng anh ấy POWERFUL AND IN CONTROL (có uy quyền và nắm quyền kiểm soát). Các bạn có tưởng tượng cảnh mình đứng trên nóc một tòa cao ốc hay trên đỉnh núi và hét lớn không? Rất thú vị phải không nào? Các mems hãy hét lên “I CAN DO IT! I CAN LEARN ENGLISH! I ENJOY LEARNING ENGLISH!” thật mạnh mẽ nhé :D.
-        Các new members cùng gõ toàn bộ bài nghe vào file word rồi gửi đính kèm về weenjoylearningenglish@gmail.com với tiêu đề "ESL 40063 Tên bạn" nhé.
-        Chúc cả nhà một tuần vui vẻ và tràn đầy năng lượng!`,
-    source: 'Spotlight',
-    narrator: 'Le Dieu Huong',
-    imageUrl: 'https://scontent.fhan5-4.fna.fbcdn.net/v/t1.0-9/70250807_2865993873415542_3327755512937709568_n.jpg?_nc_cat=104&_nc_oc=AQk2O6URyALOwDThGhXMZSzIA2kDDHOGaqSBI16nXRupykDDebtyGh9A7jR_iZ5oca8&_nc_ht=scontent.fhan5-4.fna&oh=40f0a049ecbb6aacc816902c494d59c7&oe=5E20C26F'
-}
+import styled from 'styled-components/native';
+import PodcastType from 'src/models/Podcast';
+import { NavigationScreenProp } from 'react-navigation';
 
 const Wrapper = styled.ScrollView`
   height: 100%;
   width: 100%;
-  color: yellow;
 `;
 
 const HeaderWrapper = styled.View`
@@ -113,11 +98,11 @@ const StyleSmallText = styled.Text`
   color: #a8a8a8;
 `
 
-const reFormatText = (text)=>{
+const reFormatText = (text: string)=>{
     return text.replace(/\n/g, '\n\n')
 }
 
-const trimText = (text)=>{
+const trimText = (text: string)=>{
     return text.substr(0, Math.min(text.length, 180)) + '...' ;
 }
 
@@ -150,16 +135,15 @@ const StyledText = styled.Text`
     color: #ededed;
 `
 
-const PodcastDetail = (props) => {
+interface Props {
+  getPodcast: (podcast : PodcastType)=> void,
+  podcast: PodcastType,
+  navigation: NavigationScreenProp<any,any>,
+}
+
+const PodcastDetail = (props: Props) => {
 
   const [isBrief, setIsBrief] = useState(true)
-
-
-  useEffect(() => {
-
-    console.log('check aaaaaaa', props)
-    props.getPodcast(PODCAST)
-  }, [])
 
   const onPressPlayHandle = async ()=>{
     await props.navigation.navigate('Player')
@@ -181,10 +165,10 @@ const PodcastDetail = (props) => {
     
           <StyledBodyWrapper>
               <StyledContent>
-                    <StyledUserWrapper size="big" >
+                    <StyledUserWrapper >
                         <StyledPodcastImage
                             resizeMode={"stretch"}
-                            source={{ uri: props.podcast.imageUrl }}
+                            source={{ uri: props.podcast.imgUrl }}
                         />
                         <StyledName>
                             {props.podcast.name}
@@ -230,22 +214,13 @@ PodcastDetail.navigationOptions = {
 };
 
 
-function mapStateToProps (state) {
+function mapStateToProps (state: any) {
   return {
-    podcast: state.podcast.currentPodcast,
-    list: state.podcast.listPodcast,
+    podcast: state.podcast.currentPodcast
   }
 }
 
 
 
-function mapDispatchToProps (dispatch) {
-  return {
-    getPodcast: (podcast)=> dispatch(getPodcast(podcast))
-  }
-}
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(PodcastDetail);
+export default connect(mapStateToProps)(PodcastDetail);
 

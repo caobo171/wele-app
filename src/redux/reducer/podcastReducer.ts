@@ -1,24 +1,22 @@
 import {
   GET_PODCAST,
-  LOAD_PODCASTS,
-  SEARCH_PODCASTS,
-  GET_RECENT_PODCAST,
   GET_PODCASTS_THIS_WEEK
 } from "../actions/podcastActions";
+import { ActionType } from "../reduxTypes";
 
 const initState = {
   currentPodcast: null,
   listPodcast: new Map(),
-  recentPodcasts: [],
-  podcastThisWeek: []
+  recentPodcasts: new Map(),
+  podcastThisWeek: new Map()
 };
 
-export default function podcast(state = initState, action) {
+export default function podcast(state = initState, action: ActionType) {
   switch (action.type) {
     case GET_PODCAST: {
       return {
         ...state,
-        currentPodcast: action.data,
+        currentPodcast: state.listPodcast.get(action.data),
       };
     }
     // case LOAD_PODCASTS:
@@ -28,6 +26,7 @@ export default function podcast(state = initState, action) {
       return {
         ...state,
         podcastThisWeek: action.data,
+        listPodcast: new Map([...action.data, state.listPodcast])
       }
     default: {
       return state;

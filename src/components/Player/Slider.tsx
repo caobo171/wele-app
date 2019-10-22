@@ -1,7 +1,7 @@
 import React from "react";
 
 import Slider from "@react-native-community/slider";
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 const StyledSlider = styled(Slider)`
   margin-left: auto;
@@ -25,13 +25,20 @@ const StyledTime = styled.Text`
   color: #919191;
 `;
 
-const convertTime = second => {
+const convertTime = (second:number) => {
   const roundedSecond = Math.round(second);
   const rSecond = roundedSecond % 60;
   return `${(roundedSecond - rSecond) / 60}:` + `${rSecond}`.padStart(2, "0");
 };
 
-const PlayerSlider = props => {
+interface Props {
+  onSlidingComplete: (value: number)=> void,
+  onSlidingStart: () => void,
+  duration : number,
+  position: number,
+}
+
+const PlayerSlider = (props: Props) => {
   return (
     <React.Fragment>
       <StyledSlider

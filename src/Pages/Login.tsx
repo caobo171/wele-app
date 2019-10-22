@@ -9,16 +9,16 @@
 
 import React from 'react'
 import { TouchableOpacity } from "react-native";
-import { AccessToken } from "react-native-fbsdk";
+import { AccessToken, LoginManager } from "react-native-fbsdk";
 
-import { LoginManager } from "react-native-fbsdk";
 import { firebase } from "@react-native-firebase/auth";
 
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import { connect } from "react-redux";
 
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { setCurrentUser } from '../redux/actions/userActions';
+import  UserType  from "../models/User"
 
 const Wrapper = styled.View`
   margin-top: 20px;
@@ -69,8 +69,12 @@ const StyledText = styled.Text`
 `
 
 
+interface Props{
+  setCurrentUser : (user : UserType)=> void,
+}
 
-const Login =  (props) => {
+
+const Login =  (props: Props) => {
   const onLoginFacebookHandle = async ()=>{
       // Login with permissions
       const result = await LoginManager.logInWithPermissions([
@@ -93,11 +97,12 @@ const Login =  (props) => {
       );
 
       const user = await firebase.auth().signInWithCredential(credential);
-      props.setCurrentUser({
-        displayName: user.displayName,
-        email: user.email,
-        photoURL : user.photoURL
-      })
+      console.log('check user' , user)
+      // props.setCurrentUser({
+      //   displayName: user.displayName,
+      //   email: user.email,
+      //   photoURL : user.photoURL
+      // })
   }
 
   return (
@@ -118,15 +123,15 @@ const Login =  (props) => {
 };
 
 
-const mapStateToProps = (state)=>{
-  return {
-    currentUser : state.user.currentUser
+const mapStateToProps = (state : any)=>{
+  return{
+    
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    setCurrentUser : user => dispatch(setCurrentUser(user))
+    setCurrentUser : (user: UserType) => dispatch(setCurrentUser(user))
   }
 }
 

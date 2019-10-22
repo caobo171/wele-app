@@ -18,7 +18,8 @@ import {TouchableOpacity} from 'react-native';
 
 
 
-import styled from 'styled-components';
+import styled from 'styled-components/native';
+import { NavigationScreenProp } from 'react-navigation';
 
 
 const Wrapper = styled(LinearGradient)`
@@ -49,7 +50,7 @@ const StyledNumberView = styled(TouchableOpacity)`
     align-items: center;
     flex-direction: row;
 `
-const StyledNumberText = styled.Text`
+const StyledNumberText = styled.Text<{check: boolean}>`
     color: ${props => props.check ? 'green': '#737373'};
     font-weight: bold;
 `
@@ -74,7 +75,11 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
     color: green;
     font-size: 16px;
 `
-const SettingRates = (props) => {
+
+interface Props{
+    navigation: NavigationScreenProp<any,any>
+}
+const SettingRates = (props: Props) => {
 
   const [speed, setSpeed] = useState(0)
   const [playback, setPlayback ] = useState(0)

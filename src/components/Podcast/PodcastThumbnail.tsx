@@ -1,9 +1,13 @@
 import React from "react";
 
 import { TouchableOpacity } from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
+import PodcastType from "src/models/Podcast";
+import {  NavigationScreenProp, NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
+import { getPodcast } from "../../redux/actions/podcastActions";
 
-const StyledPodcastWrapper = styled.View`
+const StyledPodcastWrapper = styled.View<{size: 'big' | 'medium'}>`
   background-color: white;
   height: ${props =>
     props.size === "big"
@@ -58,15 +62,26 @@ const StyledPodcastImage = styled.Image`
   margin-right: auto;
 `;
 
-const TrimText = text => {
+
+interface Props extends PodcastType {
+  navigation: NavigationScreenProp<any>,
+  getPodcast: (id: string)=> void
+}
+
+
+const TrimText = (text:string) => {
   return text.substr(0, Math.min(text.length, 60)) + "...";
 };
-const PodcastThumbnail = props => {
+const PodcastThumbnail = (props: Props) => {
+
+  const openPodcastDetailHandle = ()=>{
+    props.getPodcast(props.id)
+    props.navigation.navigate("PodcastDetail")
+  }
+
   return (
     <TouchableOpacity
-      onPress={() => {
-        props.navigation.navigate("PodcastDetail");
-      }}
+      onPress={openPodcastDetailHandle}
     >
       <StyledPodcastWrapper size="big">
         <StyledPodcastContent>
@@ -88,4 +103,19 @@ const PodcastThumbnail = props => {
   );
 };
 
-export default PodcastThumbnail;
+
+function mapStateToProps (state: any) {
+  return {
+  }
+}
+
+
+
+function mapDispatchToProps (dispatch: any) {
+  return {
+    getPodcast: (id:string)=> dispatch(getPodcast(id))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastThumbnail);

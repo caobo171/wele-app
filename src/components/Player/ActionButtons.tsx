@@ -1,8 +1,9 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 import EntypoIcon from "react-native-vector-icons/Entypo";
+//@ts-ignore
 import FeatherIcon from "react-native-vector-icons/Feather";
 
 const StyledFeatureButtonGroup = styled.View`
@@ -23,7 +24,7 @@ const StyledButtonText = styled.Text`
   font-size: 16px;
 `;
 
-const StyledEntypoIcon = styled(EntypoIcon)`
+const StyledEntypoIcon = styled(EntypoIcon)<{sizeMode:"small" | "big"}>`
   font-size: ${props => (props.sizeMode === "small" ? "28px" : "42px")};
   color: #e3e3e3;
   text-align: center;
@@ -55,7 +56,18 @@ const StyledPlayBackButton = styled(TouchableOpacity)`
   position: relative;
 `;
 
-const ActionButtons = props => {
+interface Props {
+  openSettings: ()=> void,
+  fastBackwardHandle: ()=> void,
+  onPausePlayHandle: ()=> void,
+  fastForwardHandle: ()=> void,
+  onPlayBackHandle: ()=> void,
+  speed: number,
+  state: number, 
+  playback: number
+}
+
+const ActionButtons = ( props: Props )  => {
   return (
     <StyledFeatureButtonGroup>
       <TouchableOpacity onPress={props.openSettings}>
@@ -67,7 +79,7 @@ const ActionButtons = props => {
       </StyledPlayButton>
 
       <StyledPlayButton onPress={props.onPausePlayHandle}>
-        <StyledEntypoIcon
+        <StyledEntypoIcon sizeMode = {'big'}
           name={props.state === 1 ? "controller-paus" : "controller-play"}
         />
       </StyledPlayButton>

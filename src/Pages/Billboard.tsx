@@ -3,14 +3,11 @@
  * Sample React Native App
  * https://github.com/facebook/react-native
  *
- * @format
  * @flow
  */
 
 import React from 'react';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -19,7 +16,8 @@ import { View , TouchableOpacity , ScrollView , Text } from 'react-native';
 
 
 
-import styled from 'styled-components';
+import styled from 'styled-components/native';
+import { NavigationScreenProp } from 'react-navigation';
 const USERS = [
   { id: 1,
     avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
@@ -100,7 +98,7 @@ const StyledUserSection = styled.View`
   flex-direction: row;
 `;
 
-const StyledOrderIndicator = styled.Text`
+const StyledOrderIndicator = styled.Text<{color: string}>`
   text-align: center;
   flex: 0.5;
   margin-left: 5px;
@@ -146,13 +144,13 @@ const StyledActionButtonGroup = styled.View`
   flex: 2;
 `;
 
-const StyledHeaderImage = styled.Image`
-  width: ${props => props.width}px;
+const StyledHeaderImage = styled.Image<{width:number, height:number}>`
+  width: ${props  => props.width}px;
   height: ${props=> props.height}px;
   margin: 16px;
 `
 
-const renderColor = (index)=>{
+const renderColor = (index: number)=>{
   switch (index){
     case 0:
       return 'blue';
@@ -165,7 +163,11 @@ const renderColor = (index)=>{
   }
 };
 
-const Billboard = (props) => {
+interface Props {
+  navigation : NavigationScreenProp<any,any>
+}
+
+const Billboard = (props : Props) => {
   return (
     <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0,0.3,0.5]}>
         <StyledBillboardHeader>

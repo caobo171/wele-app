@@ -8,10 +8,13 @@
  */
 
 import React, { useEffect } from 'react';
-
+//@ts-ignore
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import  useAsync from "react-use/lib/useAsync"; 
 import { View , TouchableOpacity } from 'react-native';
+
+
+//@ts-ignore
 import { connect } from "react-redux";
 
 import UserProfile from './UserProfile'
@@ -21,8 +24,10 @@ import { getPodcastThisWeek } from '../redux/actions/podcastActions'
 
 
 import { createStackNavigator } from 'react-navigation-stack';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import LoadingComponent from '../components/Loading/Loading';
+import { NavigationScreenProp } from 'react-navigation';
+import PodcastType from 'src/models/Podcast';
 
 const Wrapper = styled.ScrollView`
   height: 100%;
@@ -51,7 +56,7 @@ const StyledSection = styled.View`
   background-color: white;
 `;
 
-const StyledSectionTitle = styled.Text`
+const StyledSectionTitle = styled.Text<{position:'top'|'normal'}>`
   color: black;
   font-size: ${props=> props.position === 'top' ? '24px' : '20px' } ;
   font-weight: ${props=> props.position === 'top' ? 'bold' : '900' } ;
@@ -69,7 +74,15 @@ const StyledFeatherIcon = styled(FeatherIcon)`
   margin: 4px 20px 0px 0px;
 `;
 
-const Home = (props) => {
+
+interface Props {
+  getPodcastThisWeek : ()=> void,
+  navigation : NavigationScreenProp<any,any>,
+  podcastThisWeek: Array<PodcastType>,
+  recentPodcasts: Array<PodcastType>
+}
+
+const Home = (props: Props) => {
 
   const state = useAsync(async ()=>{
     await props.getPodcastThisWeek()
@@ -113,22 +126,22 @@ const Home = (props) => {
   </React.Fragment>
 };
 
-function mapStateToProps (state) {
+function mapStateToProps (state: any) {
   return {
-    podcastThisWeek: state.podcast.podcastThisWeek,
-    recentPodcasts: state.podcast.recentPodcasts,
+    podcastThisWeek: [...state.podcast.podcastThisWeek.values()],
+    recentPodcasts: [...state.podcast.recentPodcasts.values()],
   }
 }
 
 
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps (dispatch: any) {
   return {
     getPodcastThisWeek: ()=> dispatch(getPodcastThisWeek())
   }
 }
 
-const ConnectedHome = connect(mapStateToProps,mapDispatchToProps )(Home)
+const ConnectedHome = connect<any,any>(mapStateToProps,mapDispatchToProps )(Home)
 
 const HomeContainer = createStackNavigator({
     Home: {
