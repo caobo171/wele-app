@@ -9,7 +9,7 @@
 
 import React from 'react';
 
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { play } from 'react-native-track-player';
 
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -68,6 +68,14 @@ interface State {
   playback: number
 }
 
+const STATES= [    
+  TrackPlayer.STATE_NONE, 
+  TrackPlayer.STATE_PAUSED, 
+  TrackPlayer.STATE_READY, 
+  TrackPlayer.STATE_STOPPED, 
+  TrackPlayer.STATE_BUFFERING,
+  TrackPlayer.STATE_PLAYING ]
+
 class Player extends React.Component<Props, State> {
 
   static navigationOptions = {
@@ -91,32 +99,43 @@ class Player extends React.Component<Props, State> {
   }
 
   timer:any = null
-  async setUpPlayer() {
-    await TrackPlayer.setupPlayer()
-    await TrackPlayer.updateOptions({
-      stopWithApp: true,
-      capabilities: [
-        TrackPlayer.CAPABILITY_PAUSE,
-        TrackPlayer.CAPABILITY_SEEK_TO,
-        TrackPlayer.CAPABILITY_STOP,
-        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-        TrackPlayer.CAPABILITY_SET_RATING,
-        TrackPlayer.CAPABILITY_PLAY
-      ],
-      compactCapabilities: [
-        TrackPlayer.CAPABILITY_PAUSE,
-        TrackPlayer.CAPABILITY_SEEK_TO,
-        TrackPlayer.CAPABILITY_STOP,
-        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-        TrackPlayer.CAPABILITY_SET_RATING,
-        TrackPlayer.CAPABILITY_PLAY
-      ],
-    });
+
+  setUpOptionPlayer = async ()=> {
+    const speed = await AsyncStorage.getItem('@speed')
+    const playback = await AsyncStorage.getItem('@playback')
+    this.setState({
+      speed: speed ? Number(speed) : 1,
+      playback: playback ? Number(playback) : 5
+    },async ()=>{
+      
+      TrackPlayer.addEventListener('playback-state', this.onPlayerStateChangeHandle);
+      await TrackPlayer.updateOptions({
+        stopWithApp: true,
+        jumpInterval: this.state.playback,
+        capabilities: [
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_SEEK_TO,
+          TrackPlayer.CAPABILITY_STOP,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+          TrackPlayer.CAPABILITY_SET_RATING,
+          TrackPlayer.CAPABILITY_PLAY
+        ],
+        compactCapabilities: [
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_SEEK_TO,
+          TrackPlayer.CAPABILITY_STOP,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+          TrackPlayer.CAPABILITY_SET_RATING,
+          TrackPlayer.CAPABILITY_PLAY
+        ],
+      });
+    })
+
   }
 
-  async onPlayerStateChangeHandle(event:any){
+  onPlayerStateChangeHandle = async (event:any)=> {
     switch (event.state) {
       case TrackPlayer.STATE_PLAYING:
       case TrackPlayer.STATE_NONE:
@@ -128,14 +147,14 @@ class Player extends React.Component<Props, State> {
     }
   }
 
-  async playPlayerInFirstPlace(){
-    const speed = await AsyncStorage.getItem('@speed')
-    const playback = await AsyncStorage.getItem('@playback')
+  playPlayerInFirstPlace = async ()=> {
     try {
+      console.log('0')
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio],
       })
       try {
+        console.log('1')
         // Adds a track to the queue
         await TrackPlayer.add({
           id: this.props.podcast.id,
@@ -145,28 +164,36 @@ class Player extends React.Component<Props, State> {
           artwork: this.props.podcast.imgUrl,
         });
 
+      
+        console.log('2')
         // Starts playing it
         await TrackPlayer.play();
-
-        this.setState({
-          speed: speed ? Number(speed) : 1,
-          playback: playback ? Number(playback) : 5
-        })
+        console.log('3')
       } catch (err) {
         console.log('check err', err);
       }
-
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
       } else {
+
+        console.log('aaaaaaaaaaaa', err)
         throw err;
       }
     }
   }
 
   async componentDidMount() {
-    TrackPlayer.addEventListener('playback-state', this.onPlayerStateChangeHandle);
+    const track = await TrackPlayer.getCurrentTrack()
+
+    if( ! track ){
+      await TrackPlayer.setupPlayer()
+      await this.playPlayerInFirstPlace()
+      await this.setUpOptionPlayer()
+    }
+    
+    
+    
     try {
       this.timer = setInterval(async () => {
         const duration = await TrackPlayer.getDuration()
@@ -184,11 +211,7 @@ class Player extends React.Component<Props, State> {
     this.timer && clearInterval(this.timer)
   }
 
-
-
-
-
-  onPausePlayHandle = () => {
+  onPausePlayHandle = async () => {
     if (this.state.state === 1) {
       TrackPlayer.pause();
     } else {

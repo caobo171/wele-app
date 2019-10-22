@@ -179,7 +179,7 @@ const PodcastDetail = (props: Props) => {
                         </DescriptionInfo>
                         <TouchableOpacity onPress={onPressPlayHandle}>
                           <StyledPlayButton>
-                              <StyledText >Play</StyledText>
+                              <StyledText >Open</StyledText>
                           </StyledPlayButton>
                         </TouchableOpacity>
     

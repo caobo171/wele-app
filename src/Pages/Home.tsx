@@ -17,13 +17,9 @@ import { View , TouchableOpacity } from 'react-native';
 //@ts-ignore
 import { connect } from "react-redux";
 
-import UserProfile from './UserProfile'
-import PodcastDetail from './PodcastDetail'
 import PodcastThumbnail from '../components/Podcast/PodcastThumbnail'
 import { getPodcastThisWeek } from '../redux/actions/podcastActions'
 
-
-import { createStackNavigator } from 'react-navigation-stack';
 import styled from 'styled-components/native';
 import LoadingComponent from '../components/Loading/Loading';
 import { NavigationScreenProp } from 'react-navigation';
@@ -141,23 +137,6 @@ function mapDispatchToProps (dispatch: any) {
   }
 }
 
-const ConnectedHome = connect<any,any>(mapStateToProps,mapDispatchToProps )(Home)
 
-const HomeContainer = createStackNavigator({
-    Home: {
-      screen: ConnectedHome,
-      navigationOptions: {
-        header: null,
-      }
-    },
-    UserProfile: {
-      screen: UserProfile,
 
-    },
-    PodcastDetail: {
-      screen : PodcastDetail, 
-    },
-}, {
-  initialRouteName : 'Home'
-})
-export default HomeContainer;
+export default connect(mapStateToProps,mapDispatchToProps )(Home)
