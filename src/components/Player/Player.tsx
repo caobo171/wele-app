@@ -17,8 +17,6 @@ import PlayerSlider from "./Slider";
 import { connect } from 'react-redux';
 import PodcastType from 'src/models/Podcast';
 import globalPlayer, { usePlayer, slidingPlayer } from '../../hooks/playerHooks';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
-
 const Wrapper = styled.View`
   height: 100%;
   width: 100%;
@@ -66,20 +64,22 @@ const Player = (props: Props) => {
 
     }
 
-    const onSlideStartHandle = ()=>{
-        slidingPlayer(true)
+    const onSlideStartHandle = async ()=>{
+
+        console.log ('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        await slidingPlayer(true)
     }
 
-    const fastForwardHandle = ()=> {
-
+    const fastForwardHandle = async ()=> {
+        await globalPlayer.fastForward(speed)
     }
 
-    const onPlayBackHandle = ()=>{
-       
+    const onPlayBackHandle = async ()=>{
+       await globalPlayer.playBack(playback)
     }
 
-    const fastBackwardHandle = ()=>{
-
+    const fastBackwardHandle = async()=>{
+        await globalPlayer.fastBackward(speed)
     }
 
     const onPausePlayHandle = ()=>{
@@ -105,9 +105,9 @@ const Player = (props: Props) => {
                             openSettings={() => {
                                 props.navigation.navigate('SettingRates')
                             }}
-                            speed={speed.value ? Number(speed.value) : 1}
+                            speed={speed ? Number(speed) : 1}
                             playing ={globalPlayer.isPlaying(state)}
-                            playback={playback.value ? Number(playback.value) : 5 }
+                            playback={playback ? Number(playback) : 5 }
                             fastForwardHandle={fastForwardHandle}
                             fastBackwardHandle={fastBackwardHandle}
                             onPlayBackHandle={onPlayBackHandle}

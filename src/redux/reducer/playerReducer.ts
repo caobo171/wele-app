@@ -2,7 +2,9 @@ import {
     UPDATE_POSITION,
     UPDATE_STATE,
     SLIDING_PLAYER,
-    UPDATE_TRACK
+    UPDATE_TRACK, 
+    UPDATE_SPEED,
+    UPDATE_PLAYBACK
   } from "../actions/playerActions";
   import { ActionType } from "../reduxTypes";
   
@@ -13,7 +15,8 @@ import {
         duration: 0
     },
     track: null,
-    sliding: false,
+    playback: 15,
+    speed: 1
   };
   
   export default function podcast(state = initState, action: ActionType) {
@@ -30,20 +33,27 @@ import {
             state: action.data
           }
       }
-   
-      case SLIDING_PLAYER:{
-        return {
-            ...state,
-            sliding: action.data
-        }
-      }
+  
       case UPDATE_TRACK:{
           return {
               ...state,
               track: action.data
           }
       }
+
+      case UPDATE_PLAYBACK:{
+          return {
+            ...state,
+            playback: action.data
+          }
+      }
      
+      case UPDATE_SPEED: {
+          return {
+            ...state,
+            speed: action.data
+          }
+      }
       default: {
         return state;
       }

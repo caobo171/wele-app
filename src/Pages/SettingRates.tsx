@@ -20,6 +20,8 @@ import {TouchableOpacity} from 'react-native';
 
 import styled from 'styled-components/native';
 import { NavigationScreenProp } from 'react-navigation';
+import storage from '../helpers/localStorage';
+import { usePlayer, updateSpeed, updatePlayback } from '../hooks/playerHooks';
 
 
 const Wrapper = styled(LinearGradient)`
@@ -81,30 +83,18 @@ interface Props{
 }
 const SettingRates = (props: Props) => {
 
-  const [speed, setSpeed] = useState(0)
-  const [playback, setPlayback ] = useState(0)
 
-  useEffect(() => {
-    AsyncStorage.getItem('@speed').then(value => {
-        setSpeed(value ? Number(value) : 1)
-        AsyncStorage.getItem('@playback').then(value=> {
-            setPlayback( value ? Number(value) : 5 )
-        })
-    })
-  }, [])
+  const {playback, speed } = usePlayer()
 
-  const handleSetSpeed = useCallback((number)=>{
+  const handleSetSpeed = (speed: number)=>{
+    storage.set('speed', speed.toString())
+    updateSpeed(speed)
+  }
 
-        AsyncStorage.setItem('@speed', number.toString() ).then(()=>{
-            setSpeed(number)
-        })
-  }, [speed])
-
-  const handleSetPlayback = useCallback((number)=>{
-        AsyncStorage.setItem('@playback', number.toString() ).then(()=>{
-            setPlayback(number)
-        })
-  }, [playback])
+  const handleSetPlayback = (playback: number)=>{
+    storage.set('playback', playback.toString())
+    updatePlayback(playback)
+  }
 
   return (
     <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0,0.3,0.5]}>
@@ -115,20 +105,18 @@ const SettingRates = (props: Props) => {
                 console.log('err', err)
             }
         }}>
-            {/* <StyledBillboardHeader> */}
                 <StyledColumnHeader>
                     Change speed
                 </StyledColumnHeader>
                 <StyledColumnHeader>
                     Change playback 
                 </StyledColumnHeader>
-            {/* </StyledBillboardHeader>  */}
         </StyledTouchableHighlight>
 
         <StyledBillboardContent>
             <StyledValueColumn>
                 {
-                    [ 0.5 , 0.8, 1, 1.2, 1.5, 2].map(number=>{
+                    [1, 1.2, 1.5, 1.8, 2.0, 2.3].map(number=>{
                         return <StyledNumberView  key={number} onPress={()=> handleSetSpeed(number)}>
                             { speed === number && <StyledAntDesignIcon name="check"/>}
                             <StyledNumberText check={speed === number}>

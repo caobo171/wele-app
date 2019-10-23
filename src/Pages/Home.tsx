@@ -108,7 +108,7 @@ const Home = (props: Props) => {
         </StyledSection>
 
         <StyledSection>
-          <StyledSectionTitle position="normal">Recently Played</StyledSectionTitle>
+          { props.recentPodcasts.length > 0 && <StyledSectionTitle position="normal">Recently Played</StyledSectionTitle> }
           <StyledSectionContent>
             {props.recentPodcasts.map(e => {
               return <PodcastThumbnail key={e.id} {...e} {...props}/>

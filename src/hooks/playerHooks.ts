@@ -4,12 +4,12 @@ import useEffectOnce from "react-use/lib/useEffectOnce"
 
 import TrackPlayer from "react-native-track-player"
 import PodcastType from "src/models/Podcast"
-import useAsync from "react-use/lib/useAsync"
-import AsyncStorage from "@react-native-community/async-storage"
+
 import DocumentPicker from "react-native-document-picker"
 import { useDispatch, useSelector } from "react-redux"
 import { getPodcast } from "../redux/actions/podcastActions"
-import { UPDATE_POSITION, UPDATE_STATE, UPDATE_TRACK } from "../redux/actions/playerActions"
+import { UPDATE_POSITION, UPDATE_STATE, UPDATE_TRACK, UPDATE_SPEED, UPDATE_PLAYBACK, SLIDING_PLAYER } from "../redux/actions/playerActions"
+import storage from "../helpers/localStorage"
 
 const event = new EventEmitter()
 
@@ -18,17 +18,10 @@ let interval:any = null ;
 
 const UPDATE_POSITION_EVENT = 'update-position'
 const UPDATE_STATE_EVENT = 'update-state'
-const SLIDING_PLAYER = 'sliding-player'
+const SLIDING_PLAYER_EVENT = 'sliding-player-event'
 const UPDATE_TRACK_EVENT = 'update-track'
-
-const STATE_LIST = [
-    TrackPlayer.STATE_PLAYING,
-    TrackPlayer.STATE_PAUSED,
-    TrackPlayer.STATE_READY,
-    TrackPlayer.STATE_NONE,
-    TrackPlayer.STATE_STOPPED,
-    TrackPlayer.STATE_BUFFERING
-]
+const UPDATE_PLAYBACK_EVENT = "update-playback-event"
+const UPDATE_SPEED_EVENT = "update-speed-event"
 
 const PLAYING_STATE = [
     TrackPlayer.STATE_PLAYING,
@@ -38,11 +31,15 @@ const PLAYING_STATE = [
 class GlobalPlayer {
 
     init = async ()=>{
+
+        const playback = await storage.get('playback','number', 15)
+        const speed = await storage.get('speed' , 'number' , 1)
+
         await TrackPlayer.setupPlayer()
 
         await TrackPlayer.updateOptions({
             stopWithApp: true,
-            jumpInterval: 15 ,
+            jumpInterval: playback ,
             capabilities: [
               TrackPlayer.CAPABILITY_PAUSE,
               TrackPlayer.CAPABILITY_SEEK_TO,
@@ -177,11 +174,22 @@ export const updateState = (state : number)=>{
 }
 
 export const slidingPlayer = (start: boolean)=>{
-    event.emit(SLIDING_PLAYER, start)
+
+    console.log('check start', start )
+    event.emit(SLIDING_PLAYER_EVENT, start)
 }
 
 export const updateTrack = (track : TrackPlayer.Track)=>{
     event.emit(UPDATE_TRACK_EVENT, track)
+}
+
+export const updateSpeed = (speed: number)=>{
+
+    event.emit(UPDATE_SPEED_EVENT, speed)
+}
+
+export const updatePlayback = (playback: number)=>{
+    event.emit(UPDATE_PLAYBACK_EVENT, playback)
 }
 
 
@@ -189,19 +197,11 @@ export const usePlayer = ()=>{
 
     const player  = useSelector((state: any)=> state.player )
 
-    const { position, track, sliding, state } = player
+    const { position, track, state, playback, speed } = player
+
+    const [sliding, setSliding ] = useState(false)
 
     const dispatch = useDispatch()
-
-    const playback = useAsync(async()=>{
-        const playbackValue = await AsyncStorage.getItem('@playback')
-        return playbackValue ? playbackValue: 5
-    })
-
-    const speed = useAsync(async()=>{
-        const speedValue = await AsyncStorage.getItem('@speed')
-        return speedValue ? speedValue: 5
-    })
 
     const onUpdatePositionHandler = (duration : number , position: number)=>{
         dispatch({
@@ -218,10 +218,7 @@ export const usePlayer = ()=>{
     }
 
     const onSlidingHandler = (start : boolean)=> {
-        dispatch({
-            type: SLIDING_PLAYER,
-            data: start
-        })
+        setSliding(start)
     }
 
     const onUpdateTrackHandler = (track: TrackPlayer.Track)=>{
@@ -232,13 +229,26 @@ export const usePlayer = ()=>{
         if(track.id){
             dispatch(getPodcast(track.id))
         }
-       
+    }
+
+    const onUpdateSpeedHandle = (speed: number)=>{
+        dispatch({
+            type: UPDATE_SPEED,
+            data: speed
+        })
+    }
+
+    const onUpdatePlaybackHandle = (playback: number)=>{
+        dispatch({
+            type: UPDATE_PLAYBACK,
+            data: playback
+        })
     }
 
     const intervalHandle = async ()=>{
-
         if(!sliding){            
             const positionValue = await globalPlayer.getPosition()
+            if(positionValue.duration <= 0 ) return 
             dispatch({
                 type: UPDATE_POSITION,
                 data: positionValue
@@ -247,8 +257,20 @@ export const usePlayer = ()=>{
     }
 
     useEffect(()=>{
-        if(interval === null && !sliding){
-            interval = setInterval(intervalHandle, 500)
+
+        if(sliding) {
+            interval && clearInterval(interval)
+            interval = null
+        }
+        if(interval === null && !sliding ){
+            interval = setInterval(async ()=>{
+            const positionValue = await globalPlayer.getPosition()
+            if(positionValue.duration <= 0 ) return 
+                dispatch({
+                    type: UPDATE_POSITION,
+                    data: positionValue
+                })
+            }, 500)
         }
 
         return ()=>{
@@ -258,13 +280,30 @@ export const usePlayer = ()=>{
 
     useEffectOnce(()=>{
 
+        (async()=>{
+            const playback = await storage.get('playback','number', 15)
+            const speed = await storage.get('speed' , 'number' , 1)
+            await dispatch({
+                type: UPDATE_SPEED,
+                data: speed
+            })
+            await dispatch({
+                type: UPDATE_PLAYBACK,
+                data: playback
+            })
+        })()
+
         event.on(UPDATE_POSITION_EVENT,onUpdatePositionHandler);
 
         event.on(UPDATE_STATE_EVENT, onUpdateStateHandler)
 
-        event.on(SLIDING_PLAYER, onSlidingHandler)
+        event.on(SLIDING_PLAYER_EVENT, onSlidingHandler)
 
         event.on(UPDATE_TRACK_EVENT, onUpdateTrackHandler)
+
+        event.on(UPDATE_SPEED_EVENT, onUpdateSpeedHandle)
+
+        event.on(UPDATE_PLAYBACK_EVENT, onUpdatePlaybackHandle)
         
 
         globalPlayer.addStateListener()
@@ -274,8 +313,19 @@ export const usePlayer = ()=>{
         
 
         return ()=>{
+            event.off(UPDATE_POSITION_EVENT,onUpdatePositionHandler);
+
+            event.off(UPDATE_STATE_EVENT, onUpdateStateHandler)
+
+            event.off(SLIDING_PLAYER, onSlidingHandler)
+
+            event.off(UPDATE_TRACK_EVENT, onUpdateTrackHandler)
+
+            event.off(UPDATE_SPEED_EVENT, onUpdateSpeedHandle)
+
+            event.off(UPDATE_PLAYBACK_EVENT, onUpdatePlaybackHandle)
         }
     })
 
-    return { state, position , playback , speed , track }
+    return { state, position , playback , speed , track   }
 }
