@@ -1,0 +1,6 @@
+export const UPDATE_POSITION  = "UPDATE_POSITION"
+export const UPDATE_STATE = "UPDATE_STATE"
+export const SLIDING_PLAYER = "SLIDING_PLAYER"
+export const UPDATE_TRACK = "UPDATE_TRACK"
+
+

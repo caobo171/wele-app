@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 import { createAppContainer  } from "react-navigation";
-import Login from "./Pages/Login";
+import Login from "./pages/Login";
 
 
 import { connect } from "react-redux";
@@ -13,6 +13,8 @@ import LoadingComponent from "./components/Loading/Loading";
 import UserType from "./models/User"
 
 import RootNavigator from "./navigator/root"
+import useEffectOnce from "react-use/lib/useEffectOnce";
+import globalPlayer from "./hooks/playerHooks";
 
 interface Props{
   currentUser: UserType,
@@ -36,6 +38,13 @@ const MainAppScreen = (props: Props) => {
     props.setCurrentUser(null)
     return null
   }, [])
+
+
+  useEffectOnce(()=>{
+    globalPlayer.init()
+  })
+
+
 
   return (
       <React.Fragment>

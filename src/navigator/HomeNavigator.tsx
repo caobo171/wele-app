@@ -1,8 +1,8 @@
 
 import React from 'react'
-import UserProfile from './../Pages/UserProfile'
-import PodcastDetail from './../Pages/PodcastDetail'
-import Home from "./../Pages/Home"
+import UserProfile from '../pages/UserProfile'
+import PodcastDetail from '../pages/PodcastDetail'
+import Home from "../pages/Home"
 
 import PlayerThumbnail from "../components/Player/PlayerThumbnail";
 
@@ -12,10 +12,17 @@ import { NavigationScreenProp } from 'react-navigation';
 
 
 const InjectedHome = ( props: { navigation: NavigationScreenProp<any,any> })=>{
-    return <PlayerThumbnail>
+    return <PlayerThumbnail {...props}>
         <Home {...props}/>
     </PlayerThumbnail>
 }
+
+const InjectedPodcastDetail =  ( props: { navigation: NavigationScreenProp<any,any> })=>{
+  return <PlayerThumbnail {...props}>
+      <PodcastDetail {...props}/>
+  </PlayerThumbnail>
+}
+
 
 const HomeNavigator = createStackNavigator({
     Home: {
@@ -29,7 +36,10 @@ const HomeNavigator = createStackNavigator({
 
     },
     PodcastDetail: {
-      screen : PodcastDetail, 
+      screen : InjectedPodcastDetail, 
+      navigationOptions:{
+        header: null,
+      }
     },
 }, {
   initialRouteName : 'Home'

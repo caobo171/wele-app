@@ -6,7 +6,7 @@ import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 //@ts-ignore
 import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
-import Billboard from "./../Pages/Billboard";
+import Billboard from "../pages/Billboard";
 
 
 

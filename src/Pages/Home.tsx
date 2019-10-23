@@ -90,9 +90,8 @@ const Home = (props: Props) => {
     <Wrapper>
       <HeaderWrapper>
         <TouchableOpacity onPress={()=>{
-          console.log('check props', props);
           props.navigation.navigate('UserProfile');
-          console.log('okkk')}}>
+         }}>
           <View>
             <StyledFeatherIcon name={'settings'}/>
           </View>

@@ -97,7 +97,6 @@ const Login =  (props: Props) => {
       );
 
       const user = await firebase.auth().signInWithCredential(credential);
-      console.log('check user' , user)
       // props.setCurrentUser({
       //   displayName: user.displayName,
       //   email: user.email,

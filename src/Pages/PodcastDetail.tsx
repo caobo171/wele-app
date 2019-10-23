@@ -19,6 +19,7 @@ import { View, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import PodcastType from 'src/models/Podcast';
 import { NavigationScreenProp } from 'react-navigation';
+import globalPlayer from '../hooks/playerHooks';
 
 const Wrapper = styled.ScrollView`
   height: 100%;
@@ -136,7 +137,6 @@ const StyledText = styled.Text`
 `
 
 interface Props {
-  getPodcast: (podcast : PodcastType)=> void,
   podcast: PodcastType,
   navigation: NavigationScreenProp<any,any>,
 }
@@ -146,6 +146,7 @@ const PodcastDetail = (props: Props) => {
   const [isBrief, setIsBrief] = useState(true)
 
   const onPressPlayHandle = async ()=>{
+    await globalPlayer.pickTrack(props.podcast)
     await props.navigation.navigate('Player')
   }
   return <React.Fragment>

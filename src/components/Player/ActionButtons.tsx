@@ -63,7 +63,7 @@ interface Props {
   fastForwardHandle: ()=> void,
   onPlayBackHandle: ()=> void,
   speed: number,
-  state: number, 
+  playing: boolean, 
   playback: number
 }
 
@@ -80,7 +80,7 @@ const ActionButtons = ( props: Props )  => {
 
       <StyledPlayButton onPress={props.onPausePlayHandle}>
         <StyledEntypoIcon sizeMode = {'big'}
-          name={props.state === 1 ? "controller-paus" : "controller-play"}
+          name={props.playing ? "controller-paus" : "controller-play"}
         />
       </StyledPlayButton>
 

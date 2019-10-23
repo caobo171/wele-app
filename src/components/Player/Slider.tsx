@@ -39,6 +39,7 @@ interface Props {
 }
 
 const PlayerSlider = (props: Props) => {
+  
   return (
     <React.Fragment>
       <StyledSlider
