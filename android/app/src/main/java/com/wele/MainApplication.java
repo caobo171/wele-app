@@ -3,6 +3,7 @@ package com.wele;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.guichaguri.trackplayer.TrackPlayer;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

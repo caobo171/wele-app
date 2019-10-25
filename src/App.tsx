@@ -2,10 +2,11 @@ import React from "react";
 import store from "./redux/store";
 import {PermissionsAndroid} from 'react-native';
 import useEffectOnce from 'react-use/lib/useEffectOnce'
-
+import SplashScreen from 'react-native-splash-screen'
 //@ts-ignore
 import { Provider } from "react-redux";
 import NavigatorTree from "./MainWrapper";
+
 
 const App = () => {
 
@@ -33,7 +34,9 @@ const App = () => {
     }
   }
   useEffectOnce(()=>{
+   
     requestPermission()
+    SplashScreen.hide()
   })
 
   return (
