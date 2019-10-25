@@ -2,7 +2,8 @@ import {
   GET_PODCAST,
   GET_PODCASTS_THIS_WEEK,
   GET_RECENT_PODCAST,
-  UPDATE_RECENT_PODCAST
+  UPDATE_RECENT_PODCAST,
+  LOAD_PODCASTS
 } from "../actions/podcastActions";
 import { ActionType } from "../reduxTypes";
 import PodcastType from "src/models/Podcast";
@@ -58,6 +59,13 @@ export default function podcast(state = initState, action: ActionType) {
         podcastThisWeek: action.data,
         listPodcast: new Map([...state.listPodcast, ...action.data])
       }
+
+    case LOAD_PODCASTS:{
+      return {
+        ...state,
+        listPodcast: new Map([...action.data,...state.listPodcast])
+      }
+    }
     default: {
       return state;
     }

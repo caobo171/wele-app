@@ -7,6 +7,7 @@ import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
 import Billboard from "../pages/Billboard";
+import PodcastList from "../pages/PodcastList";
 
 
 
@@ -27,6 +28,15 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 tabBarLabel: "BillBoard",
                 tabBarIcon: ({ tintColor }) => (
                     <Icon name="bar-chart" color={tintColor} size={24} />
+                )
+            }
+        },
+        Podcasts:{
+            screen: PodcastList,
+            navigationOptions: {
+                tabBarLabel: "Podcasts",
+                tabBarIcon: ({ tintColor }) => (
+                    <Icon name="book" color={tintColor} size={24} />
                 )
             }
         }

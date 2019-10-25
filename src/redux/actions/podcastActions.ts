@@ -13,7 +13,7 @@ export const UPDATE_RECENT_PODCAST = "UPDATE_PODCAST"
 export const PODCAST_COLLECTION = "podcasts";
 export const POSTDATE_PROPERTY = "postDate";
 
-const getStartDate = (d:Date) => {
+const getStartDate = (d: Date) => {
   d = new Date(d);
   const diff = d.getDate() - 7; // adjust when day is sunday
   d = new Date(d.setDate(diff));
@@ -22,7 +22,7 @@ const getStartDate = (d:Date) => {
 };
 
 
-export const getPodcast = (id: string)  => (dispatch: any) => {
+export const getPodcast = (id: string) => (dispatch: any) => {
   dispatch({
     type: GET_PODCAST,
     data: id,
@@ -36,9 +36,9 @@ export const getPodcastThisWeek = () => async (dispatch: any) => {
     .startAt(getStartDate(new Date()))
     .get();
 
-  let data = new Map<string,PodcastType>();
-  querySnapshots.forEach( (doc:any) => {
-    data = data.set(doc.id, { id:doc.id, ...doc.data()})
+  let data = new Map<string, PodcastType>();
+  querySnapshots.forEach((doc: any) => {
+    data = data.set(doc.id, { id: doc.id, ...doc.data() })
   });
 
   await dispatch({
@@ -49,22 +49,36 @@ export const getPodcastThisWeek = () => async (dispatch: any) => {
 };
 
 
-export const getRecentPodcast = ()=> async (dispatch:any) => {
+export const getRecentPodcast = () => async (dispatch: any) => {
   const recentPodcasts = await storage.getRecentPodcasts()
 
   await dispatch({
-    type: GET_RECENT_PODCAST ,
+    type: GET_RECENT_PODCAST,
     data: recentPodcasts
   })
 }
 
 
-export const updateRecentPodcast = (newPodcast: PodcastType)=> async (dispatch:any) => {
-
-
-
+export const updateRecentPodcast = (newPodcast: PodcastType) => async (dispatch: any) => {
   await dispatch({
-    type: UPDATE_RECENT_PODCAST ,
+    type: UPDATE_RECENT_PODCAST,
     data: newPodcast
   })
+}
+
+
+export const getPodcastList = () => async (dispatch: any) => {
+  const querySnapshots = await firestore()
+    .collection(PODCAST_COLLECTION)
+    .get();
+
+  let data = new Map<string, PodcastType>();
+  querySnapshots.forEach((doc: any) => {
+    data = data.set(doc.id, { id: doc.id, ...doc.data() })
+  });
+
+  await dispatch({
+    type: LOAD_PODCASTS,
+    data: data
+  });
 }
