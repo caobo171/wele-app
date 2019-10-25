@@ -38,9 +38,13 @@ class WeleLocalStorage {
         const podcastsStorage = await this.get('recent-podcasts', 'object', []) as PodcastType[]
         let podcasts = [...podcastsStorage]
 
-        const savePodcast: PodcastType  = {
-            ...podcast,
-            uri
+        let savePodcast: PodcastType  = podcast 
+        if(uri.indexOf('file://') !== -1){
+            savePodcast.uri = uri
+        }else{
+            if(savePodcast.uri){
+                delete savePodcast.uri
+            }
         }
 
 

@@ -154,6 +154,8 @@ const PodcastDetail = (props: Props) => {
     try{
       const res = await globalPlayer.pickTrack(props.podcast)
       if(res !== true){
+
+        console.log('aaaaaaaaaaaaaa')
         const podcast: PodcastType = {
           ...props.podcast,
           uri: res

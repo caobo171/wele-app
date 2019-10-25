@@ -9,7 +9,7 @@ const StyledSlider = styled(Slider)`
   margin-bottom: 12px;
   width: 100%;
   font-size: 5px;
-  height: 10px;
+  height: 20px;
 `;
 
 const StyledViewTimeIndicator = styled.View`

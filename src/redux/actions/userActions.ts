@@ -11,7 +11,7 @@ export const LOG_OUT = "LOG_OUT";
 
 
 
-export const setCurrentUser = (user: UserType , isNew: boolean | string) => async (dispatch: any) => {
+export const setCurrentUser = (user: UserType , isNew?: boolean | string) => async (dispatch: any) => {
 
   if(isNew){
     const ref = database().ref(`/users/${user.id}`)
