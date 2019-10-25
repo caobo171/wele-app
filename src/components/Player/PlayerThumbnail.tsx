@@ -60,7 +60,8 @@ const trimText = (text:string) => {
   };
 
 const PlayerThumbnail = (props:any)=>{
-    const { state, position , playback ,speed , track } = usePlayer()
+
+    const { state, position , track } = usePlayer()
 
     const navigateToPlayer = ()=>{
         props.navigation.navigate('Player')

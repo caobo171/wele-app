@@ -11,14 +11,14 @@ import React, { useEffect } from 'react';
 //@ts-ignore
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import  useAsync from "react-use/lib/useAsync"; 
-import { View , TouchableOpacity } from 'react-native';
+import { View , TouchableOpacity, FlatList } from 'react-native';
 
 
 //@ts-ignore
 import { connect } from "react-redux";
 
 import PodcastThumbnail from '../components/Podcast/PodcastThumbnail'
-import { getPodcastThisWeek } from '../redux/actions/podcastActions'
+import { getPodcastThisWeek, getRecentPodcast } from '../redux/actions/podcastActions'
 
 import styled from 'styled-components/native';
 import LoadingComponent from '../components/Loading/Loading';
@@ -73,6 +73,7 @@ const StyledFeatherIcon = styled(FeatherIcon)`
 
 interface Props {
   getPodcastThisWeek : ()=> void,
+  getRecentPodcasts : ()=> void,
   navigation : NavigationScreenProp<any,any>,
   podcastThisWeek: Array<PodcastType>,
   recentPodcasts: Array<PodcastType>
@@ -82,14 +83,18 @@ const Home = (props: Props) => {
 
   const state = useAsync(async ()=>{
     await props.getPodcastThisWeek()
+    await props.getRecentPodcasts()
   },[])
 
   return <React.Fragment>
     { state.loading? 
     (<LoadingComponent/>) : (
-    <Wrapper>
+    <Wrapper
+    keyboardShouldPersistTaps={'always'}
+    >
       <HeaderWrapper>
         <TouchableOpacity onPress={()=>{
+     
           props.navigation.navigate('UserProfile');
          }}>
           <View>
@@ -101,18 +106,22 @@ const Home = (props: Props) => {
         <StyledSection>
           <StyledSectionTitle position="top">Podcast this week</StyledSectionTitle>
           <StyledSectionContent>
-            {props.podcastThisWeek.map(e => {
-              return <PodcastThumbnail key={e.id} {...e} {...props}/>
-            })}
+            <FlatList
+              data={props.podcastThisWeek}
+              renderItem={( {item } )=><PodcastThumbnail {...item} {...props}/> }
+              keyExtractor={item => item.id}
+            />
           </StyledSectionContent>
         </StyledSection>
 
         <StyledSection>
           { props.recentPodcasts.length > 0 && <StyledSectionTitle position="normal">Recently Played</StyledSectionTitle> }
           <StyledSectionContent>
-            {props.recentPodcasts.map(e => {
-              return <PodcastThumbnail key={e.id} {...e} {...props}/>
-            })}
+            <FlatList
+              data={props.recentPodcasts}
+              renderItem={( {item, index } )=><PodcastThumbnail {...item} {...props}/> }
+              keyExtractor={item => item.id}
+            />
           </StyledSectionContent>
         </StyledSection>
         </StyledBodyWrapper>
@@ -132,7 +141,8 @@ function mapStateToProps (state: any) {
 
 function mapDispatchToProps (dispatch: any) {
   return {
-    getPodcastThisWeek: ()=> dispatch(getPodcastThisWeek())
+    getPodcastThisWeek: ()=> dispatch(getPodcastThisWeek()),
+    getRecentPodcasts: ()=> dispatch(getRecentPodcast())
   }
 }
 

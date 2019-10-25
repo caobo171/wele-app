@@ -96,8 +96,6 @@ class GlobalPlayer {
     }
 
     async playPause(){
-
-
         const state = await TrackPlayer.getState()
         if(state === TrackPlayer.STATE_PLAYING){
             updateState( Number(TrackPlayer.STATE_PAUSED) )
@@ -106,7 +104,6 @@ class GlobalPlayer {
             updateState( Number(TrackPlayer.STATE_PLAYING))
             await TrackPlayer.play()
         }
-        
     }
 
     async pause(){
@@ -149,20 +146,40 @@ class GlobalPlayer {
     }
 
     async pickTrack(podcast: PodcastType){
-        try{
-            const res = await  DocumentPicker.pick({
-                type: [DocumentPicker.types.audio]
-            })
-
-            await this.addTrack(podcast, res.uri)
-
+        if(podcast.uri){
+            await this.addTrack(podcast, podcast.uri)
             await TrackPlayer.play()
-        }catch(err){
+            return podcast.uri
+        }else{
+            try{
+                const res = await  DocumentPicker.pick({
+                    type: [DocumentPicker.types.audio]
+                })
+        
+                if(res && Number(res.size) === podcast.fileSize){
+    
+                    await this.addTrack(podcast, res.uri)
+                    await TrackPlayer.play()
+                    return res.uri
+                }else{
+                    throw Error('File Size is invalid !! \n Please choose another file \n or download file again ! ')
+                }
+            }catch(err){
+                if(!DocumentPicker.isCancel(err)){
+                    throw(err)
+                }else{
+                    return true
+                }
+            }
         }
+
+
+
     }
-
-
 }
+
+
+
 
 
 const globalPlayer = new GlobalPlayer()
@@ -249,16 +266,6 @@ export const usePlayer = ()=>{
         })
     }
 
-    const intervalHandle = async ()=>{
-        if(!sliding){            
-            const positionValue = await globalPlayer.getPosition()
-            if(positionValue.duration <= 0 ) return 
-            dispatch({
-                type: UPDATE_POSITION,
-                data: positionValue
-            })
-        }
-    }
 
     useEffect(()=>{
 
@@ -297,16 +304,22 @@ export const usePlayer = ()=>{
             })
         })()
 
+        event.listenerCount(UPDATE_POSITION_EVENT) <= 0 &&
         event.on(UPDATE_POSITION_EVENT,onUpdatePositionHandler);
 
+        event.listenerCount(UPDATE_STATE_EVENT) <= 0 &&
         event.on(UPDATE_STATE_EVENT, onUpdateStateHandler)
 
+        event.listenerCount(SLIDING_PLAYER_EVENT) <= 0 &&
         event.on(SLIDING_PLAYER_EVENT, onSlidingHandler)
 
+        event.listenerCount(UPDATE_TRACK_EVENT) <= 0 &&
         event.on(UPDATE_TRACK_EVENT, onUpdateTrackHandler)
 
+        event.listenerCount(UPDATE_SPEED_EVENT) <= 0 &&
         event.on(UPDATE_SPEED_EVENT, onUpdateSpeedHandle)
 
+        event.listenerCount(UPDATE_PLAYBACK_EVENT) <= 0 &&
         event.on(UPDATE_PLAYBACK_EVENT, onUpdatePlaybackHandle)
         
 

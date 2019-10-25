@@ -83,7 +83,7 @@ interface Props{
 }
 const SettingRates = (props: Props) => {
 
-
+    console.log('checkkkkkkkk 44444444')
   const {playback, speed } = usePlayer()
 
   const handleSetSpeed = (speed: number)=>{

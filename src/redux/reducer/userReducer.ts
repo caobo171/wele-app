@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS, listUsers } from "../actions/userActions";
+import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS } from "../actions/userActions";
 import { ActionType } from '../reduxTypes'
 import  UserType  from '../../models/User'
 const initState = {

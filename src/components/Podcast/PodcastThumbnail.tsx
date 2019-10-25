@@ -75,6 +75,7 @@ const TrimText = (text:string) => {
 const PodcastThumbnail = (props: Props) => {
 
   const openPodcastDetailHandle = ()=>{
+    console.log('check presseed ok ')
     props.getPodcast(props.id)
     props.navigation.navigate("PodcastDetail")
   }

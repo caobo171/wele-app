@@ -65,8 +65,6 @@ const Player = (props: Props) => {
     }
 
     const onSlideStartHandle = async ()=>{
-
-        console.log ('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         await slidingPlayer(true)
     }
 

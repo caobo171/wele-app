@@ -2,10 +2,14 @@ import { firebase } from "@react-native-firebase/auth";
 import database from '@react-native-firebase/database';
 import { LoginManager } from "react-native-fbsdk"
 import UserType from "src/models/User";
+
+
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const LOAD_FRIENDS = "LOAD_FRIENDS";
 export const LOAD_USERS = "LOAD_USERS";
 export const LOG_OUT = "LOG_OUT";
+
+
 
 export const setCurrentUser = (user: UserType , isNew: boolean | string) => async (dispatch: any) => {
 

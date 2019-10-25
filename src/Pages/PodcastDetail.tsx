@@ -12,7 +12,7 @@ import React , {useState  } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 //@ts-ignore
 import { connect } from "react-redux";
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Alert } from 'react-native';
 
 
 
@@ -20,6 +20,8 @@ import styled from 'styled-components/native';
 import PodcastType from 'src/models/Podcast';
 import { NavigationScreenProp } from 'react-navigation';
 import globalPlayer from '../hooks/playerHooks';
+import storage from '../helpers/localStorage';
+import { updateRecentPodcast } from '../redux/actions/podcastActions';
 
 const Wrapper = styled.ScrollView`
   height: 100%;
@@ -138,6 +140,7 @@ const StyledText = styled.Text`
 
 interface Props {
   podcast: PodcastType,
+  updateRecentPodcast: (podcast: PodcastType)=> void
   navigation: NavigationScreenProp<any,any>,
 }
 
@@ -145,9 +148,26 @@ const PodcastDetail = (props: Props) => {
 
   const [isBrief, setIsBrief] = useState(true)
 
+  console.log('check podcast', props.podcast)
+
   const onPressPlayHandle = async ()=>{
-    await globalPlayer.pickTrack(props.podcast)
-    await props.navigation.navigate('Player')
+    try{
+      const res = await globalPlayer.pickTrack(props.podcast)
+      if(res !== true){
+        const podcast: PodcastType = {
+          ...props.podcast,
+          uri: res
+        }
+
+        await storage.setRecentPodcasts(props.podcast, podcast.uri as string)
+        await props.updateRecentPodcast(podcast)
+        await props.navigation.navigate('Player')
+      }
+     
+    }catch(err){
+      Alert.alert('Fail to open File ', err.toString())
+    }
+    
   }
   return <React.Fragment>
     {
@@ -221,7 +241,13 @@ function mapStateToProps (state: any) {
   }
 }
 
+const mapDispatchToProps = (dispatch: any)=>{
+  return {
+    updateRecentPodcast: (podcast: PodcastType) => dispatch(updateRecentPodcast(podcast))
+  }
+}
 
 
-export default connect(mapStateToProps)(PodcastDetail);
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastDetail);
 

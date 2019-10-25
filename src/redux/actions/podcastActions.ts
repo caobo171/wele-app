@@ -1,11 +1,15 @@
 import firestore from "@react-native-firebase/firestore";
 import PodcastType from "src/models/Podcast";
+import storage from "../../helpers/localStorage";
+
+
+
 export const GET_PODCAST = "GET_PODCAST";
 export const LOAD_PODCASTS = "LOAD_PODCASTS";
 export const SEARCH_PODCASTS = "SEARCH_PODCASTS";
 export const GET_RECENT_PODCAST = "GET_RECENT_PODCAST";
 export const GET_PODCASTS_THIS_WEEK = "GET_PODCASTS_THIS_WEEK";
-
+export const UPDATE_RECENT_PODCAST = "UPDATE_PODCAST"
 export const PODCAST_COLLECTION = "podcasts";
 export const POSTDATE_PROPERTY = "postDate";
 
@@ -42,5 +46,25 @@ export const getPodcastThisWeek = () => async (dispatch: any) => {
     data: data
   });
 
-
 };
+
+
+export const getRecentPodcast = ()=> async (dispatch:any) => {
+  const recentPodcasts = await storage.getRecentPodcasts()
+
+  await dispatch({
+    type: GET_RECENT_PODCAST ,
+    data: recentPodcasts
+  })
+}
+
+
+export const updateRecentPodcast = (newPodcast: PodcastType)=> async (dispatch:any) => {
+
+
+
+  await dispatch({
+    type: UPDATE_RECENT_PODCAST ,
+    data: newPodcast
+  })
+}

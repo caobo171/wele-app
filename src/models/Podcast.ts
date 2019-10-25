@@ -4,6 +4,8 @@ export default interface PodcastType {
     name: string,
     narrator: string,
     postDate: Date,
-    description: string
-    id: string
+    description: string,
+    id: string,
+    fileSize: number,
+    uri?: string
 }
