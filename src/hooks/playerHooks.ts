@@ -96,10 +96,14 @@ class GlobalPlayer {
     }
 
     async playPause(){
+
+
         const state = await TrackPlayer.getState()
         if(state === TrackPlayer.STATE_PLAYING){
+            updateState( Number(TrackPlayer.STATE_PAUSED) )
             await TrackPlayer.pause()
         }else if(state === TrackPlayer.STATE_PAUSED){
+            updateState( Number(TrackPlayer.STATE_PLAYING))
             await TrackPlayer.play()
         }
         
