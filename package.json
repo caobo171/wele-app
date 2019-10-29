@@ -17,6 +17,7 @@
     "@react-native-firebase/auth": "^6.0.2",
     "@react-native-firebase/database": "^6.0.2",
     "@react-native-firebase/firestore": "^6.0.2",
+    "@react-native-firebase/messaging": "^6.0.3",
     "@types/event-emitter": "^0.3.3",
     "@types/events": "^3.0.0",
     "@types/node": "^12.11.7",
