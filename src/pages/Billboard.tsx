@@ -17,53 +17,12 @@ import { View , TouchableOpacity , ScrollView , Text } from 'react-native';
 
 
 import styled from 'styled-components/native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, FlatList } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
 import { listUsers } from '../redux/actions/userActions';
 import UserType from '../models/User';
-const USERS = [
-  { id: 1,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 2,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 3,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 4,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 5,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 6,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 7,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-  {
-    id: 8,
-    avatar: 'https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/59528057_2337390009919933_2310877556993163264_n.jpg?_nc_cat=108&_nc_oc=AQltd9pUjhuunu-IUR4dEMWT779-EPHYaDBl-EhrXx7iADCLxASJd1IlOP2qpGinDnQ&_nc_ht=scontent.fhan5-5.fna&oh=e1609b24df777c814be2ca0fb390bab3&oe=5E281B00',
-    name: 'Nguyễn Văn Cao',
-  },
-];
-
+import UserAvatar from '../components/User/UserAvatar';
 
 const Wrapper = styled(LinearGradient)`
   margin-top: 5px;
@@ -74,10 +33,7 @@ const Wrapper = styled(LinearGradient)`
 `;
 
 
-const StyledPodcastImage = styled.Image`
-  height: 36px;
-  width: 36px;
-  border-radius: 50;
+const StyledAvatarWrapper = styled.View`
   flex: 2;
 `;
 
@@ -188,19 +144,45 @@ const Billboard = (props : Props) => {
           <StyledHeaderImage resizeMode={'contain'} source ={ require('../assets/cup.png') } width={52} height={80} />
         </StyledBillboardHeader> 
         <StyledBillboardContent>
-          {
+          <FlatList
+
+            data= {users}
+            renderItem = {({item , index})=> {
+              return (
+                <StyledUserSection key={item.id}>
+                <StyledOrderIndicator color={renderColor(index)}>
+                      {index + 1}
+                </StyledOrderIndicator>
+                <StyledAvatarWrapper>
+                    <UserAvatar user={item}/>
+                </StyledAvatarWrapper>
+                <StyledUserNameWrapper>
+                    <StyledName>{item.displayName}</StyledName>
+                    <StyledSubDescription>Beginner</StyledSubDescription>
+                </StyledUserNameWrapper>
+                <StyledActionButtonGroup>
+                    <TouchableOpacity onPress={() => {
+                        props.navigation.navigate('PodcastDetail');
+                      }}>
+                          <StyledEntypoIcon name={'dots-three-vertical'} />
+                      </TouchableOpacity>
+                </StyledActionButtonGroup>
+              </StyledUserSection>
+              )
+            }}
+
+            keyExtractor={item => item.id}
+          />
+          {/* {
             users.map( (user,index)=> {
               return (
                 <StyledUserSection key={user.id}>
                   <StyledOrderIndicator color={renderColor(index)}>
                         {index + 1}
                   </StyledOrderIndicator>
-                  <StyledPodcastImage
-                    resizeMode={'contain'}
-                    source = {{
-                      uri: user.photoURL,
-                    }}
-                  />
+                  <StyledAvatarWrapper>
+                      <UserAvatar user={user}/>
+                  </StyledAvatarWrapper>
                   <StyledUserNameWrapper>
                       <StyledName>{user.displayName}</StyledName>
                       <StyledSubDescription>Beginner</StyledSubDescription>
@@ -216,7 +198,7 @@ const Billboard = (props : Props) => {
 
               );
             })
-          }
+          } */}
         </StyledBillboardContent>
     </Wrapper>
   );

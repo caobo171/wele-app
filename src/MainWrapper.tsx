@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 
 import { connect } from "react-redux";
 import { firebase } from "@react-native-firebase/auth";
-import { setCurrentUser } from "./redux/actions/userActions";
+import { setCurrentUser, updateUser } from "./redux/actions/userActions";
 import useAsync from "react-use/lib/useAsync";
 import LoadingComponent from "./components/Loading/Loading";
 
@@ -15,10 +15,12 @@ import UserType from "./models/User"
 import RootNavigator from "./navigator/root"
 import useEffectOnce from "react-use/lib/useEffectOnce";
 import globalPlayer from "./hooks/playerHooks";
+import presenceSystem from "./service/presenseSystem";
 
 interface Props{
   currentUser: UserType,
-  setCurrentUser: (user: UserType | null )=> void
+  setCurrentUser: (user: UserType | null )=> void,
+  updateUser: (user: UserType) => void
 }
 
 const MainAppScreen = (props: Props) => {
@@ -42,6 +44,7 @@ const MainAppScreen = (props: Props) => {
 
   useEffectOnce(()=>{
     globalPlayer.init()
+    presenceSystem.init(props.updateUser)
   })
 
 
@@ -63,7 +66,8 @@ const mapStateToProps = (state : any)=>{
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setCurrentUser : (user: UserType) => dispatch(setCurrentUser(user))
+    setCurrentUser : (user: UserType) => dispatch(setCurrentUser(user)),
+    updateUser: (user: UserType) => dispatch(updateUser(user))
   }
 }
 

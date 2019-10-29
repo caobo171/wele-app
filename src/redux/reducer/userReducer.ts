@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS } from "../actions/userActions";
+import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS , UPDATE_USER} from "../actions/userActions";
 import { ActionType } from '../reduxTypes'
 import  UserType  from '../../models/User'
 const initState = {
@@ -8,6 +8,16 @@ const initState = {
 
 export default function user(state = initState, action: ActionType) {
   switch (action.type) {
+
+    case UPDATE_USER: {
+      const user: UserType = action.data
+      const listUsers = state.listUsers.set(user.id, user)
+      console.log('check listUsers', listUsers)
+      return {
+        ...state,
+        listUsers
+      }
+    }
     case LOAD_USERS:{
       return {
         ...state,

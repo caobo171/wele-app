@@ -19,8 +19,6 @@ export default function podcast(state = initState, action: ActionType) {
  
   switch (action.type) {
     case GET_PODCAST: {
-      console.log('check action ', action)
-      console.log('check listpodcast ', state.listPodcast)
       return {
         ...state,
         currentPodcast: state.listPodcast.get(action.data),
@@ -28,7 +26,6 @@ export default function podcast(state = initState, action: ActionType) {
     }
 
     case UPDATE_RECENT_PODCAST: {
-      console.log('check action ', action)
       const newPodcast: PodcastType = action.data
       let recentPodcasts = state.recentPodcasts.set(newPodcast.id, newPodcast)
       let listPodcast = state.listPodcast.set(newPodcast.id, newPodcast)
@@ -39,12 +36,7 @@ export default function podcast(state = initState, action: ActionType) {
       }
       
     }
-    // case LOAD_PODCASTS:
-    // case SEARCH_PODCASTS:
     case GET_RECENT_PODCAST:{
-      console.log('check action ', action)
-      console.log('check listpodcast  GET_RECENT_PODCAST', state.listPodcast ,  new Map([...action.data, ...state.listPodcast]))
-  
       return {
         ...state,
         recentPodcasts: action.data,
@@ -52,8 +44,7 @@ export default function podcast(state = initState, action: ActionType) {
       }
     }
     case GET_PODCASTS_THIS_WEEK:
-        console.log('check action ', action)
-        console.log('check listpodcast  GET_PODCASTS_THIS_WEEK', state.listPodcast, new Map([...action.data, ...state.listPodcast]))
+     
       return {
         ...state,
         podcastThisWeek: action.data,

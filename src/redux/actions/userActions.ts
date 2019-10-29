@@ -8,6 +8,7 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const LOAD_FRIENDS = "LOAD_FRIENDS";
 export const LOAD_USERS = "LOAD_USERS";
 export const LOG_OUT = "LOG_OUT";
+export const UPDATE_USER = "UPDATE_USER"
 
 
 
@@ -37,6 +38,14 @@ export const logOut = () => async (dispatch: any) => {
   });
 };
 
+
+
+export const updateUser = (user: UserType)=> async (dispatch: any) => {
+  await dispatch({
+    type: UPDATE_USER,
+    data : user
+  })
+}
 
 const getUsers = ()=>{
   return new Promise((resolve, reject)=>{

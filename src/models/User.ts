@@ -3,5 +3,6 @@ export default interface UserType{
     email: string,
     photoURL: string,
     id: string,
-    weleEmail?: string
+    weleEmail?: string,
+    online?: boolean
 }
