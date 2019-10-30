@@ -8,8 +8,46 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
 import Billboard from "../pages/Billboard";
 import PodcastList from "../pages/PodcastList";
+import { View } from "react-native";
+import styled from "styled-components/native";
+import { connect } from "react-redux";
+import NotificationType from "src/models/Notification";
 
+const StyledBadge = styled.Text`
+    position: absolute;
+    border-radius: 7px;
+    right: -4px; 
+    bottom: 0px;
+    height: 14px;
+    width: 14px;
+    font-size: 10px;
+    background: #ff4f4f;
+    color: #696969;
+    text-align: center;
+    font-weight: bold;
+    
+`
 
+interface HomeIconProps {
+    tintColor: string,
+    unSeenNotifications: number
+}
+
+const HomeIcon = (props: HomeIconProps) => {
+    return (
+        <View>
+            <Icon name="home" color={props.tintColor} size={24} />
+            {props.unSeenNotifications > 0 && <StyledBadge>{props.unSeenNotifications}</StyledBadge>}
+        </View>
+    )
+}
+
+const mapStateToProps = (state: any) => {
+    return {
+        unSeenNotifications: (state.notification.unSeenNotifications as NotificationType[]).length
+    }
+}
+const ConnectedHomeIcon = connect(mapStateToProps)(HomeIcon)
 
 const MainBottomTabNavigator = createBottomTabNavigator(
     {
@@ -18,7 +56,7 @@ const MainBottomTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: "Home",
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="home" color={tintColor} size={24} />
+                    <ConnectedHomeIcon tintColor={tintColor as string} />
                 )
             }
         },
@@ -31,7 +69,7 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 )
             }
         },
-        Podcasts:{
+        Podcasts: {
             screen: PodcastList,
             navigationOptions: {
                 tabBarLabel: "Podcasts",
@@ -57,6 +95,6 @@ const MainBottomTabNavigator = createBottomTabNavigator(
         }
     }
 );
-  
 
-export default MainBottomTabNavigator ;
+
+export default MainBottomTabNavigator;

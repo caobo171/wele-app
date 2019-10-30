@@ -131,8 +131,6 @@ const Billboard = (props : Props) => {
   const dispatch = useDispatch()
 
   const users: Array<UserType> = useSelector((state:any)=> [...state.user.listUsers.values()] )
-
-  console.log('check users', users)
   useEffectOnce(()=>{
     dispatch(listUsers())
   })

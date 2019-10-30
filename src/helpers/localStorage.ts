@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import PodcastType from 'src/models/Podcast'
+import NotificationType from 'src/models/Notification';
 
 const MAX_RECENT_PODCASTS = 5;
 class WeleLocalStorage {
     constructor(){
 
     }
-
 
     set = async (key:string, value: string)=>{
         await AsyncStorage.setItem(`@wele-${key}`, value )
@@ -72,6 +72,26 @@ class WeleLocalStorage {
 
         return podcasts
     }
+
+
+    setNotifications = async (notifications: NotificationType[]) => {
+        return await this.set('notifications',JSON.stringify(notifications))
+    }
+
+    getLastSeenNotification = async ()=>{
+        let defaultDate = new Date()
+
+        defaultDate.setDate(defaultDate.getDate() - 7 )
+        const lastSeen = await this.get('lastseen-notifications','object', defaultDate)
+        console.log('check lasseettn', lastSeen , new Date(lastSeen.toString()))
+        return new Date(lastSeen.toString())
+    }
+
+
+    setLastSeenNotification = async ()=>{
+        return this.set('lastseen-notifications', JSON.stringify(new Date()))
+    }
+
 
 }
 

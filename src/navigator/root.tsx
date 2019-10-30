@@ -3,6 +3,7 @@ import React, { useState, useEffect, Dispatch } from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import PlayerNavigator from "./PlayerStackNavigator";
 import MainBottomTabNavigator from "./MainBottomTabNavigator"
+import NotificationNavigator from "./NotificationNavigator";
 
 
 const RootNavigator = createStackNavigator(
@@ -18,10 +19,17 @@ const RootNavigator = createStackNavigator(
             navigationOptions: {
                 header: null
             }
+        },
+        NotificationNavigator: {
+            screen: NotificationNavigator,
+            navigationOptions: {
+                header: null
+            }
         }
+            
     },
     {
-        initialRouteName: "BottomTabNavigator"
+        initialRouteName: "NotificationNavigator"
     }
 );
 

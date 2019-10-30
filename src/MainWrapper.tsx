@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from "react";
+import React , {useEffect} from "react";
 import { createAppContainer  } from "react-navigation";
 import Login from "./pages/Login";
 
@@ -16,11 +16,15 @@ import RootNavigator from "./navigator/root"
 import useEffectOnce from "react-use/lib/useEffectOnce";
 import globalPlayer from "./hooks/playerHooks";
 import presenceSystem from "./service/presenseSystem";
+import messageSystem from "./service/messageSystem";
+import { getGlobalNotifications } from "./redux/actions/notificationAction";
+import NotificationType from "./models/Notification";
 
 interface Props{
   currentUser: UserType,
   setCurrentUser: (user: UserType | null )=> void,
-  updateUser: (user: UserType) => void
+  updateUser: (user: UserType) => void,
+  getGlobalNotifications: (notifications: NotificationType[])=> void
 }
 
 const MainAppScreen = (props: Props) => {
@@ -44,8 +48,18 @@ const MainAppScreen = (props: Props) => {
 
   useEffectOnce(()=>{
     globalPlayer.init()
-    presenceSystem.init(props.updateUser)
+    
+    messageSystem.init(props.getGlobalNotifications)
+    
+
   })
+
+  useEffect(()=>{
+    if(props.currentUser){
+      presenceSystem.init(props.updateUser)
+    }
+  
+  }, [props.currentUser])
 
 
 
@@ -67,7 +81,8 @@ const mapStateToProps = (state : any)=>{
 const mapDispatchToProps = (dispatch: any) => {
   return {
     setCurrentUser : (user: UserType) => dispatch(setCurrentUser(user)),
-    updateUser: (user: UserType) => dispatch(updateUser(user))
+    updateUser: (user: UserType) => dispatch(updateUser(user)),
+    getGlobalNotifications : (notifications: NotificationType[])=> dispatch(getGlobalNotifications(notifications))
   }
 }
 

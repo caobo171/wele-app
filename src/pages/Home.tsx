@@ -8,8 +8,7 @@
  */
 
 import React, { useEffect } from 'react';
-//@ts-ignore
-import FeatherIcon from 'react-native-vector-icons/Feather';
+
 import  useAsync from "react-use/lib/useAsync"; 
 import { View , TouchableOpacity, FlatList } from 'react-native';
 
@@ -24,6 +23,7 @@ import styled from 'styled-components/native';
 import LoadingComponent from '../components/Loading/Loading';
 import { NavigationScreenProp } from 'react-navigation';
 import PodcastType from 'src/models/Podcast';
+import  Header  from '../components/Home/Header';
 
 const Wrapper = styled.ScrollView`
   height: 100%;
@@ -31,14 +31,7 @@ const Wrapper = styled.ScrollView`
   color: yellow;
 `;
 
-const HeaderWrapper = styled.View`
-  background-color: white;
-  height: 32px;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding: 0;
-  
-`;
+
 const StyledBodyWrapper = styled.View`
   background-color: white;
   flex: 9;
@@ -64,11 +57,6 @@ const StyledSectionTitle = styled.Text<{position:'top'|'normal'}>`
 
 const StyledSectionContent = styled.View``;
 
-const StyledFeatherIcon = styled(FeatherIcon)`
-  font-size: 28px;
-  color: #a8a8a8;
-  margin: 4px 20px 0px 0px;
-`;
 
 
 interface Props {
@@ -92,16 +80,8 @@ const Home = (props: Props) => {
     <Wrapper
     keyboardShouldPersistTaps={'always'}
     >
-      <HeaderWrapper>
-        <TouchableOpacity onPress={()=>{
-     
-          props.navigation.navigate('UserProfile');
-         }}>
-          <View>
-            <StyledFeatherIcon name={'settings'}/>
-          </View>
-        </TouchableOpacity>
-      </HeaderWrapper>
+      <Header {...props} />
+
       <StyledBodyWrapper>
         <StyledSection>
           <StyledSectionTitle position="top">Podcast this week</StyledSectionTitle>

@@ -17,6 +17,10 @@ const InjectedHome = ( props: { navigation: NavigationScreenProp<any,any> })=>{
     </PlayerThumbnail>
 }
 
+
+
+
+
 const InjectedPodcastDetail =  ( props: { navigation: NavigationScreenProp<any,any> })=>{
   return <PlayerThumbnail {...props}>
       <PodcastDetail {...props}/>

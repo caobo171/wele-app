@@ -65,7 +65,6 @@ const getUsers = ()=>{
 export const listUsers = ()=> async (dispatch: any) => {
     const users = await getUsers()
 
-    console.log('check users', users)
     dispatch({
       type:LOAD_USERS,
       data: users
