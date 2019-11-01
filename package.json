@@ -3,7 +3,7 @@
   "version": "6.0.1",
   "private": true,
   "scripts": {
-    "start": "ENV=development react-native start ",
+    "start": "ENV=development react-native start",
     "run:android": "react-native run-android",
     "run:ios": "react-native run-ios --simulator=\"iPhone X\"",
     "build:apk": "cd android && ./gradlew assembleRelease",

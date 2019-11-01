@@ -29,7 +29,7 @@ const RootNavigator = createStackNavigator(
             
     },
     {
-        initialRouteName: "NotificationNavigator"
+        initialRouteName: "BottomTabNavigator"
     }
 );
 

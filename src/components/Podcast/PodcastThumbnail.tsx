@@ -90,7 +90,7 @@ const PodcastThumbnail = (props: Props) => {
           <DescriptionMain>{TrimText(props.description)}</DescriptionMain>
           <DescriptionSub>
             {props.source} <StyleSmallText>dẫn bởi </StyleSmallText>
-            {props.narrator}
+            {props.narrator.displayName}
           </DescriptionSub>
         </StyledPodcastContent>
         <StyledImageWrapper>

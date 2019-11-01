@@ -74,6 +74,8 @@ const Home = (props: Props) => {
     await props.getRecentPodcasts()
   },[])
 
+
+
   return <React.Fragment>
     { state.loading? 
     (<LoadingComponent/>) : (

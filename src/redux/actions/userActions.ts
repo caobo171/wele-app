@@ -2,6 +2,7 @@ import { firebase } from "@react-native-firebase/auth";
 import database from '@react-native-firebase/database';
 import { LoginManager } from "react-native-fbsdk"
 import UserType from "src/models/User";
+import ResultType from "src/models/Result";
 
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
@@ -10,19 +11,28 @@ export const LOAD_USERS = "LOAD_USERS";
 export const LOG_OUT = "LOG_OUT";
 export const UPDATE_USER = "UPDATE_USER"
 
+export const LOAD_RESULTS = "LOAD_RESULTS"
+
+export const RESULTS_COLLECTION = "results"
 
 
-export const setCurrentUser = (user: UserType , isNew?: boolean | string) => async (dispatch: any) => {
 
-  if(isNew){
+export const setCurrentUser = (user: UserType, isNew?: boolean | string) => async (dispatch: any) => {
+
+  if (isNew) {
     const ref = database().ref(`/users/${user.id}`)
 
     await ref.set({
       ...user,
       weleEmail: isNew
     })
-  }
 
+
+  }
+ 
+
+  const res = await updateNewUserToResult('caobo1712a000@gmail.com', user)
+  console.log('vao day roi ma', res)
 
   await dispatch({
     type: SET_CURRENT_USER,
@@ -40,33 +50,104 @@ export const logOut = () => async (dispatch: any) => {
 
 
 
-export const updateUser = (user: UserType)=> async (dispatch: any) => {
+export const updateUser = (user: UserType) => async (dispatch: any) => {
   await dispatch({
     type: UPDATE_USER,
-    data : user
+    data: user
   })
 }
 
-const getUsers = ()=>{
-  return new Promise((resolve, reject)=>{
-    let users = new Map<string,UserType>()
+const getUsers = () => {
+  return new Promise((resolve, reject) => {
+    let users = new Map<string, UserType>()
     const ref = database().ref(`/users`);
-    ref.once('value', async (snapshots: any)=>{
-        await snapshots.forEach( (snapshot: any) =>{
-          const user:UserType = snapshot._snapshot.value
-          users = users.set(user.id, {id: user.id , ...user} )
+    ref.once('value', async (snapshots: any) => {
+      await snapshots.forEach((snapshot: any) => {
+        const user: UserType = snapshot._snapshot.value
+        users = users.set(user.id, { id: user.id, ...user })
+      })
+
+      resolve(users)
+    })
+  })
+}
+
+
+const convertId = (key: string) => {
+
+  return key.toString().replace(new RegExp('<dot>', 'g'), '.')
+    .replace(new RegExp('<open>', 'g'), '[')
+    .replace(new RegExp('<close>', 'g'), ']')
+    .replace(new RegExp('<sharp>', 'g'), '#')
+    .replace(new RegExp('<dollar>', 'g'), '$')
+
+}
+
+const getResultsAsync = () => {
+  return new Promise((resolve, reject) => {
+    let results = new Map<string, ResultType>()
+    const ref = database().ref(`/results`).orderByChild('Total').limitToLast(50);
+    ref.once('value', async (snapshots: any) => {
+      await snapshots.forEach((snapshot: any) => {
+        const id = convertId(snapshot._snapshot.value.id)
+        const result: ResultType = {
+          ...snapshot._snapshot.value,
+          id
+        }
+
+        results.set(id, result)
+
+      })
+
+      resolve(results)
+    })
+  })
+}
+
+
+export const listUsers = () => async (dispatch: any) => {
+  const users = await getUsers()
+
+  dispatch({
+    type: LOAD_USERS,
+    data: users
+  })
+}
+
+export const updateNewUserToResult = (email: string, user: UserType) => {
+
+  return new Promise((resolve, reject) => {
+    const reConverEmail = email.toString().replace('.', '<dot>').replace('[', '<open>').replace(']', '<close>').replace('#', '<sharp>').replace('$', '<dollar>').replace('.', '<dot>').replace('.', '<dot>').replace('.', '<dot>')
+  
+    console.log('check ', `/results/${reConverEmail}`)
+    const resultRef = database().ref(`/results/${reConverEmail}`)
+
+    
+    resultRef.once('value', async (snapshots: any) => {
+      if(!snapshots._snapshot.value){
+        reject('EMAIL DOES')
+      }else{
+        resultRef.update({
+          photoURL: user.photoURL,
+          UserId: user.id,
+          Name: user.displayName
         })
 
-        resolve(users)
+        resolve(snapshots)
+      }
+      
     })
   })
+
+
+
 }
 
-export const listUsers = ()=> async (dispatch: any) => {
-    const users = await getUsers()
 
-    dispatch({
-      type:LOAD_USERS,
-      data: users
-    })
+export const getResults = () => async (dispatch: any) => {
+  const results = await getResultsAsync()
+  dispatch({
+    type: LOAD_RESULTS,
+    data: results
+  })
 }

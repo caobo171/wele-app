@@ -198,7 +198,7 @@ const PodcastDetail = (props: Props) => {
                         </StyledName>
     
                         <DescriptionInfo>
-                            {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator}
+                            {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
                         </DescriptionInfo>
                         <TouchableOpacity onPress={onPressPlayHandle}>
                           <StyledPlayButton>

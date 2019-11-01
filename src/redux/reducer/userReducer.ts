@@ -1,9 +1,11 @@
-import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS , UPDATE_USER} from "../actions/userActions";
+import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS , UPDATE_USER , LOAD_RESULTS} from "../actions/userActions";
 import { ActionType } from '../reduxTypes'
 import  UserType  from '../../models/User'
+import  ResultType  from '../../models/Result'
 const initState = {
   currentUser: null,
-  listUsers: new Map<string,UserType>()
+  listUsers: new Map<string,UserType>(),
+  listResult : new Map<string, ResultType>()
 };
 
 export default function user(state = initState, action: ActionType) {
@@ -29,6 +31,12 @@ export default function user(state = initState, action: ActionType) {
         ...state,
         currentUser: action.data
       };
+    }
+    case LOAD_RESULTS : {
+      return {
+        ...state,
+        listResult: action.data
+      } 
     }
     case LOG_OUT: {
         return {

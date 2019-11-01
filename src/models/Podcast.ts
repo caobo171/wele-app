@@ -2,7 +2,11 @@ export default interface PodcastType {
     source : string,
     imgUrl: string,
     name: string,
-    narrator: string,
+    narrator: {
+        displayName: string,
+        id: string,
+        imgUrl?: string
+    },
     postDate: Date,
     description: string,
     id: string,

@@ -84,7 +84,7 @@ const PodcastItem = (props: Props) => {
           <Title>{TrimText(props.name)}</Title>
           <DescriptionSub>
             {props.source} <StyleSmallText>dẫn bởi </StyleSmallText>
-            {props.narrator}
+            {props.narrator.displayName}
           </DescriptionSub>
         </StyledPodcastContent>
 

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 interface Props {
 
-  user: UserType
+  user: UserType | null 
 
 }
 
@@ -35,12 +35,11 @@ const StyledDot = styled.View<{isOnline: boolean}>`
   background: #4CD964;
 `
 
+const DEFAUTL_IMAGE = "https://image.flaticon.com/icons/png/512/17/17004.png"
 const UserAvatar = (props: Props) => {
 
-  const isOnline = useSelector((state:any) => (state.user.listUsers.get(props.user.id) as UserType).online) 
-
-
-  console.log('check isOnline', isOnline)
+  //@ts-ignore
+  const isOnline = props.user!== null ? useSelector((state:any) => (state.user.listUsers.get(props.user.id) as UserType).online) : false
 
 
   return (
@@ -48,7 +47,7 @@ const UserAvatar = (props: Props) => {
     <StyledAvatar
       resizeMode={'contain'}
       source={{
-        uri: props.user.photoURL,
+        uri: props.user ?  props.user.photoURL : DEFAUTL_IMAGE
       }}
     />
     {isOnline && <StyledDot isOnline={isOnline ? isOnline: false}/> } 

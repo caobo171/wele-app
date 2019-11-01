@@ -20,9 +20,10 @@ import styled from 'styled-components/native';
 import { NavigationScreenProp, FlatList } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
-import { listUsers } from '../redux/actions/userActions';
+import { listUsers, getResults } from '../redux/actions/userActions';
 import UserType from '../models/User';
 import UserAvatar from '../components/User/UserAvatar';
+import ResultType from 'src/models/Result';
 
 const Wrapper = styled(LinearGradient)`
   margin-top: 5px;
@@ -63,12 +64,11 @@ const StyledOrderIndicator = styled.Text<{color: string}>`
   flex: 0.5;
   padding-top: 8px;
   margin-right: 10px;
-
-  border-bottom-width: 4px;
+  border-bottom-width: 3px;
   border-color: #bababa;
   margin-bottom: 28px;
 
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   color: ${props => props.color} ;
 `;
@@ -126,13 +126,17 @@ interface Props {
   navigation : NavigationScreenProp<any,any>
 }
 
+
+
 const Billboard = (props : Props) => {
 
   const dispatch = useDispatch()
 
-  const users: Array<UserType> = useSelector((state:any)=> [...state.user.listUsers.values()] )
+  const results: Array<ResultType> = useSelector((state:any) => [...state.user.listResult.values()].reverse());
+
+  
   useEffectOnce(()=>{
-    dispatch(listUsers())
+    dispatch(getResults())
   })
   return (
     <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0,0.3,0.5]}>
@@ -144,26 +148,34 @@ const Billboard = (props : Props) => {
         <StyledBillboardContent>
           <FlatList
 
-            data= {users}
+            data= {results}
             renderItem = {({item , index})=> {
+
+            
+              const user : UserType | null = item.UserId ? {
+                displayName: item.Name,
+                photoURL: item.photoURL,
+                email : item.id,
+                id: item.UserId 
+              }: null
               return (
                 <StyledUserSection key={item.id}>
                 <StyledOrderIndicator color={renderColor(index)}>
                       {index + 1}
                 </StyledOrderIndicator>
                 <StyledAvatarWrapper>
-                    <UserAvatar user={item}/>
+                    <UserAvatar user={user}/>
                 </StyledAvatarWrapper>
                 <StyledUserNameWrapper>
-                    <StyledName>{item.displayName}</StyledName>
+                    <StyledName>{item.Name}</StyledName>
                     <StyledSubDescription>Beginner</StyledSubDescription>
                 </StyledUserNameWrapper>
                 <StyledActionButtonGroup>
-                    <TouchableOpacity onPress={() => {
+                    {/* <TouchableOpacity onPress={() => {
                         props.navigation.navigate('PodcastDetail');
-                      }}>
+                      }}> */}
                           <StyledEntypoIcon name={'dots-three-vertical'} />
-                      </TouchableOpacity>
+                      {/* </TouchableOpacity> */}
                 </StyledActionButtonGroup>
               </StyledUserSection>
               )
@@ -171,32 +183,6 @@ const Billboard = (props : Props) => {
 
             keyExtractor={item => item.id}
           />
-          {/* {
-            users.map( (user,index)=> {
-              return (
-                <StyledUserSection key={user.id}>
-                  <StyledOrderIndicator color={renderColor(index)}>
-                        {index + 1}
-                  </StyledOrderIndicator>
-                  <StyledAvatarWrapper>
-                      <UserAvatar user={user}/>
-                  </StyledAvatarWrapper>
-                  <StyledUserNameWrapper>
-                      <StyledName>{user.displayName}</StyledName>
-                      <StyledSubDescription>Beginner</StyledSubDescription>
-                  </StyledUserNameWrapper>
-                  <StyledActionButtonGroup>
-                      <TouchableOpacity onPress={() => {
-                          props.navigation.navigate('PodcastDetail');
-                        }}>
-                            <StyledEntypoIcon name={'dots-three-vertical'} />
-                        </TouchableOpacity>
-                  </StyledActionButtonGroup>
-                </StyledUserSection>
-
-              );
-            })
-          } */}
         </StyledBillboardContent>
     </Wrapper>
   );
