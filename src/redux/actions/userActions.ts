@@ -10,6 +10,7 @@ export const LOAD_FRIENDS = "LOAD_FRIENDS";
 export const LOAD_USERS = "LOAD_USERS";
 export const LOG_OUT = "LOG_OUT";
 export const UPDATE_USER = "UPDATE_USER"
+export const LOAD_MY_RESULT = "LOAD_MY_RESULT"
 
 export const LOAD_RESULTS = "LOAD_RESULTS"
 
@@ -17,27 +18,48 @@ export const RESULTS_COLLECTION = "results"
 
 
 
+const getCurrentUser = (id:string) => {
+  return new Promise((resolve, reject) => {
+    const ref = database().ref(`/users/${id}`);
+    ref.once('value', async (snapshot: any) => {
+      const user: UserType = {id: id , ...snapshot._snapshot.value}
+      resolve(user)
+    })
+  })
+}
+
+
+
 export const setCurrentUser = (user: UserType, isNew?: boolean | string) => async (dispatch: any) => {
 
+  
   if (isNew && typeof isNew === 'string') {
     const ref = database().ref(`/users/${user.id}`)
 
     await updateNewUserToResult( isNew  , user)
+    user = {...user, weleEmail: isNew}
     await ref.set({
       ...user,
       weleEmail: isNew
     })
 
+    await dispatch({
+      type: SET_CURRENT_USER,
+      data: { ...user, weleEmail: isNew}
+    });
 
-  }
+
+  }else{
+    const userData : any = await getCurrentUser(user.id)
  
-
   
 
-  await dispatch({
-    type: SET_CURRENT_USER,
-    data: user
-  });
+    await dispatch({
+      type: SET_CURRENT_USER,
+      data: { ...user, weleEmail: userData.weleEmail}
+    });
+  }
+
 };
 
 export const logOut = () => async (dispatch: any) => {
@@ -138,11 +160,37 @@ export const updateNewUserToResult = (email: string, user: UserType) => {
       
     })
   })
-
-
-
 }
 
+const getMyResultAsync = (user: UserType)=>{
+  console.log('check aa'  , user)
+  if(user.weleEmail){
+    return new Promise((resolve, reject) => {
+      const email = user.weleEmail as string
+      const reConverEmail = email.toString().replace('.', '<dot>').replace('[', '<open>').replace(']', '<close>').replace('#', '<sharp>').replace('$', '<dollar>').replace('.', '<dot>').replace('.', '<dot>').replace('.', '<dot>')
+    
+
+      const resultRef = database().ref(`/results/${reConverEmail}`)
+  
+      
+      resultRef.once('value', async (snapshots: any) => {
+          resolve(snapshots._snapshot.value)    
+      })
+    })
+  }else{
+    return null 
+  }
+}
+
+export const getMyResult = (user: UserType) => async (dispatch: any) =>{
+  const result = await getMyResultAsync(user)
+
+  console.log('check my result', result)
+  dispatch({
+    type: LOAD_MY_RESULT,
+    data: result
+  })
+}
 
 export const getResults = () => async (dispatch: any) => {
   const results = await getResultsAsync()

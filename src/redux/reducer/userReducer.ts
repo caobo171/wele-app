@@ -1,4 +1,7 @@
-import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS , UPDATE_USER , LOAD_RESULTS} from "../actions/userActions";
+import { SET_CURRENT_USER, LOG_OUT , LOAD_USERS , UPDATE_USER , LOAD_RESULTS ,
+  LOAD_MY_RESULT
+
+} from "../actions/userActions";
 import { ActionType } from '../reduxTypes'
 import  UserType  from '../../models/User'
 import  ResultType  from '../../models/Result'
@@ -43,6 +46,19 @@ export default function user(state = initState, action: ActionType) {
         ...state,
         currentUser: null
         };
+    }
+    case LOAD_MY_RESULT : {
+      if(state.currentUser){
+
+        return {
+          ...state,
+          currentUser: {
+            ... (state.currentUser === null ? {} : state.currentUser),
+            result : action.data
+          }
+        }
+      }
+  
     }
     default: {
       return state;

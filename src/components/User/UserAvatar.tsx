@@ -39,7 +39,7 @@ const DEFAUTL_IMAGE = "https://image.flaticon.com/icons/png/512/17/17004.png"
 const UserAvatar = (props: Props) => {
 
   //@ts-ignore
-  const isOnline = props.user!== null ? useSelector((state:any) => (state.user.listUsers.get(props.user.id) as UserType).online) : false
+  const user = useSelector((state:any) => (state.user.listUsers.get(props.user? props.user.id : '-1') ))
 
 
   return (
@@ -50,7 +50,7 @@ const UserAvatar = (props: Props) => {
         uri: props.user ?  props.user.photoURL : DEFAUTL_IMAGE
       }}
     />
-    {isOnline && <StyledDot isOnline={isOnline ? isOnline: false}/> } 
+    {user && user.online && <StyledDot isOnline={user.online ? user.online: false}/> } 
     </StyledWrapper>
 
 

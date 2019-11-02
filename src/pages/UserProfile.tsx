@@ -7,16 +7,17 @@
  * @flow
  */
 
-import React  from 'react';
+import React, { useEffect }  from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { View, TouchableOpacity } from 'react-native';
 import { connect } from "react-redux";
 
 import styled from 'styled-components/native';
-import { logOut } from "../redux/actions/userActions"
+import { logOut, getMyResult } from "../redux/actions/userActions"
 import { NavigationScreenProp } from 'react-navigation';
 import UserType from 'src/models/User';
+import useEffectOnce from 'react-use/lib/useEffectOnce';
 
 
 
@@ -99,10 +100,22 @@ const StyledText = styled.Text`
 interface Props{
   logOut: ()=> void,
   navigation: NavigationScreenProp<any,any>,
-  currentUser : UserType
+  currentUser : UserType,
+  getMyResult: (user: UserType) => void
 }
 
 const UserProfile = (props: Props) => {
+
+  useEffectOnce(()=>{
+    if(props.currentUser){
+      props.getMyResult(props.currentUser)
+    }
+    
+  })
+
+  useEffect(()=>{
+    console.log('check props', props.currentUser)
+  },[props.currentUser])
 
   const logOutHandle = async ()=>{
     await props.logOut()
@@ -154,7 +167,8 @@ const mapStateToProps = (state: any)=>{
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    logOut : ()=> dispatch(logOut())
+    logOut : ()=> dispatch(logOut()),
+    getMyResult: (user: UserType) => dispatch(getMyResult(user))
   }
 }
 
