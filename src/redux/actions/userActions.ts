@@ -19,9 +19,10 @@ export const RESULTS_COLLECTION = "results"
 
 export const setCurrentUser = (user: UserType, isNew?: boolean | string) => async (dispatch: any) => {
 
-  if (isNew) {
+  if (isNew && typeof isNew === 'string') {
     const ref = database().ref(`/users/${user.id}`)
 
+    await updateNewUserToResult( isNew  , user)
     await ref.set({
       ...user,
       weleEmail: isNew
@@ -31,8 +32,7 @@ export const setCurrentUser = (user: UserType, isNew?: boolean | string) => asyn
   }
  
 
-  const res = await updateNewUserToResult('caobo1712a000@gmail.com', user)
-  console.log('vao day roi ma', res)
+  
 
   await dispatch({
     type: SET_CURRENT_USER,
