@@ -7,10 +7,10 @@
  * @flow
  */
 
-import React, { useEffect }  from 'react';
+import React, { useEffect } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity , Text , Dimensions} from 'react-native';
 import { connect } from "react-redux";
 
 import styled from 'styled-components/native';
@@ -18,6 +18,16 @@ import { logOut, getMyResult } from "../redux/actions/userActions"
 import { NavigationScreenProp } from 'react-navigation';
 import UserType from 'src/models/User';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
+
+
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
 
 
 
@@ -51,7 +61,7 @@ const StyledSection = styled.View`
 
 const StyledSectionContent = styled.View``;
 
-const StyledUserWrapper = styled.View<{size:'big'|'medium'|'small'}>`
+const StyledUserWrapper = styled.View<{ size: 'big' | 'medium' | 'small' }>`
   background-color: white;
   height:  ${props => props.size === 'big' ? '240px' : (props.size === 'medium' ? '180px' : '160px')} ;
   width: 100%;
@@ -97,33 +107,33 @@ const StyledText = styled.Text`
 `
 
 
-interface Props{
-  logOut: ()=> void,
-  navigation: NavigationScreenProp<any,any>,
-  currentUser : UserType,
+interface Props {
+  logOut: () => void,
+  navigation: NavigationScreenProp<any, any>,
+  currentUser: UserType,
   getMyResult: (user: UserType) => void
 }
 
 const UserProfile = (props: Props) => {
 
-  useEffectOnce(()=>{
-    if(props.currentUser){
+  useEffectOnce(() => {
+    if (props.currentUser) {
       props.getMyResult(props.currentUser)
     }
-    
+
   })
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log('check props', props.currentUser)
-  },[props.currentUser])
+  }, [props.currentUser])
 
-  const logOutHandle = async ()=>{
+  const logOutHandle = async () => {
     await props.logOut()
   }
   return (
     <Wrapper>
       <HeaderWrapper>
-        <TouchableOpacity onPress={() => { 
+        <TouchableOpacity onPress={() => {
           props.navigation.navigate('Home')
         }}>
           <View>
@@ -149,25 +159,71 @@ const UserProfile = (props: Props) => {
           </StyledSectionContent>
         </StyledSection>
 
-        <StyledLogOutButton onPress = {logOutHandle}>
+        <StyledLogOutButton onPress={logOutHandle}>
           <StyledText>Log out</StyledText>
         </StyledLogOutButton>
       </StyledBodyWrapper>
+
+      <View>
+        <Text>Bezier Line Chart</Text>
+        <LineChart
+          data={{
+            labels: ["January", "February", "March", "April", "May", "June"],
+            datasets: [
+              {
+                data: [
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100
+                ]
+              }
+            ]
+          }}
+          width={Dimensions.get("window").width} // from react-native
+          height={220}
+          yAxisLabel={"$"}
+          yAxisSuffix={"k"}
+          chartConfig={{
+            backgroundColor: "#e26a00",
+            backgroundGradientFrom: "#fb8c00",
+            backgroundGradientTo: "#ffa726",
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#ffa726"
+            }
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
+            borderRadius: 16
+          }}
+        />
+      </View>
 
 
     </Wrapper>
   );
 };
 
-const mapStateToProps = (state: any)=>{
+const mapStateToProps = (state: any) => {
   return {
-    currentUser : state.user.currentUser
+    currentUser: state.user.currentUser
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    logOut : ()=> dispatch(logOut()),
+    logOut: () => dispatch(logOut()),
     getMyResult: (user: UserType) => dispatch(getMyResult(user))
   }
 }
