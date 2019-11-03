@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React , {useState  } from 'react';
+import React, { useState } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 //@ts-ignore
@@ -101,12 +101,12 @@ const StyleSmallText = styled.Text`
   color: #a8a8a8;
 `
 
-const reFormatText = (text: string)=>{
-    return text.replace(/\n/g, '\n\n')
+const reFormatText = (text: string) => {
+  return text.replace(/\n/g, '\n\n')
 }
 
-const trimText = (text: string)=>{
-    return text.substr(0, Math.min(text.length, 180)) + '...' ;
+const trimText = (text: string) => {
+  return text.substr(0, Math.min(text.length, 180)) + '...';
 }
 
 const StyledDescriptionWrapper = styled.View`
@@ -140,8 +140,8 @@ const StyledText = styled.Text`
 
 interface Props {
   podcast: PodcastType,
-  updateRecentPodcast: (podcast: PodcastType)=> void
-  navigation: NavigationScreenProp<any,any>,
+  updateRecentPodcast: (podcast: PodcastType) => void
+  navigation: NavigationScreenProp<any, any>,
 }
 
 const PodcastDetail = (props: Props) => {
@@ -150,10 +150,10 @@ const PodcastDetail = (props: Props) => {
 
   console.log('check podcast', props.podcast)
 
-  const onPressPlayHandle = async ()=>{
-    try{
+  const onPressPlayHandle = async () => {
+    try {
       const res = await globalPlayer.pickTrack(props.podcast)
-      if(res !== true){
+      if (res !== true) {
 
         console.log('aaaaaaaaaaaaaa')
         const podcast: PodcastType = {
@@ -165,11 +165,11 @@ const PodcastDetail = (props: Props) => {
         await props.updateRecentPodcast(podcast)
         await props.navigation.navigate('Player')
       }
-     
-    }catch(err){
+
+    } catch (err) {
       Alert.alert('Fail to open File ', err.toString())
     }
-    
+
   }
   return <React.Fragment>
     {
@@ -184,48 +184,49 @@ const PodcastDetail = (props: Props) => {
               </View>
             </TouchableOpacity>
           </HeaderWrapper>
-    
-    
+
+
           <StyledBodyWrapper>
-              <StyledContent>
-                    <StyledUserWrapper >
-                        <StyledPodcastImage
-                            resizeMode={"stretch"}
-                            source={{ uri: props.podcast.imgUrl }}
-                        />
-                        <StyledName>
-                            {props.podcast.name}
-                        </StyledName>
-    
-                        <DescriptionInfo>
-                            {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
-                        </DescriptionInfo>
-                        <TouchableOpacity onPress={onPressPlayHandle}>
-                          <StyledPlayButton>
-                              <StyledText >Open</StyledText>
-                          </StyledPlayButton>
-                        </TouchableOpacity>
-    
-                    </StyledUserWrapper>
-    
-                    <StyledDescriptionWrapper>
-                        <DescriptionMain>
-                        {/* { trimText(reFormatText(PODCAST.description)) } */}
-                        { isBrief ? trimText(reFormatText(props.podcast.description)) :  reFormatText(props.podcast.description) }
-    
-                        </DescriptionMain>
-    
-                        <TouchableOpacity>
-                            <StyledReadmore onPress={()=> setIsBrief(!isBrief)}>{isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
-                        </TouchableOpacity>
-    
-    
-                    </StyledDescriptionWrapper>
-    
-              </StyledContent>
+            <StyledContent>
+              <StyledUserWrapper >
+                <StyledPodcastImage
+                  resizeMode={"stretch"}
+                  source={{ uri: props.podcast.imgUrl }}
+                />
+                <StyledName>
+                  {props.podcast.name}
+                </StyledName>
+
+                <DescriptionInfo>
+                  {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
+                </DescriptionInfo>
+                <TouchableOpacity onPress={onPressPlayHandle}>
+                  <StyledPlayButton>
+                    <StyledText >Open</StyledText>
+                  </StyledPlayButton>
+                </TouchableOpacity>
+
+              </StyledUserWrapper>
+
+              <StyledDescriptionWrapper>
+                <DescriptionMain>
+                  {/* { trimText(reFormatText(PODCAST.description)) } */}
+                  {isBrief ? trimText(reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))) :
+                    reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))}
+
+                </DescriptionMain>
+
+                <TouchableOpacity>
+                  <StyledReadmore onPress={() => setIsBrief(!isBrief)}>{isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
+                </TouchableOpacity>
+
+
+              </StyledDescriptionWrapper>
+
+            </StyledContent>
           </StyledBodyWrapper>
-    
-    
+
+
         </Wrapper>
       )
     }
@@ -237,13 +238,13 @@ PodcastDetail.navigationOptions = {
 };
 
 
-function mapStateToProps (state: any) {
+function mapStateToProps(state: any) {
   return {
     podcast: state.podcast.currentPodcast
   }
 }
 
-const mapDispatchToProps = (dispatch: any)=>{
+const mapDispatchToProps = (dispatch: any) => {
   return {
     updateRecentPodcast: (podcast: PodcastType) => dispatch(updateRecentPodcast(podcast))
   }

@@ -163,7 +163,6 @@ export const updateNewUserToResult = (email: string, user: UserType) => {
 }
 
 const getMyResultAsync = (user: UserType)=>{
-  console.log('check aa'  , user)
   if(user.weleEmail){
     return new Promise((resolve, reject) => {
       const email = user.weleEmail as string
@@ -185,7 +184,6 @@ const getMyResultAsync = (user: UserType)=>{
 export const getMyResult = (user: UserType) => async (dispatch: any) =>{
   const result = await getMyResultAsync(user)
 
-  console.log('check my result', result)
   dispatch({
     type: LOAD_MY_RESULT,
     data: result
