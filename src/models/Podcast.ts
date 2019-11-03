@@ -7,6 +7,7 @@ export default interface PodcastType {
         id: string,
         imgUrl?: string
     },
+    downloadLink: string,
     postDate: Date,
     description: string,
     id: string,

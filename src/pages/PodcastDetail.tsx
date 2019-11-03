@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 //@ts-ignore
 import { connect } from "react-redux";
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View, TouchableOpacity, Alert, Linking } from 'react-native';
 
 
 
@@ -121,6 +121,10 @@ const StyledReadmore = styled.Text`
     margin-bottom: 20px;
 `;
 
+const StyledButtonWrapper = styled.View`
+  flex-direction: row;
+  width:100%;
+`
 const StyledPlayButton = styled.View`
     background-color: #25bf1d;
     width: 100px;
@@ -131,11 +135,22 @@ const StyledPlayButton = styled.View`
     margin-bottom: 10px;
 `
 
+const StyledDownloadButton = styled.View`
+    background-color: #e0d051;
+    width: 120px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+`
+
 const StyledText = styled.Text`
     font-size: 16px;
     font-weight: bold;
     letter-spacing: 3px;
-    color: #ededed;
+    color:  #6e6a4b;
 `
 
 interface Props {
@@ -143,6 +158,8 @@ interface Props {
   updateRecentPodcast: (podcast: PodcastType) => void
   navigation: NavigationScreenProp<any, any>,
 }
+
+const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_content/'
 
 const PodcastDetail = (props: Props) => {
 
@@ -154,8 +171,6 @@ const PodcastDetail = (props: Props) => {
     try {
       const res = await globalPlayer.pickTrack(props.podcast)
       if (res !== true) {
-
-        console.log('aaaaaaaaaaaaaa')
         const podcast: PodcastType = {
           ...props.podcast,
           uri: res
@@ -200,11 +215,21 @@ const PodcastDetail = (props: Props) => {
                 <DescriptionInfo>
                   {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
                 </DescriptionInfo>
+
+                <StyledButtonWrapper>
                 <TouchableOpacity onPress={onPressPlayHandle}>
                   <StyledPlayButton>
                     <StyledText >Open</StyledText>
                   </StyledPlayButton>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => Linking.openURL(props.podcast.downloadLink ? props.podcast.downloadLink : WELE_DEFAULT_LINK)}>
+                  <StyledDownloadButton >
+                    <StyledText >Download </StyledText>
+                  </StyledDownloadButton>
+                </TouchableOpacity>
+                </StyledButtonWrapper>
+       
 
               </StyledUserWrapper>
 

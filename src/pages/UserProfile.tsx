@@ -116,13 +116,16 @@ interface Props {
   navigation: NavigationScreenProp<any, any>,
   currentUser: UserType,
   getMyResult: (user: UserType) => void,
-  result: number[]
+  result: {
+    totalArray: number[],
+    labelArray:number[]
+  } 
 }
 
 const transformResult = (result: ResultType | undefined)=>{
 
 
-  if(!result ) return [ 0, 0, 0, 0, 0, 0, 0, 0 , 0]
+  if(!result ) return { totalArray : [ 0, 0, 0, 0, 0, 0, 0, 0 , 0], labelArray:['', '', '', '', '', '', '', '' , ''] } 
 
   const rResult = {...result}
 
@@ -135,26 +138,30 @@ const transformResult = (result: ResultType | undefined)=>{
   }
 
   data = data.sort((a,b)=> a-b )
-  console.log(data.map((e:any)=> ({result:  rResult[e], e})))
 
   let tempTotal = 0;
   let totalArray  = []
+  let labelArray = []
+  const divider = Math.round(data.length / 6)
   for (let i = 0 ; i< data.length; i++){
     if(rResult[data[i]]){
       tempTotal += Number(rResult[data[i]])
-      console.log('check aa', tempTotal)
-        if(i% 20 === 0){
+        if(i% divider === 0){
           totalArray.push(tempTotal)
+          labelArray.push(data[i])
         }
         
     }
   }
 
-  if(data.length -1 % 20 !== 0 ){
+  if(data.length -1 % divider !== 0 ){
     totalArray.push(tempTotal)
+    labelArray.push(data[data.length -1])
   }
 
-  return totalArray
+  console.log({ totalArray, labelArray })
+
+  return { totalArray, labelArray }
 }
 
 const UserProfile = (props: Props) => {
@@ -208,11 +215,12 @@ const UserProfile = (props: Props) => {
 
         <StyledLineCharWrapper>
           <LineChart
+            
             data={{
-
+              labels : props.result.labelArray,
               datasets: [
                 {
-                  data: props.result
+                  data: props.result.totalArray
                 }
               ]
             }}
