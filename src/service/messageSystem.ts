@@ -3,9 +3,10 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { NOTIFICATION_COLLECTION } from '../redux/actions/notificationAction';
 import NotificationType from 'src/models/Notification';
+import UserType from 'src/models/User';
 
 class MessageSystem {
-    async init(getGlobalNotification: any){
+    async init(getGlobalNotification: any , me: UserType){
         console.log('check init successfully !!!! ')
         const unsubscribe = await firebase.firestore().collection(NOTIFICATION_COLLECTION).onSnapshot({
             includeMetadataChanges: true
@@ -18,7 +19,7 @@ class MessageSystem {
                     time: e._data.time.toDate()
                 }
             } )
-            getGlobalNotification && getGlobalNotification(notifications)
+            getGlobalNotification && getGlobalNotification(notifications,me)
         })
 
         // let unsubscribe= null;

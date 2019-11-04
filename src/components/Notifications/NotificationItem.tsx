@@ -6,8 +6,8 @@ import { NavigationScreenProp } from 'react-navigation'
 
 
 const StyledImage = styled.Image`
-  height: 42px;
-  width: 42px;
+  height: 46px;
+  width: 46px;
   border-radius: 50;
 
 `;
@@ -15,11 +15,12 @@ const StyledImage = styled.Image`
 const StyledImageWrapper = styled.View`
   position: relative;
   flex: 1;
+  align-items: center;
 `
 
 
 const StyledWrapper = styled.TouchableOpacity`
-  height: 60px;
+  height: 76px;
   width: 100%;
   flex-direction: row;
   padding: 4px  8px 4px 8px;
@@ -55,6 +56,8 @@ interface Props {
 
 
 const TrimText = (text: string) => {
+    const MAX_LENGTH = 80 
+    if(text.length <= MAX_LENGTH ) return text
     return text.substr(0, Math.min(text.length, 80)) + "...";
 };
 

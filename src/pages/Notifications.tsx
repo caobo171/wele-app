@@ -92,11 +92,6 @@ const Notifications = (props: Props) => {
         keyExtractor = {item => item.id}
       />
 
-      <StyledBodyWrapper>
-          
-      </StyledBodyWrapper>
-
-
     </Wrapper>
   );
 };

@@ -8,10 +8,10 @@
 
 import React from 'react';
 
-import EntypoIcon from 'react-native-vector-icons/Entypo';
+
 import LinearGradient from 'react-native-linear-gradient';
 
-import { View , TouchableOpacity , ScrollView , Text } from 'react-native';
+
 
 
 
@@ -24,6 +24,7 @@ import { listUsers, getResults } from '../redux/actions/userActions';
 import UserType from '../models/User';
 import UserAvatar from '../components/User/UserAvatar';
 import ResultType from 'src/models/Result';
+import BillboardItem from '../components/Billboard/BillboardItem';
 
 const Wrapper = styled(LinearGradient)`
   margin-top: 5px;
@@ -34,9 +35,6 @@ const Wrapper = styled(LinearGradient)`
 `;
 
 
-const StyledAvatarWrapper = styled.View`
-  flex: 2;
-`;
 
 
 const StyledBillboardHeader = styled.View`
@@ -53,55 +51,7 @@ const StyledBillboardContent = styled.ScrollView`
 `;
 
 
-const StyledUserSection = styled.View`
-  height: 58px;
-  width: 100%;
-  flex-direction: row;
-`;
 
-const StyledOrderIndicator = styled.Text<{color: string}>`
-  text-align: center;
-  flex: 0.5;
-  padding-top: 8px;
-  margin-right: 10px;
-  border-bottom-width: 3px;
-  border-color: #bababa;
-  margin-bottom: 28px;
-
-  font-size: 10px;
-  font-weight: bold;
-  color: ${props => props.color} ;
-`;
-
-const StyledUserNameWrapper = styled.View`
-  flex: 8;
-  flex-direction: column;
-  margin-left: 12px;
-`;
-
-const StyledName = styled.Text`
-  font-weight: bold;
-  font-size: 14px;
-  letter-spacing: 1px;
-
-`;
-
-const StyledSubDescription = styled.Text`
-  font-size: 12px;
-  color: #757575;
-`;
-
-
-
-const StyledEntypoIcon = styled(EntypoIcon)`
-  font-size: 16px;
-  color: #a8a8a8;
-  margin: 8px 10px 8px 10px;
-`;
-
-const StyledActionButtonGroup = styled.View`
-  flex: 2;
-`;
 
 const StyledHeaderImage = styled.Image<{width:number, height:number}>`
   width: ${props  => props.width}px;
@@ -109,23 +59,11 @@ const StyledHeaderImage = styled.Image<{width:number, height:number}>`
   margin: 16px;
 `
 
-const renderColor = (index: number)=>{
-  switch (index){
-    case 0:
-      return 'blue';
-    case 1:
-      return 'green';
-    case 2:
-      return 'red';
-    default:
-      return  'grey';
-  }
-};
+
 
 interface Props {
   navigation : NavigationScreenProp<any,any>
 }
-
 
 
 const Billboard = (props : Props) => {
@@ -148,37 +86,15 @@ const Billboard = (props : Props) => {
         <StyledBillboardContent>
           <FlatList
 
-            data= {results}
-            renderItem = {({item , index})=> {
-
-            
+            data= {results.filter( e=> e.id !== 'weenjoylearningenglish@gmail.com' )}
+            renderItem = {({item , index})=> {            
               const user : UserType | null = item.UserId ? {
                 displayName: item.Name,
                 photoURL: item.photoURL,
                 email : item.id,
                 id: item.UserId 
               }: null
-              return (
-                <StyledUserSection key={item.id}>
-                <StyledOrderIndicator color={renderColor(index)}>
-                      {index + 1}
-                </StyledOrderIndicator>
-                <StyledAvatarWrapper>
-                    <UserAvatar user={user}/>
-                </StyledAvatarWrapper>
-                <StyledUserNameWrapper>
-                    <StyledName>{item.Name}</StyledName>
-                    <StyledSubDescription>Beginner</StyledSubDescription>
-                </StyledUserNameWrapper>
-                <StyledActionButtonGroup>
-                    {/* <TouchableOpacity onPress={() => {
-                        props.navigation.navigate('PodcastDetail');
-                      }}> */}
-                          <StyledEntypoIcon name={'dots-three-vertical'} />
-                      {/* </TouchableOpacity> */}
-                </StyledActionButtonGroup>
-              </StyledUserSection>
-              )
+              return <BillboardItem user={user} result={item} index= {index} />
             }}
 
             keyExtractor={item => item.id}

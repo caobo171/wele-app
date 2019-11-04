@@ -10,6 +10,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import NotificationType from 'src/models/Notification';
 import { updateNotifications } from '../../redux/actions/notificationAction';
+import UserType from 'src/models/User';
 
 const StyledFeatherIcon = styled(FeatherIcon)`
   font-size: 28px;
@@ -49,7 +50,8 @@ const StyledBadge = styled.Text`
 interface Props {
     navigation: NavigationScreenProp<any>,
     unSeenNotifications:number ,
-    updateNotifications: ()=> void
+    updateNotifications: (me: UserType)=> void,
+    currentUser: UserType
 }
 
 const Header = (props: Props) => {
@@ -59,7 +61,7 @@ const Header = (props: Props) => {
         <HeaderWrapper>
             
             <TouchableOpacity onPress={() => {
-                props.updateNotifications()
+                props.updateNotifications(props.currentUser)
                 props.navigation.navigate('Notifications');
             }}>
                 <StyledView>
@@ -83,7 +85,8 @@ const Header = (props: Props) => {
 
 const mapStateToProps = (state:any)=>{
     return {
-        unSeenNotifications: (state.notification.unSeenNotifications as NotificationType[]).length
+        unSeenNotifications: (state.notification.unSeenNotifications as NotificationType[]).length,
+        currentUser: state.user.currentUser
     }
 
 
@@ -91,7 +94,7 @@ const mapStateToProps = (state:any)=>{
 
 const mapDispatchToProps = (dispatch : any)=>{
     return {
-        updateNotifications: ()=> dispatch(updateNotifications())
+        updateNotifications: (me: UserType)=> dispatch(updateNotifications(me))
     }
 }
 

@@ -21,12 +21,13 @@ export default function notification(state = initState, action: ActionType) {
     switch (action.type) {
         case GET_GLOBAL_NOTIFICATIONS: {
 
-            console.log('check ',action.data.notifications )
             const notifications: NotificationType[] = action.data.notifications;
 
-            
-            const lastSeen: Date = action.data.lastSeen;
+            let defaultDate = new Date()
+            defaultDate.setDate(defaultDate.getDate() - 7 )
+            const lastSeen: Date = action.data.lastSeen ? action.data.lastSeen : defaultDate
 
+            console.log('check lastSeen', lastSeen)
          
 
             return {

@@ -24,7 +24,7 @@ interface Props{
   currentUser: UserType,
   setCurrentUser: (user: UserType | null )=> void,
   updateUser: (user: UserType) => void,
-  getGlobalNotifications: (notifications: NotificationType[])=> void
+  getGlobalNotifications: (notifications: NotificationType[] , me : UserType)=> void
 }
 
 const MainAppScreen = (props: Props) => {
@@ -32,6 +32,7 @@ const MainAppScreen = (props: Props) => {
     const rawUser = await firebase.auth().currentUser;
 
     if(rawUser){
+      console.log('check rawUser', rawUser)
       const user = {
         displayName: rawUser.displayName as string,
         email: rawUser.email as string,
@@ -48,15 +49,12 @@ const MainAppScreen = (props: Props) => {
 
   useEffectOnce(()=>{
     globalPlayer.init()
-    
-    messageSystem.init(props.getGlobalNotifications)
-    
-
   })
 
   useEffect(()=>{
     if(props.currentUser){
       presenceSystem.init(props.updateUser)
+      messageSystem.init(props.getGlobalNotifications, props.currentUser)
     }
   
   }, [props.currentUser])
@@ -82,7 +80,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     setCurrentUser : (user: UserType) => dispatch(setCurrentUser(user)),
     updateUser: (user: UserType) => dispatch(updateUser(user)),
-    getGlobalNotifications : (notifications: NotificationType[])=> dispatch(getGlobalNotifications(notifications))
+    getGlobalNotifications : (notifications: NotificationType[], me: UserType)=> dispatch(getGlobalNotifications(notifications, me))
   }
 }
 

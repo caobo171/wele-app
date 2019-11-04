@@ -18,7 +18,7 @@ export const RESULTS_COLLECTION = "results"
 
 
 
-const getCurrentUser = (id:string) => {
+const getCurrentUserAsync = (id:string) => {
   return new Promise((resolve, reject) => {
     const ref = database().ref(`/users/${id}`);
     ref.once('value', async (snapshot: any) => {
@@ -45,18 +45,18 @@ export const setCurrentUser = (user: UserType, isNew?: boolean | string) => asyn
 
     await dispatch({
       type: SET_CURRENT_USER,
-      data: { ...user, weleEmail: isNew}
+      data: { ...user, weleEmail: isNew }
     });
 
 
   }else{
-    const userData : any = await getCurrentUser(user.id)
- 
+    const userData : any = await getCurrentUserAsync(user.id)
+    
   
 
     await dispatch({
       type: SET_CURRENT_USER,
-      data: { ...user, weleEmail: userData.weleEmail}
+      data: {  ...userData, ...user}
     });
   }
 
@@ -108,7 +108,7 @@ const convertId = (key: string) => {
 const getResultsAsync = () => {
   return new Promise((resolve, reject) => {
     let results = new Map<string, ResultType>()
-    const ref = database().ref(`/results`).orderByChild('Total').limitToLast(50);
+    const ref = database().ref(`/results`).orderByChild('Total').limitToLast(51);
     ref.once('value', async (snapshots: any) => {
       await snapshots.forEach((snapshot: any) => {
         const id = convertId(snapshot._snapshot.value.id)

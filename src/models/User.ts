@@ -7,5 +7,6 @@ export default interface UserType{
     id: string,
     weleEmail?: string,
     online?: boolean,
-    result? : ResultType
+    result? : ResultType,
+    lastSeen? : Date
 }
