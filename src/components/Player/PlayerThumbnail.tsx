@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, TouchableOpacity , ProgressBarAndroid } from 'react-native'
 import styled from "styled-components/native"
 
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import globalPlayer, { usePlayer } from '../../hooks/playerHooks';
+import { PlayerContext } from '../../MainWrapper';
 
 const StyledView = styled.View`
     height: 32px;
@@ -61,7 +62,7 @@ const trimText = (text:string) => {
 
 const PlayerThumbnail = (props:any)=>{
 
-    const { state, position , track } = usePlayer()
+    const { state, position , track } = useContext(PlayerContext)
 
     const navigateToPlayer = ()=>{
         props.navigation.navigate('Player')

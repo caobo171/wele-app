@@ -31,6 +31,9 @@ const PLAYING_STATE = [
     TrackPlayer.STATE_BUFFERING
 ]
 
+
+
+
 class GlobalPlayer {
 
     init = async () => {

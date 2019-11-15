@@ -1,7 +1,7 @@
 export default interface ResultType{
     Email_ad?: string,
     Facebook?: string,
-    photoURL: string,
+    photoURL?: string,
     id: string,
     Time?: string,
     Total?:number,

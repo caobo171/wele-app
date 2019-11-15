@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React , {useEffect} from "react";
-import { createAppContainer  } from "react-navigation";
+import React, { useEffect } from "react";
+import { createAppContainer } from "react-navigation";
 import Login from "./pages/Login";
 
 
@@ -14,77 +14,102 @@ import UserType from "./models/User"
 
 import RootNavigator from "./navigator/root"
 import useEffectOnce from "react-use/lib/useEffectOnce";
-import globalPlayer from "./hooks/playerHooks";
+import globalPlayer, { usePlayer } from "./hooks/playerHooks";
 import presenceSystem from "./service/presenseSystem";
 import messageSystem from "./service/messageSystem";
 import { getGlobalNotifications } from "./redux/actions/notificationAction";
 import NotificationType from "./models/Notification";
 
-interface Props{
+interface Props {
   currentUser: UserType,
-  setCurrentUser: (user: UserType | null )=> void,
+  setCurrentUser: (user: UserType | null) => void,
   updateUser: (user: UserType) => void,
-  getGlobalNotifications: (notifications: NotificationType[] , me : UserType)=> void
+  getGlobalNotifications: (notifications: NotificationType[], me: UserType) => void
 }
 
+
+export const PlayerContext = React.createContext({
+  state: 0,
+  position: {
+    position: 0,
+    duration: 0
+  },
+  track: null,
+  playback: 15,
+  speed: 1
+})
+
+
+
 const MainAppScreen = (props: Props) => {
-  const state = useAsync(async ()=>{
+  const status = useAsync(async () => {
     const rawUser = await firebase.auth().currentUser;
 
-    if(rawUser){
+    if (rawUser) {
       console.log('check rawUser', rawUser)
       const user = {
         displayName: rawUser.displayName as string,
         email: rawUser.email as string,
-        photoURL : rawUser.photoURL as string,
+        photoURL: rawUser.photoURL as string,
         id: rawUser.uid
       }
-      props.setCurrentUser(user)
-      return user
+      return await props.setCurrentUser(user)
+
     }
-    props.setCurrentUser(null)
-    return null
+    return await props.setCurrentUser(null)
   }, [])
 
 
-  useEffectOnce(()=>{
+
+  const { state, position, track, playback, speed } = usePlayer()
+
+  useEffectOnce(() => {
     globalPlayer.init()
   })
 
-  useEffect(()=>{
-    if(props.currentUser){
+  useEffect(() => {
+    if (props.currentUser) {
       presenceSystem.init(props.updateUser)
       messageSystem.init(props.getGlobalNotifications, props.currentUser)
     }
-  
+
   }, [props.currentUser])
 
 
 
   return (
-      <React.Fragment>
-        {state.loading ? <LoadingComponent/> : 
-         props.currentUser ? <AppContainer/> : <Login/>
-        }
-      </React.Fragment>
+    <React.Fragment>
+      {status.loading ? <LoadingComponent /> :
+        props.currentUser && props.currentUser.weleEmail ?
+          <PlayerContext.Provider 
+          
+          value = {{
+            state, position, track, playback, speed
+          }}
+          >
+            <AppContainer />
+          </PlayerContext.Provider>
+          : <Login />
+      }
+    </React.Fragment>
   );
 };
 
-const mapStateToProps = (state : any)=>{
+const mapStateToProps = (state: any) => {
   return {
-    currentUser : state.user.currentUser
+    currentUser: state.user.currentUser
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setCurrentUser : (user: UserType) => dispatch(setCurrentUser(user)),
+    setCurrentUser: (user: UserType) => dispatch(setCurrentUser(user)),
     updateUser: (user: UserType) => dispatch(updateUser(user)),
-    getGlobalNotifications : (notifications: NotificationType[], me: UserType)=> dispatch(getGlobalNotifications(notifications, me))
+    getGlobalNotifications: (notifications: NotificationType[], me: UserType) => dispatch(getGlobalNotifications(notifications, me))
   }
 }
 
 const AppContainer = createAppContainer(RootNavigator);
 
 //@ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps )(MainAppScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MainAppScreen);

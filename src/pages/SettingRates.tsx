@@ -7,11 +7,10 @@
  * @flow
  */
 
-import React, {useEffect , useState , useCallback} from 'react';
+import React, {useEffect , useState , useCallback, useContext} from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-community/async-storage'
 
 import {TouchableOpacity} from 'react-native';
 
@@ -21,7 +20,8 @@ import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationScreenProp } from 'react-navigation';
 import storage from '../helpers/localStorage';
-import { usePlayer, updateSpeed, updatePlayback } from '../hooks/playerHooks';
+import {  updateSpeed, updatePlayback } from '../hooks/playerHooks';
+import { PlayerContext } from '../MainWrapper';
 
 
 const Wrapper = styled(LinearGradient)`
@@ -84,7 +84,7 @@ interface Props{
 const SettingRates = (props: Props) => {
 
     console.log('checkkkkkkkk 44444444')
-  const {playback, speed } = usePlayer()
+  const {playback, speed } = useContext(PlayerContext)
 
   const handleSetSpeed = (speed: number)=>{
     storage.set('speed', speed.toString())

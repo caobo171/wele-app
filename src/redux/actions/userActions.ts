@@ -4,7 +4,6 @@ import { LoginManager } from "react-native-fbsdk"
 import UserType from "src/models/User";
 import ResultType from "src/models/Result";
 
-
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const LOAD_FRIENDS = "LOAD_FRIENDS";
 export const LOAD_USERS = "LOAD_USERS";
@@ -19,6 +18,7 @@ export const RESULTS_COLLECTION = "results"
 
 
 const getCurrentUserAsync = (id:string) => {
+
   return new Promise((resolve, reject) => {
     const ref = database().ref(`/users/${id}`);
     ref.once('value', async (snapshot: any) => {
@@ -32,17 +32,24 @@ const getCurrentUserAsync = (id:string) => {
 
 export const setCurrentUser = (user: UserType, isNew?: boolean | string) => async (dispatch: any) => {
 
+  if(!user){
+    return await dispatch({
+      type:SET_CURRENT_USER,
+      data: user
+    })
+  }
   
   if (isNew && typeof isNew === 'string') {
     const ref = database().ref(`/users/${user.id}`)
-
-    await updateNewUserToResult( isNew  , user)
-    user = {...user, weleEmail: isNew}
     await ref.set({
       ...user,
       weleEmail: isNew
     })
 
+    await updateNewUserToResult( isNew  , user)
+
+
+    console.log('isNew' , isNew)
     await dispatch({
       type: SET_CURRENT_USER,
       data: { ...user, weleEmail: isNew }
@@ -50,10 +57,9 @@ export const setCurrentUser = (user: UserType, isNew?: boolean | string) => asyn
 
 
   }else{
+
     const userData : any = await getCurrentUserAsync(user.id)
     
-  
-
     await dispatch({
       type: SET_CURRENT_USER,
       data: {  ...userData, ...user}
@@ -98,10 +104,10 @@ const getUsers = () => {
 const convertId = (key: string) => {
 
   return key.toString().replace(new RegExp('<dot>', 'g'), '.')
-    .replace(new RegExp('<open>', 'g'), '[')
-    .replace(new RegExp('<close>', 'g'), ']')
-    .replace(new RegExp('<sharp>', 'g'), '#')
-    .replace(new RegExp('<dollar>', 'g'), '$')
+    .replace(new RegExp('weleopenwele', 'g'), '[')
+    .replace(new RegExp('weleclosewele', 'g'), ']')
+    .replace(new RegExp('welesharpwele', 'g'), '#')
+    .replace(new RegExp('weledollarwele', 'g'), '$')
 
 }
 
@@ -139,17 +145,30 @@ export const listUsers = () => async (dispatch: any) => {
 export const updateNewUserToResult = (email: string, user: UserType) => {
 
   return new Promise((resolve, reject) => {
-    const reConverEmail = email.toString().replace('.', '<dot>').replace('[', '<open>').replace(']', '<close>').replace('#', '<sharp>').replace('$', '<dollar>').replace('.', '<dot>').replace('.', '<dot>').replace('.', '<dot>')
+    const reConverEmail = email.toString()
+    .replace('.', 'weledotwele')
+    .replace('[', 'weleopenwele')
+    .replace(']', 'weleclosewele')
+    .replace('#', 'welesharpwele')
+    .replace('$', 'weledollarwele')
+    .replace('.', 'weledotwele')
+    .replace('.', 'weledotwele')
+    .replace('.', 'weledotwele')
   
-    console.log('check ', `/results/${reConverEmail}`)
-    const resultRef = database().ref(`/results/${reConverEmail}`)
+    const resultRef = database().ref(`/mappingresults/${reConverEmail}`)
 
     
     resultRef.once('value', async (snapshots: any) => {
       if(!snapshots._snapshot.value){
-        reject('EMAIL DOES')
+        resultRef.set({
+          id: reConverEmail,
+          photoURL: user.photoURL,
+          UserId: user.id,
+          Name: user.displayName
+        })
       }else{
         resultRef.update({
+          id: reConverEmail,
           photoURL: user.photoURL,
           UserId: user.id,
           Name: user.displayName
