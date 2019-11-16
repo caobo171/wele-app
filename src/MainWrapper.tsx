@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 
 import { connect } from "react-redux";
 import { firebase } from "@react-native-firebase/auth";
-import { setCurrentUser, updateUser } from "./redux/actions/userActions";
+import { setCurrentUser, updateUser, listUsers } from "./redux/actions/userActions";
 import useAsync from "react-use/lib/useAsync";
 import LoadingComponent from "./components/Loading/Loading";
 
@@ -24,7 +24,8 @@ interface Props {
   currentUser: UserType,
   setCurrentUser: (user: UserType | null) => void,
   updateUser: (user: UserType) => void,
-  getGlobalNotifications: (notifications: NotificationType[], me: UserType) => void
+  getGlobalNotifications: (notifications: NotificationType[], me: UserType) => void,
+  listUsers: ()=> void
 }
 
 
@@ -69,6 +70,8 @@ const MainAppScreen = (props: Props) => {
 
   useEffect(() => {
     if (props.currentUser) {
+
+      props.listUsers()
       presenceSystem.init(props.updateUser)
       messageSystem.init(props.getGlobalNotifications, props.currentUser)
     }
@@ -105,6 +108,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     setCurrentUser: (user: UserType) => dispatch(setCurrentUser(user)),
     updateUser: (user: UserType) => dispatch(updateUser(user)),
+    listUsers : () => dispatch(listUsers()),
     getGlobalNotifications: (notifications: NotificationType[], me: UserType) => dispatch(getGlobalNotifications(notifications, me))
   }
 }

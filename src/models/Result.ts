@@ -7,5 +7,5 @@ export default interface ResultType{
     Total?:number,
     UserId? : string,
     [podcast:number]: number,
-    Name: string
+    Name?: string
 }

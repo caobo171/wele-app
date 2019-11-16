@@ -77,12 +77,11 @@ const renderColor = (index: number)=>{
 
 
 interface Props {
-    result : ResultType,
+    total : number,
     index: number,
-    user: UserType | null
+    user: UserType 
 }
 const BillboardItem = (props: Props)=>{
-    console.log(props.result.id)
     return (
         <StyledUserSection>
         <StyledOrderIndicator color={renderColor(props.index)}>
@@ -92,8 +91,8 @@ const BillboardItem = (props: Props)=>{
             <UserAvatar user={props.user}/>
         </StyledAvatarWrapper>
         <StyledUserNameWrapper>
-            <StyledName>{props.result.Name}</StyledName>
-            <StyledSubDescription>{props.result.Total ? props.result.Total.toFixed(1).toString(): ''}{' scores'}</StyledSubDescription>
+            <StyledName>{props.user.displayName}</StyledName>
+            <StyledSubDescription>{props.total.toFixed(1).toString()}{' scores'}</StyledSubDescription>
         </StyledUserNameWrapper>
         <StyledActionButtonGroup>
             {/* <TouchableOpacity onPress={() => {

@@ -48,8 +48,6 @@ export const setCurrentUser = (user: UserType, isNew?: boolean | string) => asyn
 
     await updateNewUserToResult( isNew  , user)
 
-
-    console.log('isNew' , isNew)
     await dispatch({
       type: SET_CURRENT_USER,
       data: { ...user, weleEmail: isNew }
@@ -103,12 +101,25 @@ const getUsers = () => {
 
 const convertId = (key: string) => {
 
-  return key.toString().replace(new RegExp('<dot>', 'g'), '.')
+  return key.toString()
+    .replace(new RegExp('weledotwele', 'g'), '.')
     .replace(new RegExp('weleopenwele', 'g'), '[')
     .replace(new RegExp('weleclosewele', 'g'), ']')
     .replace(new RegExp('welesharpwele', 'g'), '#')
     .replace(new RegExp('weledollarwele', 'g'), '$')
+}
 
+
+const validateKey= (email: string) => {
+  return email
+  .replace('.', 'weledotwele')
+  .replace('[', 'weleopenwele')
+  .replace(']', 'weleclosewele')
+  .replace('#', 'welesharpwele')
+  .replace('$', 'weledollarwele')
+  .replace('.', 'weledotwele')
+  .replace('.', 'weledotwele')
+  .replace('.', 'weledotwele')
 }
 
 const getResultsAsync = () => {
@@ -116,8 +127,9 @@ const getResultsAsync = () => {
     let results = new Map<string, ResultType>()
     const ref = database().ref(`/results`).orderByChild('Total').limitToLast(51);
     ref.once('value', async (snapshots: any) => {
+
       await snapshots.forEach((snapshot: any) => {
-        const id = convertId(snapshot._snapshot.value.id)
+        const id = convertId(snapshot._snapshot.key)
         const result: ResultType = {
           ...snapshot._snapshot.value,
           id
@@ -145,15 +157,7 @@ export const listUsers = () => async (dispatch: any) => {
 export const updateNewUserToResult = (email: string, user: UserType) => {
 
   return new Promise((resolve, reject) => {
-    const reConverEmail = email.toString()
-    .replace('.', 'weledotwele')
-    .replace('[', 'weleopenwele')
-    .replace(']', 'weleclosewele')
-    .replace('#', 'welesharpwele')
-    .replace('$', 'weledollarwele')
-    .replace('.', 'weledotwele')
-    .replace('.', 'weledotwele')
-    .replace('.', 'weledotwele')
+    const reConverEmail = validateKey(email)
   
     const resultRef = database().ref(`/mappingresults/${reConverEmail}`)
 
@@ -185,7 +189,7 @@ const getMyResultAsync = (user: UserType)=>{
   if(user.weleEmail){
     return new Promise((resolve, reject) => {
       const email = user.weleEmail as string
-      const reConverEmail = email.toString().replace('.', '<dot>').replace('[', '<open>').replace(']', '<close>').replace('#', '<sharp>').replace('$', '<dollar>').replace('.', '<dot>').replace('.', '<dot>').replace('.', '<dot>')
+      const reConverEmail = validateKey(email)
     
 
       const resultRef = database().ref(`/results/${reConverEmail}`)
@@ -210,7 +214,10 @@ export const getMyResult = (user: UserType) => async (dispatch: any) =>{
 }
 
 export const getResults = () => async (dispatch: any) => {
+
+
   const results = await getResultsAsync()
+
   dispatch({
     type: LOAD_RESULTS,
     data: results

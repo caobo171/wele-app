@@ -55,7 +55,7 @@ const StyledBillboardContent = styled.ScrollView`
 
 const StyledHeaderImage = styled.Image<{width:number, height:number}>`
   width: ${props  => props.width}px;
-  height: ${props=> props.height}px;
+  height: ${props => props.height}px;
   margin: 16px;
 `
 
@@ -65,13 +65,33 @@ interface Props {
   navigation : NavigationScreenProp<any,any>
 }
 
+interface MergeType{
+  user: UserType,
+  total: number
+}
 
 const Billboard = (props : Props) => {
 
   const dispatch = useDispatch()
 
-  const results: Array<ResultType> = useSelector((state:any) => [...state.user.listResult.values()].reverse());
+  const results: Map<string,ResultType> = useSelector((state:any) => state.user.listResult);
 
+  const users : Array<UserType> = useSelector(((state:any) => [...state.user.listUsers.values()].reverse()))
+
+  //@ts-ignore
+  const mergeResult: MergeType[] = users.map( (user: UserType)=> {
+      if(user.weleEmail && results.get(user.weleEmail)){
+          return {
+            user,
+            //@ts-ignore
+            total: results.get(user.weleEmail) ? results.get(user.weleEmail).Total : 0 as number
+          }
+      }else{
+        return {
+          user,
+          total: 0 as number
+        }
+      }} )
   
   useEffectOnce(()=>{
     dispatch(getResults())
@@ -86,18 +106,14 @@ const Billboard = (props : Props) => {
         <StyledBillboardContent>
           <FlatList
 
-            data= {results.filter( e=> e.id !== 'weenjoylearningenglish@gmail.com' )}
-            renderItem = {({item , index})=> {            
-              const user : UserType | null = item.UserId ? {
-                displayName: item.Name,
-                photoURL: item.photoURL,
-                email : item.id,
-                id: item.UserId 
-              }: null
-              return <BillboardItem user={user} result={item} index= {index} />
+            data= {mergeResult.sort((a, b)=> a.total - b.total).filter( e=> e.user.weleEmail !== 'weenjoylearningenglish@gmail.com' )}
+            renderItem = {({item , index})=> {  
+                        
+              const user : UserType = item.user 
+              return <BillboardItem user={user} total={item.total} index= {index} />
             }}
 
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.user.id}
           />
         </StyledBillboardContent>
     </Wrapper>
