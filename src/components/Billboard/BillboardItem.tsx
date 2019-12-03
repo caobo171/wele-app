@@ -81,7 +81,7 @@ interface Props {
     index: number,
     user: UserType 
 }
-const BillboardItem = (props: Props)=>{
+const BillboardItem = React.memo((props: Props)=>{
     return (
         <StyledUserSection>
         <StyledOrderIndicator color={renderColor(props.index)}>
@@ -103,7 +103,7 @@ const BillboardItem = (props: Props)=>{
         </StyledActionButtonGroup>
       </StyledUserSection>
     )
-}
+}, (prev, next)=>(prev.total === next.total && prev.user.id === next.user.id))
 
 
 export default BillboardItem

@@ -43,6 +43,7 @@ const DescriptionSub = styled.Text`
 
 
 const Info = (props: PodcastType) => {
+
   return (
     <StyledInfoWrapper>
       <StyledPodcastImage

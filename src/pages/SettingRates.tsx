@@ -20,7 +20,7 @@ import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationScreenProp } from 'react-navigation';
 import storage from '../helpers/localStorage';
-import {  updateSpeed, updatePlayback } from '../hooks/playerHooks';
+import globalPlayer, {  updateSpeed, updatePlayback } from '../hooks/playerHooks';
 import { PlayerContext } from '../MainWrapper';
 
 
@@ -82,12 +82,11 @@ interface Props{
     navigation: NavigationScreenProp<any,any>
 }
 const SettingRates = (props: Props) => {
-
-    console.log('checkkkkkkkk 44444444')
   const {playback, speed } = useContext(PlayerContext)
 
   const handleSetSpeed = (speed: number)=>{
     storage.set('speed', speed.toString())
+    globalPlayer.fast(speed);
     updateSpeed(speed)
   }
 
@@ -116,7 +115,7 @@ const SettingRates = (props: Props) => {
         <StyledBillboardContent>
             <StyledValueColumn>
                 {
-                    [1, 1.2, 1.5, 1.8, 2.0, 2.3].map(number=>{
+                    [0.5, 0.7 ,  0.8, 1, 1.2, 1.5, 1.8, 2].map(number=>{
                         return <StyledNumberView  key={number} onPress={()=> handleSetSpeed(number)}>
                             { speed === number && <StyledAntDesignIcon name="check"/>}
                             <StyledNumberText check={speed === number}>

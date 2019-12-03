@@ -134,15 +134,10 @@ class GlobalPlayer {
         await TrackPlayer.seekTo(Math.max(0, position - playback))
     }
 
-    async fastForward(speed: number) {
-        const rate = await TrackPlayer.getRate()
-        TrackPlayer.setRate(rate * speed)
+    async fast(speed: number) {
+        TrackPlayer.setRate(speed)
     }
 
-    async fastBackward(speed: number) {
-        const rate = await TrackPlayer.getRate()
-        TrackPlayer.setRate(rate / speed)
-    }
 
     async seekTo(position: number) {
         await TrackPlayer.seekTo(position)

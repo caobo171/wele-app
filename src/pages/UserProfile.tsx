@@ -97,13 +97,22 @@ const StyledName = styled.Text`
 `
 
 const StyledLogOutButton = styled.TouchableOpacity`
-  width: 80%;
   margin: auto;
+  width: 100px;
+  height: 40px;
+  border-width: 4px;
+  border-radius: 20px;
+  padding: 4px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-color: #595959
 `
 
 const StyledText = styled.Text`
   font-weight: bold; 
   letter-spacing: 1px;
+  text-transform: uppercase;
 `
 
 const StyledLineCharWrapper = styled.View`
@@ -229,13 +238,13 @@ const UserProfile = (props: Props) => {
             yAxisLabel={""}
             yAxisSuffix={""}
             chartConfig={{
-              backgroundColor: "#e26a00",
-              backgroundGradientFrom: "#fb8c00",
-              backgroundGradientTo: "#ffa726",
+              backgroundColor: "#ffffff",
+              backgroundGradientFrom: "#ffffff",
+              backgroundGradientTo: "#ffffff",
               
               decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              color: (opacity = 0.7) => `rgba(0, 0, 0, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               style: {
                 borderRadius: 16,
                

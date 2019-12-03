@@ -70,7 +70,7 @@ interface MergeType{
   total: number
 }
 
-const Billboard = (props : Props) => {
+const Billboard = React.memo((props : Props) => {
 
   const dispatch = useDispatch()
 
@@ -106,7 +106,7 @@ const Billboard = (props : Props) => {
         <StyledBillboardContent>
           <FlatList
 
-            data= {mergeResult.sort((a, b)=> a.total - b.total).filter( e=> e.user.weleEmail !== 'weenjoylearningenglish@gmail.com' )}
+            data= {mergeResult.sort((a, b)=> b.total - a.total).filter( e=> e.user.weleEmail !== 'weenjoylearningenglish@gmail.com' )}
             renderItem = {({item , index})=> {  
                         
               const user : UserType = item.user 
@@ -118,6 +118,6 @@ const Billboard = (props : Props) => {
         </StyledBillboardContent>
     </Wrapper>
   );
-};
+})
 
 export default Billboard;

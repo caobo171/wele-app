@@ -4,7 +4,7 @@ export default interface PodcastType {
     name: string,
     narrator: {
         displayName: string,
-        id: string,
+        id?: string,
         imgUrl?: string
     },
     downloadLink: string,
@@ -12,5 +12,6 @@ export default interface PodcastType {
     description: string,
     id: string,
     fileSize: number,
-    uri?: string
+    uri?: string,
+    hint?: string
 }

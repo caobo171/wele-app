@@ -7,16 +7,18 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
 
 import ActionButtons from "./ActionButtons";
-import Header from "./Header";
 import Info from "./Info";
 import PlayerSlider from "./Slider";
 import { connect } from 'react-redux';
 import PodcastType from 'src/models/Podcast';
 import globalPlayer, { usePlayer, slidingPlayer } from '../../hooks/playerHooks';
+import { NavigationContext } from 'react-navigation';
+
+
 const Wrapper = styled.View`
   height: 100%;
   width: 100%;
@@ -49,91 +51,64 @@ const StyledDescriptionWrapper = styled.View`
 
 
 interface Props {
-    navigation: any,
     podcast: PodcastType
 }
 
 
 const Player = (props: Props) => {
 
-    const { state, position , playback ,speed ,} = usePlayer()
+    const nav = useContext(NavigationContext)
+    const { state, position, playback, speed, } = usePlayer()
 
-    const onSlideCompleHandle = async (value:number)=>{
+    const onSlideCompleHandle = async (value: number) => {
         await globalPlayer.seekTo(value)
         await slidingPlayer(false)
 
     }
 
-    const onSlideStartHandle = async ()=>{
+    const onSlideStartHandle = async () => {
         await slidingPlayer(true)
     }
 
-    const fastForwardHandle = async ()=> {
-        await globalPlayer.fastForward(speed)
+
+    const onPlayBackHandle = async () => {
+        await globalPlayer.playBack(playback)
     }
 
-    const onPlayBackHandle = async ()=>{
-       await globalPlayer.playBack(playback)
-    }
-
-    const fastBackwardHandle = async()=>{
-        await globalPlayer.fastBackward(speed)
-    }
-
-    const onPausePlayHandle = ()=>{
+    const onPausePlayHandle = () => {
         globalPlayer.playPause()
     }
 
     return (
-        <Wrapper>
-            <Header {...props} />
-            <StyledBodyWrapper>
-                <StyledContent>
-                    <Info
-                        {...props.podcast}
-                    />
-                    <StyledDescriptionWrapper>
-                        <PlayerSlider
-                            duration={position.duration}
-                            position={position.position}
-                            onSlidingComplete={onSlideCompleHandle}
-                            onSlidingStart={onSlideStartHandle}
-                        />
-                        <ActionButtons
-                            openSettings={() => {
-                                props.navigation.navigate('SettingRates')
-                            }}
-                            speed={speed ? Number(speed) : 1}
-                            playing ={globalPlayer.isPlaying(state)}
-                            playback={playback ? Number(playback) : 5 }
-                            fastForwardHandle={fastForwardHandle}
-                            fastBackwardHandle={fastBackwardHandle}
-                            onPlayBackHandle={onPlayBackHandle}
-                            onPausePlayHandle={onPausePlayHandle}
-                        />
-                    </StyledDescriptionWrapper>
 
-                </StyledContent>
-            </StyledBodyWrapper>
+        <StyledContent>
+            <Info
+                {...props.podcast}
+            />
+            <StyledDescriptionWrapper>
+                <PlayerSlider
+                    duration={position.duration}
+                    position={position.position}
+                    onSlidingComplete={onSlideCompleHandle}
+                    onSlidingStart={onSlideStartHandle}
+                />
+                <ActionButtons
+                    openSettings={() => {
+                        nav.navigate('SettingRates')
+                    }}
+                    speed={speed ? Number(speed) : 1}
+                    playing={globalPlayer.isPlaying(state)}
+                    playback={playback ? Number(playback) : 5}
+                    onPlayBackHandle={onPlayBackHandle}
+                    onPausePlayHandle={onPausePlayHandle}
+                />
+            </StyledDescriptionWrapper>
 
+        </StyledContent>
 
-        </Wrapper>
     );
 }
 
-Player.navigationOptions = {
-    header: null
-}
 
-
-
-
-function mapStateToProps(state: any) {
-    return {
-        podcast: state.podcast.currentPodcast
-    }
-}
-
-
-export default connect(mapStateToProps)(Player);
+export default Player
 

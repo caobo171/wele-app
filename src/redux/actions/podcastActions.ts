@@ -71,11 +71,16 @@ export const getPodcastList = () => async (dispatch: any) => {
   const querySnapshots = await firestore()
     .collection(PODCAST_COLLECTION)
     .get();
+  
+
+  console.log('check querySnapshot', querySnapshots)
 
   let data = new Map<string, PodcastType>();
   querySnapshots.forEach((doc: any) => {
     data = data.set(doc.id, { id: doc.id, ...doc.data() })
   });
+
+  console.log('check data', data)
 
   await dispatch({
     type: LOAD_PODCASTS,

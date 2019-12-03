@@ -3,7 +3,7 @@ import { View, TouchableOpacity , ProgressBarAndroid } from 'react-native'
 import styled from "styled-components/native"
 
 import EntypoIcon from "react-native-vector-icons/Entypo";
-import globalPlayer, { usePlayer } from '../../hooks/playerHooks';
+import globalPlayer from '../../hooks/playerHooks';
 import { PlayerContext } from '../../MainWrapper';
 
 const StyledView = styled.View`
@@ -80,7 +80,7 @@ const PlayerThumbnail = (props:any)=>{
                             <StyledAntEntypoIcon name={"chevron-thin-up"} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress = {navigateToPlayer}>
-                            <StyledText>{trimText(track ? track.title : '')}</StyledText>
+                            <StyledText>{trimText( track ? track.title : '')}</StyledText>
                         </TouchableOpacity>
                         <StyledPlayButton onPress ={()=>{
                             globalPlayer.playPause()

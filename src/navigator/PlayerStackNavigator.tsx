@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import Player from "./../components/Player/Player";
+import Player from "../components/Player";
 import SettingRates from "../pages/SettingRates";
 
 

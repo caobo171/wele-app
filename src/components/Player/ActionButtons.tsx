@@ -58,9 +58,7 @@ const StyledPlayBackButton = styled(TouchableOpacity)`
 
 interface Props {
   openSettings: ()=> void,
-  fastBackwardHandle: ()=> void,
   onPausePlayHandle: ()=> void,
-  fastForwardHandle: ()=> void,
   onPlayBackHandle: ()=> void,
   speed: number,
   playing: boolean, 
@@ -74,19 +72,19 @@ const ActionButtons = ( props: Props )  => {
         <StyledButtonText>{`${props.speed.toString()}x`}</StyledButtonText>
       </TouchableOpacity>
 
-      <StyledPlayButton onPress={props.fastBackwardHandle}>
+      {/* <StyledPlayButton onPress={props.fastBackwardHandle}>
         <StyledEntypoIcon sizeMode={"small"} name="controller-fast-backward" />
-      </StyledPlayButton>
+      </StyledPlayButton> */}
 
       <StyledPlayButton onPress={props.onPausePlayHandle}>
         <StyledEntypoIcon sizeMode = {'big'}
           name={props.playing ? "controller-paus" : "controller-play"}
         />
       </StyledPlayButton>
-
+{/* 
       <StyledPlayButton onPress={props.fastForwardHandle}>
         <StyledEntypoIcon sizeMode={"small"} name="controller-fast-forward" />
-      </StyledPlayButton>
+      </StyledPlayButton> */}
 
       <StyledPlayBackButton onPress={props.onPlayBackHandle}>
         <StyledFeatherIcon name="corner-up-left" />
