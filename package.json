@@ -7,6 +7,7 @@
     "run:android": "react-native run-android",
     "run:ios": "react-native run-ios --simulator=\"iPhone X\"",
     "build:apk": "cd android && ./gradlew assembleRelease",
+    "build:bundle": "cd android && ./gradlew bundleRelease",
     "test": "jest",
     "prepare": "patch-package"
   },
