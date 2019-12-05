@@ -17,7 +17,7 @@ export const TIMESTAMP_PROPERTY = "time"
 
 
 const setLastSeenNotification = (me: UserType)=>{
-    firebase.database().ref(`/users/${me.id}/lastSeen`).set(new Date())
+    firebase.database().ref(`/users/${me.id}/lastSeen`).set( (new Date()).getTime())
 }
 
 
