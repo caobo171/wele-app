@@ -7,9 +7,8 @@ import SplashScreen from 'react-native-splash-screen'
 import { Provider } from "react-redux";
 import NavigatorTree from "./MainWrapper";
 
-import RNFS from "react-native-fs"
 
-
+console.disableYellowBox;
 const App = () => {
 
   const requestPermission = async ()=>{

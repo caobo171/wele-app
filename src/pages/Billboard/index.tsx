@@ -58,9 +58,6 @@ const Billboard = React.memo(() => {
   const state = useAsync(async () => {
     return await getResults()
   })
-  useEffectOnce(() => {
-    getResults()
-  })
 
   return (
     <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0, 0.3, 0.5]}>
@@ -89,5 +86,12 @@ const Billboard = React.memo(() => {
     </Wrapper>
   );
 })
+
+
+//@ts-ignore
+Billboard.navigationOptions = {
+  header: null
+};
+
 
 export default Billboard;

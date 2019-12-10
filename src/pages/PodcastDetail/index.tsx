@@ -62,8 +62,8 @@ const StyledUserWrapper = styled.View`
 
 
 const StyledPodcastImage = styled.Image`
-  height: 140;
-  width: 68%;
+  height: 176;
+  width: 100%;
   border-radius: 10;
   margin: 10px 0px 20px 0px;
 `;
@@ -136,7 +136,7 @@ const StyledPlayButton = styled.View`
 
 const StyledDownloadButton = styled.View`
     background-color: #e0d051;
-    width: 120px;
+    width: 160px;
     height: 36px;
     align-items: center;
     justify-content: center;
@@ -150,6 +150,10 @@ const StyledText = styled.Text`
     font-weight: bold;
     letter-spacing: 3px;
     color:  #6e6a4b;
+    text-align: center;
+    text-transform: uppercase;
+
+    padding: 8px;
 `
 
 const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_content/'
@@ -177,6 +181,7 @@ const PodcastDetail = () => {
       }
 
     } catch (err) {
+      console.log('check errr' , err)
       Alert.alert('Fail to open File ', err.toString())
     }
 

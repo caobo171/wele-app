@@ -5,6 +5,8 @@ import PodcastType from './types'
 export const getPodcast = createAction('podcast/GET_PODCAST',
 (id:string)=> id)<string>()
 
+export const updatePodcast = createAction('podcast/UPDATE_PODCAST',
+(podcast:PodcastType)=> podcast)<PodcastType>()
 
 export const getPodcastThisWeek =  createAction('podcast/GET_PODCAST_THIS_WEEK',
 (podcasts: Map<string,PodcastType>)=> podcasts )<Map<string,PodcastType>>()

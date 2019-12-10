@@ -19,6 +19,13 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
     ...state,
     currentPodcast: state.listPodcast.get(action.payload)
 }))
+.handleAction(actions.updatePodcast,(state,action)=>{
+    const listPodcast = state.listPodcast.set(action.payload.id,action.payload)
+    return {
+        ...state,
+        listPodcast
+    }
+})
 .handleAction(actions.updateRecentPodcast,(state, action)=>{
     const newPodcast = action.payload
     let recentPodcasts = state.recentPodcasts.set(newPodcast.id, newPodcast)
@@ -37,5 +44,5 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
 .handleAction(actions.getPodcastThisWeek,(state,action)=>({
     ...state,
     podcastThisWeek: action.payload,
-    listPodcast: new Map([...state.listPodcast, ...action.payload])
+    listPodcast: new Map([ ...action.payload, ...state.listPodcast])
 }))

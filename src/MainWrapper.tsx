@@ -27,18 +27,19 @@ const MainAppScreen = () => {
     const rawUser = await firebase.auth().currentUser;
 
     if (rawUser) {
-      console.log('check rawUser', rawUser)
       const user = {
         displayName: rawUser.displayName as string,
         email: rawUser.email as string,
         photoURL: rawUser.photoURL as string,
         id: rawUser.uid
       }
+
       return await setCurrentUser(user)
 
     }
     return await setCurrentUser(null)
   }, [])
+
 
   useEffectOnce(() => {
     globalPlayer.init()

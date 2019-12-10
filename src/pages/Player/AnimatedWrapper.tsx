@@ -18,10 +18,7 @@ interface Props {
 }
 
 const AnimatedWrapper = (props: Props) => {
-  //@ts-ignore
-  window.hint = props.podcast
-
-  console.log('check ', props.podcast.hint , props.podcast.hint.replace(/\s/g, '') , props.podcast.hint.replace(/\s/g, '')==='')
+  
   return (
     <React.Fragment>
       {

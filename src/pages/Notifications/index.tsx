@@ -56,6 +56,8 @@ const StyledPageTitleText = styled.Text`
 const Notifications = () => {
     
   const notifications = useNotifications()
+
+  console.log('check notifications', notifications)
   const nav = useContext(NavigationContext)
   return (
     <Wrapper>

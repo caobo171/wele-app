@@ -2,7 +2,7 @@ import { firebase  } from '@react-native-firebase/messaging'
 import { NOTIFICATION_COLLECTION } from '@store/notification/functions';
 import { UserType } from '@/store/user/types';
 import NotificationType from '@/store/notification/types';
-import { getGlobalNotification } from '@/store/notification/actions';
+import { getGlobalNotifications } from '@/store/notification/functions';
 import storage from './localStorage';
 
 
@@ -13,6 +13,7 @@ class MessageSystem {
             includeMetadataChanges: true
         }, async (doc: any )=>{
 
+            console.log('aaaaaaaaa' , doc)
             const notifications: NotificationType[] = doc.docs.map((e:any)=> {
                 return {
                     id: e.id,
@@ -21,12 +22,14 @@ class MessageSystem {
                 }
             } )
 
+            console.log('aaaaaaaaa' , notifications)
+
             // save noti in local 
             await storage.setNotifications(notifications)
             const lastSeen = me.lastSeen
 
             // update noti in redux store
-            getGlobalNotification(notifications , lastSeen)
+            getGlobalNotifications(notifications , lastSeen)
         })
  
     }

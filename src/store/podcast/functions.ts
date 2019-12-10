@@ -35,6 +35,11 @@ export const getPodcastThisWeek = async (storex= store)=>{
     return await storex.dispatch(actions.getPodcastThisWeek(data))
 }
 
+export const updatePodcast = (podcast: PodcastType,  storex=store)=>{
+  console.log('check update Podcast', podcast)
+  return storex.dispatch(actions.updatePodcast(podcast))
+}
+
 
 export const getRecentPodcast =  async (storex = store)=>{
     const recentPodcasts = await storage.getRecentPodcasts()

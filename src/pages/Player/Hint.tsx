@@ -18,12 +18,16 @@ interface Props{
     hint: string | undefined 
 }
 
+const validdateHint = (hint: string)=>{
+    return hint.replace(/&#39;/g,`'`).replace(/&quot;/g,`"`)
+}
+
 const Hint = (props: Props) => {
 
     console.log('check ', props.hint)
 
     return (<StyldView>
-        <StyledText>{props.hint}</StyledText>
+        <StyledText>{validdateHint(props.hint)}</StyledText>
     </StyldView>)
 }
 

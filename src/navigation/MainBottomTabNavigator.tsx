@@ -6,11 +6,11 @@ import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 //@ts-ignore
 import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
-import Billboard from "../pages/Billboard";
 import PodcastList from "../pages/PodcastList";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { useUnreadNotificationNumber } from "@/store/notification/hooks";
+import BillboardNavigator from "./BillboardNavigator";
 
 
 const StyledBadge = styled.Text`
@@ -55,8 +55,8 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 )
             }
         },
-        BillBoard: {
-            screen: Billboard,
+        BillboardNavigator: {
+            screen: BillboardNavigator,
             navigationOptions: {
                 tabBarLabel: "BillBoard",
                 tabBarIcon: ({ tintColor }) => (
@@ -64,7 +64,7 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 )
             }
         },
-        Podcasts: {
+        PodcastList: {
             screen: PodcastList,
             navigationOptions: {
                 tabBarLabel: "Podcasts",

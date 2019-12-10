@@ -9,10 +9,12 @@ const initialState: State = {
 }
 
 export default createReducer<State, ActionType<typeof actions>>(initialState)
-    .handleAction(actions.getGlobalNotification, (state, action) => {
+    .handleAction(actions.getGlobalNotifications, (state, action) => {
         const notifications: NotificationType[] = action.payload.notifications;
         let defaultDate = new Date()
         defaultDate.setDate(defaultDate.getDate() - 7)
+
+        console.log('check notifications in Reducer', notifications)
         const lastSeen: number = action.payload.lastSeen ? action.payload.lastSeen : defaultDate.getTime()
         return {
             ...state,

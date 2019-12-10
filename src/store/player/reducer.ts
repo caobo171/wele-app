@@ -33,10 +33,17 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
     ...state,
     speed: action.payload
 }))
-.handleAction(actions.updatePosition,(state, action)=>({
-    ...state,
-    position: action.payload
-}))
+.handleAction(actions.updatePosition,(state, action)=>{
+
+    if(!state.sliding){
+        return {
+            ...state,
+            position: action.payload
+        }
+    }else{
+        return state
+    }
+})
 .handleAction(actions.updateSliding, (state,action)=>({
     ...state,
     sliding: action.payload

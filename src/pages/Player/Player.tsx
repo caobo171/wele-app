@@ -16,7 +16,7 @@ import PlayerSlider from "./Slider";
 import globalPlayer from '../../service/playerService';
 import { NavigationContext } from 'react-navigation';
 import PodcastType from '@/store/podcast/types';
-import { updateSliding } from '@/store/player/functions';
+import { updateSliding, updatePosition } from '@/store/player/functions';
 import { usePlayer } from '@/store/player/hooks';
 
 
@@ -50,6 +50,8 @@ const Player = (props: Props) => {
     const onSlideCompleHandle = async (value: number) => {
         await globalPlayer.seekTo(value)
         await updateSliding(false)
+        await updatePosition(position.duration,value)
+        
 
     }
 

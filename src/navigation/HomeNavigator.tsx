@@ -1,14 +1,12 @@
 
 import React from 'react'
-import UserProfile from '../pages/UserProfile'
-import PodcastDetail from '../pages/PodcastDetail'
-import Home from "../pages/Home"
+import UserProfile from '@pages/UserProfile'
+import PodcastDetail from '@pages/PodcastDetail'
+import Home from "@pages/Home"
 
 import PlayerThumbnail from "@pages/Player/PlayerThumbnail";
-
-
 import { createStackNavigator } from 'react-navigation-stack';
-import { NavigationScreenProp } from 'react-navigation';
+import AnotherProfile from '@/pages/UserProfile/AnotherUserProfile';
 
 
 const InjectedHome = ()=>{
@@ -37,7 +35,6 @@ const HomeNavigator = createStackNavigator({
     },
     UserProfile: {
       screen: UserProfile,
-
     },
     PodcastDetail: {
       screen : InjectedPodcastDetail, 
