@@ -11,7 +11,7 @@ export const TIMESTAMP_PROPERTY = "time"
 export const getGlobalNotifications = async (notifications: NotificationType[], lastSeen:number, storex= store)=>{
     await storage.setNotifications(notifications)
 
-    return storex.dispatch(actions.getGlobalNotification(notifications , lastSeen))
+    return storex.dispatch(actions.getGlobalNotifications(notifications , lastSeen))
 }
 
 

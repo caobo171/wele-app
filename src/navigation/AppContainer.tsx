@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import PlayerNavigator from "./PlayerStackNavigator";
 import MainBottomTabNavigator from "./MainBottomTabNavigator"
 import NotificationNavigator from "./NotificationNavigator";
+import AnotherProfile from "@/pages/UserProfile/AnotherUserProfile";
 
 
 const RootNavigator = createStackNavigator(
@@ -25,11 +26,17 @@ const RootNavigator = createStackNavigator(
             navigationOptions: {
                 header: null
             }
-        }
+        },
+        // AnotherProfile:{
+        //     screen: AnotherProfile
+        // }
             
     },
     {
-        initialRouteName: "BottomTabNavigator"
+        initialRouteName: "BottomTabNavigator",
+        navigationOptions:{
+            header:  null
+        }
     }
 );
 

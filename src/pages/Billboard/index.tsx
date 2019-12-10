@@ -87,4 +87,11 @@ const Billboard = React.memo(() => {
   );
 })
 
+
+//@ts-ignore
+Billboard.navigationOptions = {
+  header: null
+};
+
+
 export default Billboard;

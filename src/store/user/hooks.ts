@@ -37,13 +37,13 @@ export const useCurrentUser = () => {
 
 const transformResult = (result: ResultType | undefined) => {
 
+  
+
+  if (!result) return { totalArray: [0, 0, 0, 0, 0, 0, 0, 0, 0], labelArray: ['', '', '', '', '', '', '', '', ''] }
   const lastUpdateTime = new Date(result.Time)
 
   const missPodcastNumber = ((new Date()).getTime() - lastUpdateTime.getTime())/ (1000 * 60* 60 * 24 * 7 )
   // milliseconds * seconds * minutes * hours * days 
-
-  if (!result) return { totalArray: [0, 0, 0, 0, 0, 0, 0, 0, 0], labelArray: ['', '', '', '', '', '', '', '', ''] }
-
   let rResult = { ...result }
 
   const keys = Object.keys(rResult)

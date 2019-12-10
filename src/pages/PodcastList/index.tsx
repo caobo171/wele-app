@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import  useAsync from "react-use/lib/useAsync"; 
 import {FlatList } from 'react-native';
 
@@ -22,6 +22,7 @@ import LoadingComponent from '@components/Loading/Loading';
 import PodcastType from '@/store/podcast/types';
 import { getAllPodcasts } from '@store/podcast/functions';
 import { usePodcastList } from '@/store/podcast/hooks';
+import { NavigationContext } from 'react-navigation';
 
 const Wrapper = styled.ScrollView`
   height: 100%;
@@ -83,9 +84,16 @@ const TYPING_TIMEOUT= 1000;
 
 const PodcastList = () => {
 
+  const nav = useContext(NavigationContext)
+  const searchText = nav.getParam('search', '')
+
+  useEffect(()=>{
+    setSearchString(searchText)
+  },[searchText])
+
   const [startSearch,setStartSearch  ] = useState(false)
 
-  const [searchString, setSearchString ] = useState('')
+  const [searchString, setSearchString ] = useState(searchText)
 
   const state = useAsync(async ()=>{
     await getAllPodcasts()

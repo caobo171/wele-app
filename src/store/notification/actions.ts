@@ -1,7 +1,7 @@
 import { action , createAction } from 'typesafe-actions'
 import NotificationType from './types'
 
-export const getGlobalNotification = createAction('notifications/GET_GLOBAL_NOTIFICATIONS',
+export const getGlobalNotifications = createAction('notifications/GET_GLOBAL_NOTIFICATIONS',
 (notifications: NotificationType[] , lastSeen: number)=> ({notifications, lastSeen}) )<{
     notifications:NotificationType[],
     lastSeen: number}>()

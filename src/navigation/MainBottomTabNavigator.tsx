@@ -55,7 +55,7 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 )
             }
         },
-        BillBoard: {
+        BillboardNavigator: {
             screen: BillboardNavigator,
             navigationOptions: {
                 tabBarLabel: "BillBoard",
@@ -64,7 +64,7 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 )
             }
         },
-        Podcasts: {
+        PodcastList: {
             screen: PodcastList,
             navigationOptions: {
                 tabBarLabel: "Podcasts",

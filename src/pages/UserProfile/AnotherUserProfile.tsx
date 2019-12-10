@@ -103,7 +103,7 @@ const AnotherProfile = (props: Props) => {
         <Wrapper>
             <HeaderWrapper>
                 <TouchableOpacity onPress={() => {
-                    nav.navigate('BillBoard')
+                    nav.navigate('Billboard')
                 }}>
                     <View>
                         <StyledAntDesignIcon name={'arrowleft'} />

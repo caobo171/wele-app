@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 import NotificationType from '@store/notification/types'
+import { NavigationContext } from 'react-navigation';
 
 
 
@@ -49,59 +50,67 @@ const StyledContentWrapper = styled.View`
 
 
 interface Props {
-    notification: NotificationType,
+  notification: NotificationType,
 }
 
 
 const TrimText = (text: string) => {
-    const MAX_LENGTH = 80 
-    if(text.length <= MAX_LENGTH ) return text
-    return text.substr(0, Math.min(text.length, 80)) + "...";
+  const MAX_LENGTH = 80
+  if (text.length <= MAX_LENGTH) return text
+  return text.substr(0, Math.min(text.length, 80)) + "...";
 };
 
 
 function timeSince(date: Date) {
 
-    var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-  
-    var interval = Math.floor(seconds / 31536000);
-  
-    if (interval > 1) {
-      return interval + " years";
-    }
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) {
-      return interval + " months";
-    }
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
-      return interval + " days";
-    }
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) {
-      return interval + " hours";
-    }
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) {
-      return interval + " minutes";
-    }
-    return Math.floor(seconds) + " seconds";
+  var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+
+  var interval = Math.floor(seconds / 31536000);
+
+  if (interval > 1) {
+    return interval + " years";
   }
+  interval = Math.floor(seconds / 2592000);
+  if (interval > 1) {
+    return interval + " months";
+  }
+  interval = Math.floor(seconds / 86400);
+  if (interval > 1) {
+    return interval + " days";
+  }
+  interval = Math.floor(seconds / 3600);
+  if (interval > 1) {
+    return interval + " hours";
+  }
+  interval = Math.floor(seconds / 60);
+  if (interval > 1) {
+    return interval + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
+}
 
 export const NotificationItem = (props: Props) => {
-    return (
+  const nav = useContext(NavigationContext)
+  const onClickNotificationHandler = () => {
+    if (props.notification.type === 'weekly_podcast') {
+      nav.navigate('PodcastList', {
+        search: props.notification.message.match(/\d+/g)[0]
+      })
+    }
+  }
+  return (
 
-        <StyledWrapper>
-            <StyledImageWrapper>
-                <StyledImage source={{ uri: props.notification.imgUrl }} />
-            </StyledImageWrapper>
-            <StyledContentWrapper>
-                <StyledText>{props.notification.title && <StyledTitle>[{props.notification.title.toUpperCase()}]</StyledTitle>} {TrimText(props.notification.message)}</StyledText>
-                <StyledTimeAgo>{timeSince(props.notification.time)} ago</StyledTimeAgo>
-            </StyledContentWrapper>
+    <StyledWrapper onPress={onClickNotificationHandler}>
+      <StyledImageWrapper>
+        <StyledImage source={{ uri: props.notification.imgUrl }} />
+      </StyledImageWrapper>
+      <StyledContentWrapper>
+        <StyledText>{props.notification.title && <StyledTitle>[{props.notification.title.toUpperCase()}]</StyledTitle>} {TrimText(props.notification.message)}</StyledText>
+        <StyledTimeAgo>{timeSince(props.notification.time)} ago</StyledTimeAgo>
+      </StyledContentWrapper>
 
-        </StyledWrapper>
-    )
+    </StyledWrapper>
+  )
 }
 
 export default NotificationItem
