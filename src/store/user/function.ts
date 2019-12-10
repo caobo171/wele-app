@@ -138,7 +138,7 @@ const convertId = (key: string) => {
 const getResultsAsync = (): Promise<Map<string, ResultType>> => {
     return new Promise((resolve, reject) => {
         let results = new Map<string, ResultType>()
-        const ref = database().ref(`/${RESULTS_COLLECTION}`).orderByChild(TOTAL_PROPERTY).limitToLast(51);
+        const ref = database().ref(`/${RESULTS_COLLECTION}`).orderByChild(TOTAL_PROPERTY)
         ref.once('value', async (snapshots: any) => {
             await snapshots.forEach((snapshot: any) => {
                 const id = convertId(snapshot._snapshot.key)
@@ -155,6 +155,10 @@ const getResultsAsync = (): Promise<Map<string, ResultType>> => {
 
 export const getResults = async (storex = store) => {
     const results = await getResultsAsync()
-    return storex.dispatch(actions.getResults(results))
+
+    if(results){
+        return await storex.dispatch(actions.getResults(results))
+    }
+    
 }
 

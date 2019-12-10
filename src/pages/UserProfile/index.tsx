@@ -12,15 +12,16 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
-import {NavigationContext } from 'react-navigation';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
-
+import { NavigationContext } from 'react-navigation';
 
 import {
   LineChart,
 } from "react-native-chart-kit";
 import { useCurrentUser, useMyResult } from '@/store/user/hooks';
 import { getMyresult, logOut } from '@/store/user/function';
+import useAsync from 'react-use/lib/useAsync';
+import LoadingComponent from '@/components/Loading/Loading';
+import ProfileChart from './Chart';
 
 
 
@@ -119,12 +120,12 @@ const UserProfile = () => {
 
   const nav = useContext(NavigationContext)
 
-
-  useEffectOnce(() => {
+  const state = useAsync(async () => {
     if (currentUser) {
       getMyresult(currentUser)
     }
-  })
+  }, [currentUser])
+
 
   const logOutHandle = async () => {
     await logOut()
@@ -159,46 +160,11 @@ const UserProfile = () => {
         </StyledSection>
 
         <StyledLineCharWrapper>
-          <LineChart
-            
-            data={{
-              labels : myResults.labelArray,
-              datasets: [
-                {
-                  data: myResults.totalArray
-                }
-              ]
-            }}
-            width={Dimensions.get("window").width  } // from react-native
-            height={220}
-            yAxisLabel={""}
-            yAxisSuffix={""}
-            chartConfig={{
-              backgroundColor: "#ffffff",
-              backgroundGradientFrom: "#ffffff",
-              backgroundGradientTo: "#ffffff",
-              
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 0.7) => `rgba(0, 0, 0, ${opacity})`,
-              //@ts-ignore
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16,
-               
-              },
-              propsForDots: {
-                r: "2",
-                strokeWidth: "1",
-                stroke: "#ffa726"
-              }
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-              margin: 'auto'
-            }}
-          />
+          {
+            state.loading ? <LoadingComponent /> :
+              <ProfileChart results={myResults}/>
+            }
+
         </StyledLineCharWrapper>
 
 

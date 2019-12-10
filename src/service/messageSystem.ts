@@ -13,6 +13,7 @@ class MessageSystem {
             includeMetadataChanges: true
         }, async (doc: any )=>{
 
+            console.log('aaaaaaaaa' , doc)
             const notifications: NotificationType[] = doc.docs.map((e:any)=> {
                 return {
                     id: e.id,
@@ -20,6 +21,8 @@ class MessageSystem {
                     time: e._data.time.toDate()
                 }
             } )
+
+            console.log('aaaaaaaaa' , notifications)
 
             // save noti in local 
             await storage.setNotifications(notifications)

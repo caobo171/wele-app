@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import styled from 'styled-components/native';
 import { UserType } from '@store/user/types';
 import UserAvatar from '../../components/User/UserAvatar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NavigationContext } from 'react-navigation';
 const StyledUserSection = styled.View`
   height: 58px;
   width: 100%;
@@ -58,6 +60,10 @@ const StyledActionButtonGroup = styled.View`
   flex: 2;
 `;
 
+const StyledTouchableOpacity = styled.TouchableOpacity`
+  height: 100%;
+`
+
 const renderColor = (index: number) => {
   switch (index) {
     case 0:
@@ -78,6 +84,8 @@ interface Props {
   user: UserType
 }
 const BillboardItem = React.memo((props: Props) => {
+
+  const nav = useContext(NavigationContext)
   return (
     <StyledUserSection>
       <StyledOrderIndicator color={renderColor(props.index)}>
@@ -91,7 +99,15 @@ const BillboardItem = React.memo((props: Props) => {
         <StyledSubDescription>{props.total.toFixed(1).toString()}{' scores'}</StyledSubDescription>
       </StyledUserNameWrapper>
       <StyledActionButtonGroup>
-        <StyledEntypoIcon name={'dots-three-vertical'} />
+        <StyledTouchableOpacity onPress ={()=>{
+          console.log('aaaaaaaaa click me ')
+            nav.navigate('AnotherProfile', {
+              user: props.user
+            })
+        }}>
+          <StyledEntypoIcon name={'dots-three-vertical'} />
+        </StyledTouchableOpacity>
+
       </StyledActionButtonGroup>
     </StyledUserSection>
   )

@@ -9,18 +9,16 @@
 
 import React, { useState, useCallback } from 'react'
 import { TouchableOpacity, Alert } from "react-native";
-import { AccessToken, LoginManager } from "react-native-fbsdk";
-import { firebase } from "@react-native-firebase/auth";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
-import { connect } from "react-redux";
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
-import { UserType } from "@store/user/types"
 
 
 import * as Animatable from 'react-native-animatable';
 import { loginWithFacebook, validateEmail } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
+import LoadingComponent from '@/components/Loading/Loading';
 const Wrapper = styled.View`
   margin-top: 20px;
   height: 100%;
@@ -91,10 +89,9 @@ const Login = () => {
   const [user, setUser] = useState<any>({})
 
   const [firstTime, setFirstTime] = useState(false)
-
   const currentUser = useCurrentUser()
 
-  const onLoginFacebookHandle = async () => {
+  const [loginState, fetchLogin] = useAsyncFn(async () => {
     // Login with permissions
     const user = await loginWithFacebook()
     //@ts-ignore
@@ -102,14 +99,20 @@ const Login = () => {
       setFirstTime(true)
       setUser(user)
     } else {
-      
-      setCurrentUser({
+
+      return await setCurrentUser({
         id: user.user.uid,
         displayName: user.user.displayName ? user.user.displayName : '',
         email: user.user.email ? user.user.email : '',
         photoURL: user.user.photoURL ? user.user.photoURL : ''
       }, false)
+
+
     }
+  })
+
+  const onLoginFacebookHandle = async () => {
+    fetchLogin()
   }
 
   const onTextChangeHandle = useCallback((value: string) => {
@@ -152,7 +155,7 @@ const Login = () => {
     <Wrapper>
       <StyledLogoImage
         resizeMode={"contain"}
-        source={{ uri: 'https://external.fhan5-7.fna.fbcdn.net/safe_image.php?d=AQDMvQfI0WkUxIgV&w=540&h=282&url=https%3A%2F%2Fstatic.wixstatic.com%2Fmedia%2F29b9a8_05dd638ec28a4b26826c557f0bc92d7f%257Emv2.jpg&cfs=1&upscale=1&fallback=news_d_placeholder_publisher&_nc_hash=AQATC3dBf1z-fyYw' }}
+        source={require('@/assets/branding.jpg')}
       />
 
       {condition && (
@@ -173,33 +176,33 @@ const Login = () => {
       )}
 
       <StyledButtonWrapper>
-        {
-          condition && (
-            <React.Fragment>
-              <StyledTextInput value={confirmEmail} onChangeText={onConfirmEmailChangeHandle} placeholder={"WELE email ..."} />
 
-              <StyledTextInput value={email} onChangeText={onTextChangeHandle} placeholder={"Confirm your email ..."} />
-              <StyledButton onPress={onContinueHandle}>
-                <StyledText>{"Continue >>"}</StyledText>
-              </StyledButton>
-            </React.Fragment>
-          )
-        }
+        {loginState.loading ? <LoadingComponent /> :
+          <React.Fragment>
+            {
+              condition && (
+                <React.Fragment>
+                  <StyledTextInput value={confirmEmail} onChangeText={onConfirmEmailChangeHandle} placeholder={"WELE email ..."} />
 
-        {
-          !condition && (
-            <Animatable.View
-              animation="bounce" easing="ease-out" iterationCount={Infinity}
-            >
-              <StyledButton onPress={onLoginFacebookHandle}>
-                <StyledFeatherIcon name={'facebook-f'} />
-                <StyledText>Login With Facebook</StyledText>
-              </StyledButton>
-            </Animatable.View>
+                  <StyledTextInput value={email} onChangeText={onTextChangeHandle} placeholder={"Confirm your email ..."} />
+                  <StyledButton onPress={onContinueHandle}>
+                    <StyledText>{"Continue >>"}</StyledText>
+                  </StyledButton>
+                </React.Fragment>
+              )
+            }
 
-          )
-        }
+            {!condition && (
+                <Animatable.View
+                  animation="bounce" easing="ease-out" iterationCount={Infinity}>
+                  <StyledButton onPress={onLoginFacebookHandle}>
+                    <StyledFeatherIcon name={'facebook-f'} />
+                    <StyledText>Login With Facebook</StyledText>
+                  </StyledButton>
+                </Animatable.View>
 
+              )}
+          </React.Fragment>}
       </StyledButtonWrapper>
 
     </Wrapper>
