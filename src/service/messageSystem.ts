@@ -1,16 +1,17 @@
 import { firebase  } from '@react-native-firebase/messaging'
-import { Alert } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
-import { NOTIFICATION_COLLECTION } from '../redux/actions/notificationAction';
-import NotificationType from 'src/models/Notification';
-import UserType from 'src/models/User';
+import { NOTIFICATION_COLLECTION } from '@store/notification/functions';
+import { UserType } from '@/store/user/types';
+import NotificationType from '@/store/notification/types';
+import { getGlobalNotification } from '@/store/notification/actions';
+import storage from './localStorage';
+
 
 class MessageSystem {
-    async init(getGlobalNotification: any , me: UserType){
+    async init(me: UserType){
         console.log('check init successfully !!!! ')
         const unsubscribe = await firebase.firestore().collection(NOTIFICATION_COLLECTION).onSnapshot({
             includeMetadataChanges: true
-        }, (doc: any )=>{
+        }, async (doc: any )=>{
 
             const notifications: NotificationType[] = doc.docs.map((e:any)=> {
                 return {
@@ -19,30 +20,14 @@ class MessageSystem {
                     time: e._data.time.toDate()
                 }
             } )
-            getGlobalNotification && getGlobalNotification(notifications,me)
+
+            // save noti in local 
+            await storage.setNotifications(notifications)
+            const lastSeen = me.lastSeen
+
+            // update noti in redux store
+            getGlobalNotification(notifications , lastSeen)
         })
-
-        // let unsubscribe= null;
-        // const enabled = await firebase.messaging().hasPermission();
-        // console.log('check enabled', enabled)
-        // if(enabled){
-        //     await firebase.messaging().subscribeToTopic('test');
-        //     unsubscribe = firebase.messaging().onMessage((message: any)=>{
-        //         console.log('check message', message)
-        //     })
-        // }else{
-        //     try {
-        //         await firebase.messaging().requestPermission();
-        //         unsubscribe = firebase.messaging().onMessage((message: any)=>{
-        //             console.log('check message', message)
-        //         })
-        //     }catch(err){
-        //         Alert.alert('FAIL TO REQUEST PERMISSION !')
-        //     }
-        // }
-
-        // console.log('check aaa', await AsyncStorage.getItem('messages'))
-
  
     }
 }

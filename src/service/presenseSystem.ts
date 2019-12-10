@@ -1,11 +1,12 @@
 import auth , {firebase} from "@react-native-firebase/auth";
-import UserType from "src/models/User";
+import { UserType } from "@/store/user/types";
+import { updateUser } from "@/store/user/function";
 
 
 class PresenceSystem {
 
 
-    async init(updateUserFunction: any){
+    async init(){
         const user:any = await firebase.auth().currentUser
 
         console.log('check current user', user._user.uid)
@@ -23,7 +24,7 @@ class PresenceSystem {
                     ...data._snapshot.value
                 }
 
-                updateUserFunction(user)
+                updateUser(user)
 
 
             })

@@ -1,13 +1,8 @@
 import React from 'react'
 import styled from 'styled-components/native';
-import UserType from 'src/models/User';
+import { UserType } from '@store/user/types';
 import { useSelector } from 'react-redux';
 
-interface Props {
-
-  user: UserType | null 
-
-}
 
 
 const StyledAvatar = styled.Image`
@@ -23,7 +18,7 @@ const StyledWrapper = styled.View`
   position: relative;
 `
 
-const StyledDot = styled.View<{isOnline: boolean}>`
+const StyledDot = styled.View<{ isOnline: boolean }>`
   position: absolute;
 
   border: 2px solid #fff;
@@ -35,25 +30,28 @@ const StyledDot = styled.View<{isOnline: boolean}>`
   background: #4CD964;
 `
 
+interface Props {
+  user: UserType | null
+}
+
+
 const DEFAUTL_IMAGE = "https://image.flaticon.com/icons/png/512/17/17004.png"
 const UserAvatar = (props: Props) => {
 
   //@ts-ignore
-  const user = useSelector((state:any) => (state.user.listUsers.get(props.user? props.user.id : '-1') ))
+  const user = useSelector((state: any) => (state.user.listUsers.get(props.user ? props.user.id : '-1')))
 
 
   return (
     <StyledWrapper>
-    <StyledAvatar
-      resizeMode={'contain'}
-      source={{
-        uri: props.user ?  props.user.photoURL : DEFAUTL_IMAGE
-      }}
-    />
-    {user && user.online && <StyledDot isOnline={user.online ? user.online: false}/> } 
+      <StyledAvatar
+        resizeMode={'contain'}
+        source={{
+          uri: props.user ? props.user.photoURL : DEFAUTL_IMAGE
+        }}
+      />
+      {user && user.online && <StyledDot isOnline={user.online ? user.online : false} />}
     </StyledWrapper>
-
-
   )
 }
 
