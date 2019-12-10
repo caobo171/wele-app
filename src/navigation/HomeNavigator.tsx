@@ -35,10 +35,6 @@ const HomeNavigator = createStackNavigator({
     },
     UserProfile: {
       screen: UserProfile,
-
-    },
-    AnotherProfile:{
-      screen: AnotherProfile
     },
     PodcastDetail: {
       screen : InjectedPodcastDetail, 
