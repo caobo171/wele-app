@@ -3,7 +3,8 @@ import styled from "styled-components/native";
 
 const StyledLoading = styled.ActivityIndicator`
   color: #0000ff;
-  font-size: 40px;
+  font-size: 80px;
+  font-weight: 800;
 `;
 
 const StyledWrapper = styled.View`
@@ -15,7 +16,7 @@ const StyledWrapper = styled.View`
 const LoadingComponent = () => {
   return (
     <StyledWrapper>
-      <StyledLoading />
+      <StyledLoading  size={'large'}/>
     </StyledWrapper>
   );
 };

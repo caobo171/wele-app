@@ -181,6 +181,7 @@ const PodcastDetail = () => {
       }
 
     } catch (err) {
+      console.log('check errr' , err)
       Alert.alert('Fail to open File ', err.toString())
     }
 

@@ -88,6 +88,13 @@ const StyledName = styled.Text`
   letter-spacing: 3px;
   font-weight: 800; 
 `
+const StyledEmail = styled.Text`
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 700; 
+`
 
 const StyledLogOutButton = styled.TouchableOpacity`
   margin: auto;
@@ -155,6 +162,9 @@ const UserProfile = () => {
               <StyledName>
                 {currentUser.displayName}
               </StyledName>
+              <StyledEmail>
+                ( {currentUser.weleEmail ? currentUser.weleEmail : `You dont' have WELE Email`} )
+              </StyledEmail>
             </StyledUserWrapper>
           </StyledSectionContent>
         </StyledSection>
