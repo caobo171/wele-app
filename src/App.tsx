@@ -1,5 +1,5 @@
 import React from "react";
-import store from "./redux/store";
+import store from "./store/store";
 import {PermissionsAndroid} from 'react-native';
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import SplashScreen from 'react-native-splash-screen'
