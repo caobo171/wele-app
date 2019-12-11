@@ -15,19 +15,18 @@ import styled from 'styled-components/native';
 import { NavigationContext, NavigationScreenProp } from 'react-navigation';
 
 import {useAnotherUserResult } from '@/store/user/hooks';
-
+import { ThemeMode , CustomTheme } from '@/store/theme/ThemeWrapper';
 import ProfileChart from './Chart';
 
 
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
-  color: yellow;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
 const HeaderWrapper = styled.View`
-  background-color: white;
   height: 32px;
   flex-direction: row;
   justify-content: flex-start;
@@ -35,7 +34,6 @@ const HeaderWrapper = styled.View`
   
 `;
 const StyledBodyWrapper = styled.View`
-  background-color: white;
   flex: 9;
   align-items: flex-start;
 `;
@@ -44,14 +42,12 @@ const StyledBodyWrapper = styled.View`
 const StyledSection = styled.View`
   width: 100%;
   margin: 0 ;
-  background-color: white;
 `;
 
 
 const StyledSectionContent = styled.View``;
 
 const StyledUserWrapper = styled.View<{ size: 'big' | 'medium' | 'small' }>`
-  background-color: white;
   width: 100%;
   flex-direction: column;
   border-style: solid;
@@ -76,12 +72,13 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text`
+const StyledName = styled.Text<{theme: CustomTheme}>`
   width: 100%;
   text-align: center;
   font-size: 20px;
   letter-spacing: 3px;
   font-weight: 800; 
+  color: ${props=> props.theme.textColorH1}
 `
 
 const StyledLineCharWrapper = styled.View`

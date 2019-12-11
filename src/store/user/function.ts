@@ -4,6 +4,7 @@ import { LoginManager } from "react-native-fbsdk"
 import * as actions from './actions'
 import { UserType, ResultType } from "./types";
 import store from "../store";
+import { GoogleSignin } from "@react-native-community/google-signin";
 
 
 export const RESULTS_COLLECTION = "results"
@@ -59,7 +60,18 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 
 export const logOut = async (storex = store) => {
     await firebase.auth().signOut();
-    await LoginManager.logOut()
+    try{
+        await LoginManager.logOut()
+    }catch(e){
+        
+    }
+   
+    try{
+        await GoogleSignin.signOut()
+    }catch(e){
+
+    }
+    
     return await storex.dispatch(actions.logOut())
 };
 
