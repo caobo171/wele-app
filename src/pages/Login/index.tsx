@@ -8,30 +8,34 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { TouchableOpacity, Alert } from "react-native";
+import { TouchableOpacity, Alert , View } from "react-native";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
-
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 
 import * as Animatable from 'react-native-animatable';
 import { loginWithFacebook, validateEmail } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import LoadingComponent from '@/components/Loading/Loading';
-const Wrapper = styled.View`
-  margin-top: 20px;
+
+const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
   flex-direction: column;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
-const StyledLogoImage = styled.Image`
+const StyledLogoImage = styled.Image<{theme: CustomTheme}>`
   width: 100%;
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   flex: 1;
+  ${props=> props.theme.name === ThemeMode.DARK && `
+    opacity: 0.4;
+  `}
 `;
 
 
@@ -193,13 +197,14 @@ const Login = () => {
             }
 
             {!condition && (
-                <Animatable.View
-                  animation="bounce" easing="ease-out" iterationCount={Infinity}>
+                <View
+                  // animation="bounce" easing="ease-out" iterationCount={Infinity}
+                  >
                   <StyledButton onPress={onLoginFacebookHandle}>
                     <StyledFeatherIcon name={'facebook-f'} />
                     <StyledText>Login With Facebook</StyledText>
                   </StyledButton>
-                </Animatable.View>
+                </View>
 
               )}
           </React.Fragment>}

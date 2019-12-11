@@ -4,7 +4,8 @@ import useEffectOnce from 'react-use/lib/useEffectOnce'
 import storage from '@/service/localStorage'
 import { updateTheme } from './functions'
 import { useTheme } from './hook'
-import React from 'react'
+import React , {useEffect} from 'react'
+import { StatusBar , StatusBarStyle} from 'react-native'
 
 export enum ThemeMode {
     LIGHT = 'light',
@@ -72,6 +73,19 @@ const ThemeWrapper: React.FC<PropsWithChildren<{}>> = ({children})=>{
             updateTheme(savedTheme)
         })()
     })
+
+    useEffect(()=>{
+        const background = getTheme(themeMode).backgroundColor
+        StatusBar.setBackgroundColor(background)
+        if(themeMode===ThemeMode.DARK){
+            
+            StatusBar.setBarStyle('light-content')
+        }else{
+            StatusBar.setBarStyle('dark-content')
+            
+        }
+       
+    },[themeMode])
 
     console.log('check themeMOde', themeMode)
 
