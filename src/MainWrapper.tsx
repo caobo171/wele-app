@@ -14,7 +14,8 @@ import messageSystem from "./service/messageSystem";
 
 
 import { useCurrentUser } from "./store/user/hooks";
-import { setCurrentUser, getAllUsers } from "./store/user/function";
+import { setCurrentUser, getAllUsers, getResults } from "./store/user/function";
+import { getAllPodcasts } from "./store/podcast/functions";
 
 
 
@@ -50,6 +51,8 @@ const MainAppScreen = () => {
     if (currentUser) {
       getAllUsers()
       messageSystem.init(currentUser)
+      getAllPodcasts()
+      getResults()
     }
 
   }, [currentUser])

@@ -14,8 +14,8 @@ class PresenceSystem {
 
         await onlineRef.on('value', (snapshot:any) => {
 
-            // firebase.database().ref(`/users/${user._user.uid}/online`).set(true)
-            // firebase.database().ref(`/users/${user._user.uid}/online`).onDisconnect().set(false)
+            firebase.database().ref(`/users/${user._user.uid}/online`).set(true)
+            firebase.database().ref(`/users/${user._user.uid}/online`).onDisconnect().set(false)
 
             firebase.database().ref(`/users`).on('child_changed',(data:any)=>{
                 const user : UserType = {
