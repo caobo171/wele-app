@@ -34,7 +34,7 @@ const StyledLogoImage = styled.Image<{ theme: CustomTheme }>`
   margin-right: auto;
   flex: 1;
   ${props => props.theme.name === ThemeMode.DARK && `
-    opacity: 0.4;
+    opacity: 0.7;
   `}
 `;
 
