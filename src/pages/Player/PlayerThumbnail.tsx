@@ -6,6 +6,7 @@ import EntypoIcon from "react-native-vector-icons/Entypo";
 import globalPlayer from '../../service/playerService';
 import { NavigationContext } from 'react-navigation';
 import { usePlayer } from '@/store/player/hooks';
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 
 const StyledView = styled.View`
     height: 32px;
@@ -15,9 +16,10 @@ const StyledView = styled.View`
     align-items: center;
     margin: 0;
 `
-const Wrapper = styled.View`
-height: 100%;
-width: 100%;
+const Wrapper = styled.View<{theme: CustomTheme}>`
+    height: 100%;
+    width: 100%;
+    background-color: ${props=> props.theme.backgroundColor};
 `
 
 const StyledPlayButton = styled(TouchableOpacity)`

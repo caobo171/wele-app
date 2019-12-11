@@ -16,16 +16,16 @@ import { FlatList } from 'react-native-gesture-handler';
 import NotificationItem  from './NotificationItem';
 import { useNotifications } from '@/store/notification/hooks';
 
+import {CustomTheme } from '@store/theme/ThemeWrapper'
 
-
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
-  color: yellow;
+  background-color: ${props=> props.theme.backgroundColor}
 `;
 
-const HeaderWrapper = styled.View`
-  background-color: white;
+const HeaderWrapper = styled.View<{theme: CustomTheme}>`
+  background-color: ${props=> props.theme.backgroundColor};
   height: 40px;
   flex-direction: row;
   justify-content: flex-start;
@@ -34,7 +34,7 @@ const HeaderWrapper = styled.View`
   margin-bottom: 10px;
 
   border-bottom-width: 1px;
-  border-color: #d4d4d4;
+  border-color: ${props=> props.theme.borderSectionColor}
 `;
 
 const StyledAntDesignIcon = styled(AntDesignIcon)`
@@ -44,11 +44,12 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
 `;
 
 
-const StyledPageTitleText = styled.Text`
+const StyledPageTitleText = styled.Text<{theme: CustomTheme}>`
   font-weight: bold; 
   letter-spacing: 1px;
   font-size: 24px;
   margin-left: 20px;
+  color: ${props=> props.theme.textColorH1};
 `
 
 
@@ -57,7 +58,6 @@ const Notifications = () => {
     
   const notifications = useNotifications()
 
-  console.log('check notifications', notifications)
   const nav = useContext(NavigationContext)
   return (
     <Wrapper>

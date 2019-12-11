@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import PodcastType from '@/store/podcast/types';
 import NotificationType from '@/store/notification/types';
+import { ThemeMode } from '@/store/theme/ThemeWrapper';
 
 const MAX_RECENT_PODCASTS = 5;
 class WeleLocalStorage {
@@ -64,7 +65,6 @@ class WeleLocalStorage {
 
     getRecentPodcasts = async ()=>{
         const podcastsStorage = await this.get('recent-podcasts', 'object', []) as PodcastType[]
-        console.log('check podcastStorage', podcastsStorage)
         let podcasts = new Map<string, PodcastType>();
         for(let i = 0 ; i< podcastsStorage.length; i++){
             podcasts = await podcasts.set(podcastsStorage[i].id, podcastsStorage[i])
@@ -83,7 +83,6 @@ class WeleLocalStorage {
 
         defaultDate.setDate(defaultDate.getDate() - 7 )
         const lastSeen = await this.get('lastseen-notifications','object', defaultDate)
-        console.log('check lasseettn', lastSeen , new Date(lastSeen.toString()))
         return new Date(lastSeen.toString())
     }
 
@@ -92,6 +91,14 @@ class WeleLocalStorage {
         return this.set('lastseen-notifications', JSON.stringify(new Date()))
     }
 
+
+    saveTheme = async (theme: ThemeMode)=>{
+        return await this.set('theme', theme)
+    }
+
+    getTheme = async ()=>{
+        return await this.get('theme','string',ThemeMode.LIGHT)
+    }
 
 }
 

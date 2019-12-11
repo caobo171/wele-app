@@ -22,13 +22,16 @@ import { useCurrentPodcast } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
 import { updateRecentPodcast } from '@/store/podcast/functions';
 
-const Wrapper = styled.ScrollView`
+
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+
+const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
 const HeaderWrapper = styled.View`
-  background-color: white;
   height: 32px;
   flex-direction: row;
   justify-content: flex-start;
@@ -36,7 +39,6 @@ const HeaderWrapper = styled.View`
   
 `;
 const StyledBodyWrapper = styled.View`
-  background-color: white;
   flex: 9;
   align-items: flex-start;
   padding: 10px 10px 10px 20px;
@@ -46,7 +48,6 @@ const StyledBodyWrapper = styled.View`
 const StyledContent = styled.View`
   width: 100%;
   margin: 0 ;
-  background-color: white;
   flex-direction: column;
 `;
 
@@ -61,11 +62,15 @@ const StyledUserWrapper = styled.View`
 `;
 
 
-const StyledPodcastImage = styled.Image`
+const StyledPodcastImage = styled.Image<{theme: CustomTheme}>`
   height: 176;
   width: 100%;
   border-radius: 10;
   margin: 10px 0px 20px 0px;
+
+  ${props=> props.theme.name === ThemeMode.DARK && `
+    opacity: 0.6;
+  `}
 `;
 
 const StyledAntDesignIcon = styled(AntDesignIcon)`
@@ -74,13 +79,14 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text`
+const StyledName = styled.Text<{theme: CustomTheme}>`
   width: 80%;
   text-align: left;
   font-size: 20px;
   letter-spacing: 1px;
   font-weight: bold; 
   margin-bottom: 20px;
+  color: ${props=> props.theme.textColorH1};
 `
 
 const DescriptionInfo = styled.Text`
@@ -114,10 +120,11 @@ const StyledDescriptionWrapper = styled.View`
     flex: 1;
 `
 
-const StyledReadmore = styled.Text`
+const StyledReadmore = styled.Text<{theme: CustomTheme}>`
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 20px;
+    color: ${props=> props.theme.textColorH1};
 `;
 
 const StyledButtonWrapper = styled.View`
@@ -181,7 +188,6 @@ const PodcastDetail = () => {
       }
 
     } catch (err) {
-      console.log('check errr' , err)
       Alert.alert('Fail to open File ', err.toString())
     }
 

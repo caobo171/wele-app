@@ -18,20 +18,21 @@ import { connect } from "react-redux";
 import PodcastItem from './PodcastItem'
 
 import styled from 'styled-components/native';
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import LoadingComponent from '@components/Loading/Loading';
 import PodcastType from '@/store/podcast/types';
 import { getAllPodcasts } from '@store/podcast/functions';
 import { usePodcastList } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
-  color: yellow;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
-const StyledBodyWrapper = styled.View`
-  background-color: white;
+const StyledBodyWrapper = styled.View<{theme: CustomTheme}>`
+  background-color: ${props=> props.theme.backgroundColor}
   flex: 9;
   align-items: flex-start;
 `;
@@ -40,11 +41,10 @@ const StyledBodyWrapper = styled.View`
 const StyledSection = styled.View`
   width: 100%;
   margin: 0 ;
-  background-color: white;
 `;
 
-const StyledSectionTitle = styled.Text`
-  color: black;
+const StyledSectionTitle = styled.Text<{theme: CustomTheme}>`
+  color: ${props=> props.theme.textColorH1};
   font-size: 20px ;
   font-weight: bold ;
   margin: 0px 10px 0px 10px;
@@ -62,10 +62,10 @@ const StyledSearchInput = styled.TextInput<{size:'normal'|'big'}>`
   color: white;
 `
 
-const StyledSearchWrapper = styled.View`
+const StyledSearchWrapper = styled.View<{theme: CustomTheme}>`
     align-items: flex-start;
     border-bottom-width: 1px;
-    border-color: #d4d4d4;
+    border-color: ${props=> props.theme.borderSectionColor}
     margin: 0px 10px 0px 10px;
 `
 

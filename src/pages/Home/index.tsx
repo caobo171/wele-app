@@ -20,10 +20,12 @@ import  Header  from './Header';
 import { getPodcastThisWeek, getRecentPodcast } from '@/store/podcast/functions';
 import { usePodcastThisWeek, useRecentPodcasts } from '@/store/podcast/hooks';
 
-const Wrapper = styled.ScrollView`
+import {CustomTheme } from '@store/theme/ThemeWrapper'
+
+const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
-  color: yellow;
+  background-color: ${props=> props.theme.backgroundColor}
 `;
 
 
@@ -34,20 +36,21 @@ const StyledBodyWrapper = styled.View`
 `;
 
 
-const StyledSection = styled.View`
+const StyledSection = styled.View<{theme: CustomTheme}>`
   width: 100%;
   margin: 0 ;
-  background-color: white;
+  background-color: ${props=> props.theme.backgroundColor}
 `;
 
-const StyledSectionTitle = styled.Text<{position:'top'|'normal'}>`
-  color: black;
+const StyledSectionTitle = styled.Text<{position:'top'|'normal', theme: CustomTheme}>`
+  color: ${props=> props.theme.textColorH1}
   font-size: ${props=> props.position === 'top' ? '24px' : '20px' } ;
   font-weight: ${props=> props.position === 'top' ? 'bold' : '900' } ;
   padding-bottom: 16px;
-  margin: ${props=> props.position === 'top' ? '-12px' : '28px' } 10px 0px 10px; 
+  margin: ${props=> props.position === 'top' ? '-4px' : '28px' } 10px 0px 10px; 
   border-bottom-width: 1px;
-  border-color: #d4d4d4;
+  border-color: ${props=> props.theme.borderSectionColor}
+  background-color: ${props=> props.theme.backgroundColor}
 `;
 
 const StyledSectionContent = styled.View``;

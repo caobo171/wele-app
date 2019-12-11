@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import NotificationType from '@store/notification/types'
 import { NavigationContext } from 'react-navigation';
 
-
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 
 const StyledImage = styled.Image`
   height: 46px;
@@ -27,13 +27,15 @@ const StyledWrapper = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const StyledText = styled.Text`
+const StyledText = styled.Text<{theme: CustomTheme}>`
     font-size: 13px;
     flex: 2.2;
+    color: ${props=> props.theme.textColorH2};
 `
 
-const StyledTitle = styled.Text`
+const StyledTitle = styled.Text<{theme: CustomTheme}>`
      font-weight:bold;
+     color: ${props=> props.theme.textColorH1};
 `
 
 const StyledTimeAgo = styled.Text`

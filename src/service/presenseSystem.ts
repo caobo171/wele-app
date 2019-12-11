@@ -9,7 +9,6 @@ class PresenceSystem {
     async init(){
         const user:any = await firebase.auth().currentUser
 
-        console.log('check current user', user._user.uid)
 
         const onlineRef = await  firebase.database().ref('.info/connected');
 

@@ -24,8 +24,6 @@ const validdateHint = (hint: string)=>{
 
 const Hint = (props: Props) => {
 
-    console.log('check ', props.hint)
-
     return (<StyldView>
         <StyledText>{validdateHint(props.hint)}</StyledText>
     </StyldView>)
