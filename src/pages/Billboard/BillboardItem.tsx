@@ -3,7 +3,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import styled from 'styled-components/native';
 import { UserType } from '@store/user/types';
 import UserAvatar from '../../components/User/UserAvatar';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import { NavigationContext } from 'react-navigation';
 const StyledUserSection = styled.View`
   height: 58px;
@@ -31,11 +31,11 @@ const StyledUserNameWrapper = styled.View`
   margin-left: 12px;
 `;
 
-const StyledName = styled.Text`
+const StyledName = styled.Text<{theme: CustomTheme}>`
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 1px;
-
+  color: ${props=> props.theme.textColorH1};
 `;
 
 const StyledAvatarWrapper = styled.View`
@@ -100,7 +100,6 @@ const BillboardItem = React.memo((props: Props) => {
       </StyledUserNameWrapper>
       <StyledActionButtonGroup>
         <StyledTouchableOpacity onPress ={()=>{
-          console.log('aaaaaaaaa click me ')
             nav.navigate('AnotherProfile', {
               user: props.user
             })

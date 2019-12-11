@@ -63,7 +63,6 @@ const transformResult = (result: ResultType | undefined) => {
      rResult[i] = 0 
   }
 
-  console.log('check rResults', rResult)
 
   let tempTotal = 0;
   let totalArray = []
@@ -80,7 +79,7 @@ const transformResult = (result: ResultType | undefined) => {
       }
 
     }else{
-      console.log('aaa false' , data[i])
+      
     }
   }
 
@@ -88,8 +87,6 @@ const transformResult = (result: ResultType | undefined) => {
     totalArray.push(tempTotal)
     labelArray.push(data[data.length - 1])
   }
-
-  console.log('check totalArray', totalArray, labelArray, missPodcastNumber, maxKey)
 
   return { totalArray, labelArray }
 }

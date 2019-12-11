@@ -10,29 +10,27 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationContext } from 'react-navigation';
 
-import {
-  LineChart,
-} from "react-native-chart-kit";
 import { useCurrentUser, useMyResult } from '@/store/user/hooks';
 import { getMyresult, logOut } from '@/store/user/function';
 import useAsync from 'react-use/lib/useAsync';
 import LoadingComponent from '@/components/Loading/Loading';
 import ProfileChart from './Chart';
+import { updateTheme } from '@/store/theme/functions';
+import { ThemeMode , CustomTheme } from '@/store/theme/ThemeWrapper';
 
 
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
-  color: yellow;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
 const HeaderWrapper = styled.View`
-  background-color: white;
   height: 32px;
   flex-direction: row;
   justify-content: flex-start;
@@ -40,7 +38,6 @@ const HeaderWrapper = styled.View`
   
 `;
 const StyledBodyWrapper = styled.View`
-  background-color: white;
   flex: 9;
   align-items: flex-start;
 `;
@@ -49,14 +46,12 @@ const StyledBodyWrapper = styled.View`
 const StyledSection = styled.View`
   width: 100%;
   margin: 0 ;
-  background-color: white;
 `;
 
 
 const StyledSectionContent = styled.View``;
 
 const StyledUserWrapper = styled.View<{ size: 'big' | 'medium' | 'small' }>`
-  background-color: white;
   width: 100%;
   flex-direction: column;
   border-style: solid;
@@ -81,23 +76,24 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text`
+const StyledName = styled.Text<{theme: CustomTheme}>`
   width: 100%;
   text-align: center;
   font-size: 20px;
   letter-spacing: 3px;
   font-weight: 800; 
+  color: ${props=> props.theme.textColorH1};
 `
-const StyledEmail = styled.Text`
+const StyledEmail = styled.Text<{theme: CustomTheme}>`
   width: 100%;
   text-align: center;
   font-size: 18px;
   letter-spacing: 1px;
   font-weight: 700; 
+  color: ${props=> props.theme.textColorH2};
 `
 
 const StyledLogOutButton = styled.TouchableOpacity`
-  margin: auto;
   width: 100px;
   height: 40px;
   border-width: 4px;
@@ -106,17 +102,36 @@ const StyledLogOutButton = styled.TouchableOpacity`
   text-align: center;
   justify-content: center;
   align-items: center;
-  border-color: #595959
+  border-color: #595959;
+  margin: 8px;
 `
 
-const StyledText = styled.Text`
+const StyledText = styled.Text<{theme: CustomTheme}>`
   font-weight: bold; 
   letter-spacing: 1px;
   text-transform: uppercase;
+  color: ${props=> props.theme.textColorH1};
+  
 `
 
 const StyledLineCharWrapper = styled.View`
   width: 80%;
+`
+
+const StyledThemeButton = styled.TouchableOpacity<{ color: string }>`
+  height: 36px;
+  width: 36px;
+  border-radius: 18px;
+  background-color: ${props => props.color};
+  border-width: 2px;
+  border-color: #bfbfbf;
+  margin: 8px;
+`
+
+const StyledButtonsGroup = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
 `
 
 
@@ -172,15 +187,27 @@ const UserProfile = () => {
         <StyledLineCharWrapper>
           {
             state.loading ? <LoadingComponent /> :
-              <ProfileChart results={myResults}/>
-            }
+              <ProfileChart results={myResults} />
+          }
 
         </StyledLineCharWrapper>
 
+        <StyledButtonsGroup>
+          <StyledLogOutButton onPress={logOutHandle}>
+            <StyledText>Log out</StyledText>
 
-        <StyledLogOutButton onPress={logOutHandle}>
-          <StyledText>Log out</StyledText>
-        </StyledLogOutButton>
+          </StyledLogOutButton>
+
+          <StyledThemeButton color={'#ffffff'} onPress={() => {
+            updateTheme(ThemeMode.LIGHT)
+          }} />
+          <StyledThemeButton color={'#595959'}
+            onPress={() => {
+              updateTheme(ThemeMode.DARK)
+            }}
+          />
+        </StyledButtonsGroup>
+
       </StyledBodyWrapper>
 
     </Wrapper>

@@ -8,12 +8,10 @@ import storage from './localStorage';
 
 class MessageSystem {
     async init(me: UserType){
-        console.log('check init successfully !!!! ')
         const unsubscribe = await firebase.firestore().collection(NOTIFICATION_COLLECTION).onSnapshot({
             includeMetadataChanges: true
         }, async (doc: any )=>{
 
-            console.log('aaaaaaaaa' , doc)
             const notifications: NotificationType[] = doc.docs.map((e:any)=> {
                 return {
                     id: e.id,
@@ -21,8 +19,6 @@ class MessageSystem {
                     time: e._data.time.toDate()
                 }
             } )
-
-            console.log('aaaaaaaaa' , notifications)
 
             // save noti in local 
             await storage.setNotifications(notifications)

@@ -154,9 +154,6 @@ class GlobalPlayer {
             try{
                 const res =await RNFS.stat(podcast.uri)
                 if(res && res.isFile()){
-    
-                    console.log('aaaaa vao day roi')
-    
                     await this.addTrack(podcast, podcast.uri)
                     await TrackPlayer.play()
                     return podcast.uri

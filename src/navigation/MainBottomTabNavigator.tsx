@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from "react";
+import React, { useContext } from "react";
 
 import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 
@@ -8,9 +8,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
 import PodcastList from "../pages/PodcastList";
 import { View } from "react-native";
-import styled from "styled-components/native";
+import styled, { ThemeContext } from "styled-components/native";
 import { useUnreadNotificationNumber } from "@/store/notification/hooks";
 import BillboardNavigator from "./BillboardNavigator";
+import { ThemeMode } from "@/store/theme/ThemeWrapper";
 
 
 const StyledBadge = styled.Text`
@@ -37,13 +38,27 @@ const HomeIcon = (props: HomeIconProps) => {
     return (
         <View>
             <Icon name="home" color={props.tintColor} size={24} />
-            {unreadNumber> 0 && <StyledBadge>{unreadNumber}</StyledBadge>}
+            {unreadNumber > 0 && <StyledBadge>{unreadNumber}</StyledBadge>}
         </View>
     )
 }
 
 
 const ConnectedHomeIcon = HomeIcon
+
+export const CustomTabbar = (props) => {
+
+    const theme = useContext(ThemeContext)
+
+    return <BottomTabBar {...props}
+    activeTintColor={theme.name === ThemeMode.DARK ? "#bdbdbd":"#787878"}
+    inactiveTintColor = {theme.name === ThemeMode.DARK ? "#787878":"#bdbdbd"}
+    style={{
+        backgroundColor: theme.backgroundColor
+    }} ></BottomTabBar>
+}
+
+
 const MainBottomTabNavigator = createBottomTabNavigator(
     {
         Home: {
@@ -61,7 +76,8 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                 tabBarLabel: "BillBoard",
                 tabBarIcon: ({ tintColor }) => (
                     <Icon name="bar-chart" color={tintColor} size={24} />
-                )
+                ),
+
             }
         },
         PodcastList: {
@@ -75,12 +91,9 @@ const MainBottomTabNavigator = createBottomTabNavigator(
         }
     },
     {
-        tabBarComponent: BottomTabBar,
+        tabBarComponent: CustomTabbar,
         tabBarOptions: {
-            activeTintColor: "black",
-            inactiveTintColor: "grey",
             style: {
-                backgroundColor: "white",
                 borderTopWidth: 0,
                 shadowOffset: { width: 5, height: 3 },
                 shadowColor: "black",
@@ -90,6 +103,8 @@ const MainBottomTabNavigator = createBottomTabNavigator(
         }
     }
 );
+
+
 
 
 export default MainBottomTabNavigator;

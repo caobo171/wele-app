@@ -76,7 +76,10 @@ const getAllUsersAsync = (): Promise<Map<string, UserType>> => {
         ref.once('value', async (snapshots: any) => {
             await snapshots.forEach((snapshot: any) => {
                 const user: UserType = snapshot._snapshot.value
-                users = users.set(user.id, { id: user.id, ...user })
+                if(user.id){
+                    users = users.set(user.id, { id: user.id, ...user })
+                }
+               
             })
 
             resolve(users)

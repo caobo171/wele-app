@@ -1,17 +1,18 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 
-const StyldView = styled.ScrollView`
-
+const StyldView = styled.ScrollView<{theme: CustomTheme}>`
+    background-color: ${props=> props.theme.backgroundColor};
     width: 100%;
-    background-color: #fff;
     padding: 10px;
 `
 
-const StyledText = styled.Text`
+const StyledText = styled.Text<{theme: CustomTheme}>`
     margin-top: 16px;
     font-size: 18px;
     margin-bottom: 32px;
+    color: ${props=> props.theme.textColorH1};
 `
 
 interface Props{
@@ -23,8 +24,6 @@ const validdateHint = (hint: string)=>{
 }
 
 const Hint = (props: Props) => {
-
-    console.log('check ', props.hint)
 
     return (<StyldView>
         <StyledText>{validdateHint(props.hint)}</StyledText>

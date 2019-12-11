@@ -36,7 +36,7 @@ export const getPodcastThisWeek = async (storex= store)=>{
 }
 
 export const updatePodcast = (podcast: PodcastType,  storex=store)=>{
-  console.log('check update Podcast', podcast)
+
   return storex.dispatch(actions.updatePodcast(podcast))
 }
 

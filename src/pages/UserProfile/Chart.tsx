@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { LineChart } from 'react-native-chart-kit'
 import { Dimensions } from 'react-native'
+import { useTheme } from '@/store/theme/hook'
+import { ThemeContext } from 'styled-components'
+import { ThemeMode } from '@/store/theme/ThemeWrapper'
 
 interface Props {
     results: {
@@ -13,6 +16,13 @@ interface Props {
 const WIDTH = Dimensions.get("window").width
 
 const ProfileChart = (props: Props) => {
+
+    const theme = useContext(ThemeContext)
+    const themeMode = useTheme()
+
+    const labelColor = themeMode === ThemeMode.LIGHT ?`rgba(0, 0, 0, 0.7)` : `rgba(255, 255,255, 0.7)`
+
+    const lineColor = themeMode === ThemeMode.LIGHT ?`rgba(0, 0, 0, 0.4)` : `rgba(255, 255,255, 0.4)`
     return <LineChart
 
         data={{
@@ -28,17 +38,17 @@ const ProfileChart = (props: Props) => {
         yAxisLabel={""}
         yAxisSuffix={""}
         chartConfig={{
-            backgroundColor: "#ffffff",
-            backgroundGradientFrom: "#ffffff",
-            backgroundGradientTo: "#ffffff",
+            backgroundColor: theme.backgroundColor,
+            backgroundGradientFrom: theme.backgroundColor,
+            backgroundGradientTo: theme.backgroundColor,
 
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 0.7) => `rgba(0, 0, 0, ${opacity})`,
+            color: (opacity = 0.7) => lineColor,
             //@ts-ignore
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            labelColor: (opacity = 1) => labelColor,
             style: {
                 borderRadius: 16,
-
+                color: theme.textColorH1
             },
             propsForDots: {
                 r: "2",
@@ -50,7 +60,8 @@ const ProfileChart = (props: Props) => {
         style={{
             marginVertical: 8,
             borderRadius: 16,
-            margin: 'auto'
+            margin: 'auto',
+            color: theme.textColorH1
         }}
     />
 }

@@ -13,10 +13,11 @@ import Header from "./Header";
 import { connect } from 'react-redux';
 import PodcastType from '@store/podcast/types';
 import AnimatedWrapper from './AnimatedWrapper';
-const Wrapper = styled.View`
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
-  color: yellow;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
 

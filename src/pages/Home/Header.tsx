@@ -3,6 +3,7 @@
 import React, { useContext } from 'react'
 import { NavigationContext } from 'react-navigation';
 import styled from 'styled-components/native';
+import {CustomTheme} from '@store/theme/ThemeWrapper'
 
 //@ts-ignore
 import FeatherIcon from 'react-native-vector-icons/Feather';
@@ -12,14 +13,15 @@ import { updateNotifications } from '@store/notification/functions';
 import { updateLastSeenOfUser } from '@/store/user/function';
 import { useCurrentUser } from '@/store/user/hooks';
 
+
 const StyledFeatherIcon = styled(FeatherIcon)`
   font-size: 28px;
   color: #a8a8a8;
   margin: 8px 20px 0px 0px;
 `;
 
-const HeaderWrapper = styled.View`
-  background-color: white;
+const HeaderWrapper = styled.View<{theme: CustomTheme}>`
+  background-color: ${props=> props.theme.backgroundColor}
   height: 40px;
   flex-direction: row;
   justify-content: flex-end;

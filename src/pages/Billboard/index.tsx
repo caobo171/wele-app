@@ -6,24 +6,26 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { FlatList } from 'react-navigation';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import { UserType } from '@store/user/types'
 import { getResults } from '@store/user/function';
 import { useResults } from '@store/user/hooks';
 import BillboardItem from './BillboardItem';
 import useAsync from 'react-use/lib/useAsync';
 import LoadingComponent from '@/components/Loading/Loading';
+import { useTheme } from '@/store/theme/hook';
 
-const Wrapper = styled(LinearGradient)`
-  margin-top: 5px;
-  height: 99%;
-  width: 96%;
+
+const Wrapper = styled(LinearGradient)<{theme: CustomTheme}>`
+  width: 100%;
+  height: 100%;
   color: yellow;
   margin : auto;
+  background-color: ${props=> props.theme.backgroundColor};
 `;
 
 const StyledBillboardHeader = styled.View`
@@ -59,8 +61,17 @@ const Billboard = React.memo(() => {
     return await getResults()
   })
 
+  const theme = useTheme()
+  const gradient = theme === ThemeMode.LIGHT ? {
+    colors: ['#7a7a7a', '#b5b5b5', '#e6e6e6'],
+    locations: [0, 0.3, 0.5]
+  }: {
+    colors: ['#787878', '#333333', '#000000'],
+    locations: [0, 0.2, 0.5]
+  }
+
   return (
-    <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0, 0.3, 0.5]}>
+    <Wrapper colors={gradient.colors} locations={gradient.locations}>
       <StyledBillboardHeader>
         <StyledHeaderImage resizeMode={'contain'} source={require('@/assets/cup.png')} width={64} height={72} />
         <StyledHeaderImage resizeMode={'contain'} source={require('@/assets/cup.png')} width={92} height={112} />

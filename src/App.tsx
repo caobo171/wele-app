@@ -1,17 +1,18 @@
 import React from "react";
 import store from "./store/store";
-import {PermissionsAndroid} from 'react-native';
+import { PermissionsAndroid } from 'react-native';
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import SplashScreen from 'react-native-splash-screen'
 //@ts-ignore
 import { Provider } from "react-redux";
 import NavigatorTree from "./MainWrapper";
+import ThemeWrapper from "@store/theme/ThemeWrapper";
 
 
 console.disableYellowBox;
 const App = () => {
 
-  const requestPermission = async ()=>{
+  const requestPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -34,14 +35,16 @@ const App = () => {
       console.warn(err);
     }
   }
-  useEffectOnce(()=>{
+  useEffectOnce(() => {
     requestPermission()
     SplashScreen.hide()
   })
 
   return (
     <Provider store={store}>
-      <NavigatorTree />
+      <ThemeWrapper>
+        <NavigatorTree />
+      </ThemeWrapper>
     </Provider>
   );
 };

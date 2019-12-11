@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components/native";
 import PodcastType from "@store/podcast/types";
 
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+
+
 const StyledInfoWrapper = styled.View`
   width: 100%;
   flex-direction: column;
@@ -25,10 +28,11 @@ const StyleInfo = styled.View`
   margin-right: auto;
 `;
 
-const StyledNameText = styled.Text`
+const StyledNameText = styled.Text<{theme: CustomTheme}>`
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 12px;
+  color: ${props=> props.theme.textColorH1};
 `;
 
 const StyleSmallText = styled.Text`

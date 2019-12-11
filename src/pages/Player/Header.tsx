@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-
+import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import { NavigationContext } from "react-navigation";
 
 const HeaderWrapper = styled.View`
-  background-color: white;
   height: 32px;
   flex-direction: row;
   justify-content: flex-start;
@@ -20,8 +19,9 @@ const StyledAntEntypoIcon = styled(EntypoIcon)`
   margin: 8px 10px 8px 10px;
 `;
 
-const StyledHeaderText = styled.Text`
+const StyledHeaderText = styled.Text<{theme: CustomTheme}>`
   margin: auto;
+  color: ${props=> props.theme.textColorH2};
 `;
 
 

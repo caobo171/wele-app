@@ -14,7 +14,6 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
         let defaultDate = new Date()
         defaultDate.setDate(defaultDate.getDate() - 7)
 
-        console.log('check notifications in Reducer', notifications)
         const lastSeen: number = action.payload.lastSeen ? action.payload.lastSeen : defaultDate.getTime()
         return {
             ...state,
