@@ -12,7 +12,7 @@ export const USERS_COLLECTION = 'users'
 
 export const TOTAL_PROPERTY = 'Total'
 
-const getCurrentUserAsync = (id: string) => {
+const getCurrentUserAsync = (id: string): Promise<UserType> => {
     return new Promise((resolve, reject) => {
         const ref = database().ref(`/${USERS_COLLECTION}/${id}`);
         ref.once('value', async (snapshot: any) => {
@@ -39,12 +39,20 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
     }
 
     if (isNew && typeof isNew === 'string') {
+        console.log('aaaaaaaaaaaa this is here 1')
         await updateWELEEmail(user, isNew)
         return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
-        const userData: any = await getCurrentUserAsync(user.id)
-        return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
 
+        console.log('aaaaaaaaaaaa this is here 2')
+        const userData: UserType = await getCurrentUserAsync(user.id)
+        if(userData.email){
+            return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
+
+        }else{
+            return  storex.dispatch(actions.setCurrentUser(null))
+        }
+        
     }
 };
 

@@ -25,6 +25,7 @@ const MainAppScreen = () => {
 
   const status = useAsync(async () => {
     const rawUser = await firebase.auth().currentUser;
+    console.log(rawUser)
 
     if (rawUser) {
       const user = {
@@ -48,7 +49,6 @@ const MainAppScreen = () => {
   useEffect(() => {
     if (currentUser) {
       getAllUsers()
-      presenceSystem.init()
       messageSystem.init(currentUser)
     }
 

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
+    "@react-native-community/google-signin": "^3.0.3",
     "@react-native-community/slider": "^2.0.2",
     "@react-native-firebase/app": "^6.0.2",
     "@react-native-firebase/auth": "^6.0.2",
@@ -66,14 +67,14 @@
     "@types/react-redux": "^7.1.5",
     "@types/styled-components": "^4.1.16",
     "babel-jest": "^24.8.0",
+    "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "^6.1.0",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "patch-package": "^6.1.4",
     "react-native-typescript-transformer": "^1.2.13",
     "react-test-renderer": "16.8.6",
-    "typescript": "^3.6.4",
-    "babel-plugin-module-resolver": "^3.2.0"
+    "typescript": "^3.6.4"
   },
   "jest": {
     "preset": "react-native"
