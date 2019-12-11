@@ -95,9 +95,6 @@ const PodcastList = () => {
 
   const [searchString, setSearchString ] = useState(searchText)
 
-  const state = useAsync(async ()=>{
-    await getAllPodcasts()
-  },[])
 
   const podcastList = usePodcastList()
 
@@ -126,8 +123,10 @@ const PodcastList = () => {
   }
 
   return <React.Fragment>
-    { state.loading? 
-    (<LoadingComponent/>) : (
+    { 
+    // state.loading? 
+    // (<LoadingComponent/>) : 
+    (
     <Wrapper
     keyboardShouldPersistTaps={'always'}
     >

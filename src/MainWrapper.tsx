@@ -14,7 +14,8 @@ import messageSystem from "./service/messageSystem";
 
 
 import { useCurrentUser } from "./store/user/hooks";
-import { setCurrentUser, getAllUsers } from "./store/user/function";
+import { setCurrentUser, getAllUsers, getResults } from "./store/user/function";
+import { getAllPodcasts } from "./store/podcast/functions";
 
 
 
@@ -25,6 +26,7 @@ const MainAppScreen = () => {
 
   const status = useAsync(async () => {
     const rawUser = await firebase.auth().currentUser;
+    console.log(rawUser)
 
     if (rawUser) {
       const user = {
@@ -48,8 +50,9 @@ const MainAppScreen = () => {
   useEffect(() => {
     if (currentUser) {
       getAllUsers()
-      presenceSystem.init()
       messageSystem.init(currentUser)
+      getAllPodcasts()
+      getResults()
     }
 
   }, [currentUser])

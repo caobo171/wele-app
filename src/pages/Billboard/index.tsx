@@ -57,9 +57,9 @@ const Billboard = React.memo(() => {
 
   const mergeResults = useResults()
 
-  const state = useAsync(async () => {
-    return await getResults()
-  })
+  // const state = useAsync(async () => {
+  //   return await getResults()
+  // })
 
   const theme = useTheme()
   const gradient = theme === ThemeMode.LIGHT ? {
@@ -78,7 +78,7 @@ const Billboard = React.memo(() => {
         <StyledHeaderImage resizeMode={'contain'} source={require('@/assets/cup.png')} width={52} height={80} />
       </StyledBillboardHeader>
       {
-        state.loading ? <LoadingComponent /> :
+        // state.loading ? <LoadingComponent /> :
           <StyledBillboardContent>
             <FlatList
 

@@ -12,6 +12,8 @@ import styled, { ThemeContext } from "styled-components/native";
 import { useUnreadNotificationNumber } from "@/store/notification/hooks";
 import BillboardNavigator from "./BillboardNavigator";
 import { ThemeMode } from "@/store/theme/ThemeWrapper";
+import useEffectOnce from "react-use/lib/useEffectOnce";
+import presenceSystem from "@/service/presenseSystem";
 
 
 const StyledBadge = styled.Text`
@@ -48,6 +50,9 @@ const ConnectedHomeIcon = HomeIcon
 
 export const CustomTabbar = (props) => {
 
+    useEffectOnce(()=>{
+        presenceSystem.init()
+    })
     const theme = useContext(ThemeContext)
 
     return <BottomTabBar {...props}

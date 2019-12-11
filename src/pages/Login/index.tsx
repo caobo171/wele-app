@@ -8,33 +8,33 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { TouchableOpacity, Alert , View } from "react-native";
+import { TouchableOpacity, Alert, View } from "react-native";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
-import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
-
+import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
+import LoginWithGoogle from './LoginWithGoogle'
 import * as Animatable from 'react-native-animatable';
-import { loginWithFacebook, validateEmail } from './helper';
+import { loginWithFacebook, validateEmail, loginWithGoogle } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import LoadingComponent from '@/components/Loading/Loading';
 
-const Wrapper = styled.View<{theme: CustomTheme}>`
+const Wrapper = styled.View<{ theme: CustomTheme }>`
   height: 100%;
   width: 100%;
   flex-direction: column;
-  background-color: ${props=> props.theme.backgroundColor};
+  background-color: ${props => props.theme.backgroundColor};
 `;
 
-const StyledLogoImage = styled.Image<{theme: CustomTheme}>`
+const StyledLogoImage = styled.Image<{ theme: CustomTheme }>`
   width: 100%;
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   flex: 1;
-  ${props=> props.theme.name === ThemeMode.DARK && `
-    opacity: 0.4;
+  ${props => props.theme.name === ThemeMode.DARK && `
+    opacity: 0.7;
   `}
 `;
 
@@ -115,10 +115,34 @@ const Login = () => {
     }
   })
 
+  const [loginGoogleState, fetchLoginGoogle] = useAsyncFn(async () => {
+    const user = await loginWithGoogle()
+    if (user.additionalUserInfo.isNewUser) {
+      return await setCurrentUser({
+        id: user.user.uid,
+        displayName: user.user.displayName ? user.user.displayName : '',
+        email: user.user.email ? user.user.email : '',
+        photoURL: user.user.photoURL ? user.user.photoURL : ''
+      }, user.user.email)
+    } else {
+
+      return await setCurrentUser({
+        id: user.user.uid,
+        displayName: user.user.displayName ? user.user.displayName : '',
+        email: user.user.email ? user.user.email : '',
+        photoURL: user.user.photoURL ? user.user.photoURL : ''
+      }, false)
+
+    }
+  })
+
   const onLoginFacebookHandle = async () => {
     fetchLogin()
   }
 
+  const onLoginWithGoogleHandle = async () => {
+    fetchLoginGoogle()
+  }
   const onTextChangeHandle = useCallback((value: string) => {
     setEmail(value)
   }, [email])
@@ -152,7 +176,7 @@ const Login = () => {
   }
 
 
-  const condition = (currentUser && !currentUser.weleEmail || firstTime)
+  const condition = (currentUser && (!currentUser.weleEmail || firstTime))
 
 
   return (
@@ -181,8 +205,9 @@ const Login = () => {
 
       <StyledButtonWrapper>
 
-        {loginState.loading ? <LoadingComponent /> :
+        {(loginState.loading || loginGoogleState.loading) ? <LoadingComponent /> :
           <React.Fragment>
+            <LoginWithGoogle loginWithGoogle={onLoginWithGoogleHandle} />
             {
               condition && (
                 <React.Fragment>
@@ -197,16 +222,16 @@ const Login = () => {
             }
 
             {!condition && (
-                <View
-                  // animation="bounce" easing="ease-out" iterationCount={Infinity}
-                  >
-                  <StyledButton onPress={onLoginFacebookHandle}>
-                    <StyledFeatherIcon name={'facebook-f'} />
-                    <StyledText>Login With Facebook</StyledText>
-                  </StyledButton>
-                </View>
+              <View
+              // animation="bounce" easing="ease-out" iterationCount={Infinity}
+              >
+                <StyledButton onPress={onLoginFacebookHandle}>
+                  <StyledFeatherIcon name={'facebook-f'} />
+                  <StyledText>Login With Facebook</StyledText>
+                </StyledButton>
+              </View>
 
-              )}
+            )}
           </React.Fragment>}
       </StyledButtonWrapper>
 
