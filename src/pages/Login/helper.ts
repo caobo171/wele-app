@@ -15,7 +15,6 @@ export const loginWithFacebook = async () => {
     }
 
     const data = await AccessToken.getCurrentAccessToken();
-    console.log('check user 1', data , result)
 
     if (!data) {
         throw new Error("Something went wrong obtaining access token");
@@ -25,34 +24,52 @@ export const loginWithFacebook = async () => {
         data.accessToken
     );
 
-    try{
+    try {
         const user = await firebase.auth().signInWithCredential(credential);
-        console.log('check user', user )
         return user
-    }catch(err){
-        if(err.code==='auth/account-exists-with-different-credential'){
+    } catch (err) {
+        if (err.code === 'auth/account-exists-with-different-credential') {
             const user = await loginWithGoogle()
             user.user.linkWithCredential(credential)
             return user;
-        }else{
+        } else {
             Alert.alert('Facebook Login Error', err)
             return null
-        } 
+        }
     }
 }
 
 export const loginWithGoogle = async () => {
 
-    await GoogleSignin.configure({
-        scopes: [],
-        webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
-    });
-    await GoogleSignin.signIn();
-    const {idToken, accessToken} = await GoogleSignin.getTokens()
+    console.log('aaaaaaaaaaaa')
+    try {
+        await GoogleSignin.configure({
+            scopes: [],
+            webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
+        });
+    } catch (err) {
+        Alert.alert(err)
+    }
+
+
+    try {
+        await GoogleSignin.signIn();
+    } catch (err) {
+        Alert.alert(err)
+    }
+
+
+    //    try{
+    const { idToken, accessToken } = await GoogleSignin.getTokens()
+
     const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-    const user  = await firebase.auth().signInWithCredential(credential);
-    
+
+    const user = await firebase.auth().signInWithCredential(credential);
+
     return user
+    //    }catch(err){
+    //        Alert.alert(err)
+    //    }
 }
 
 export const validateEmail = (email: string) => {
