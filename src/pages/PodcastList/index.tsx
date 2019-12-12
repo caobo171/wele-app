@@ -19,9 +19,7 @@ import PodcastItem from './PodcastItem'
 
 import styled from 'styled-components/native';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
-import LoadingComponent from '@components/Loading/Loading';
 import PodcastType from '@/store/podcast/types';
-import { getAllPodcasts } from '@store/podcast/functions';
 import { usePodcastList } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
 

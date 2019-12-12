@@ -6,8 +6,7 @@ import Home from "@pages/Home"
 
 import PlayerThumbnail from "@pages/Player/PlayerThumbnail";
 import { createStackNavigator } from 'react-navigation-stack';
-import AnotherProfile from '@/pages/UserProfile/AnotherUserProfile';
-
+import { createSwitchNavigator } from 'react-navigation';
 
 const InjectedHome = ()=>{
     return <PlayerThumbnail>
@@ -26,7 +25,7 @@ const InjectedPodcastDetail =  ()=>{
 }
 
 
-const HomeNavigator = createStackNavigator({
+const HomeNavigator = createSwitchNavigator({
     Home: {
       screen: InjectedHome,
       navigationOptions: {

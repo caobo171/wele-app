@@ -1,8 +1,8 @@
-import { createStackNavigator } from "react-navigation-stack";
 import Notifications from "../pages/Notifications";
+import { createSwitchNavigator } from "react-navigation";
 
 
-const NotificationNavigator = createStackNavigator(
+const NotificationNavigator = createSwitchNavigator(
     {
         Notifications: {
             screen: Notifications,

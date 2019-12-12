@@ -39,20 +39,6 @@ const StyledText = styled.Text`
     color: #d1d1d1;
 `
 
-const StyledTextInput = styled.TextInput`
-  flex-direction: row;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-  height: 40px;
-  border-bottom-width: 2px;
-  border-bottom-color: #83bcfc;
-`
-
-const StyledTextNote = styled.Text`
-
-`
 
 export interface Props{
     loginWithGoogle: ()=>void

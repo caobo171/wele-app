@@ -98,12 +98,10 @@ const Login = () => {
   const [loginState, fetchLogin] = useAsyncFn(async () => {
     // Login with permissions
     const user = await loginWithFacebook()
-    //@ts-ignore
     if (user.additionalUserInfo.isNewUser) {
       setFirstTime(true)
       setUser(user)
     } else {
-
       return await setCurrentUser({
         id: user.user.uid,
         displayName: user.user.displayName ? user.user.displayName : '',

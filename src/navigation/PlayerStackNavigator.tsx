@@ -1,10 +1,11 @@
 import { createStackNavigator } from "react-navigation-stack";
 import Player from "../pages/Player";
 import SettingRates from "../pages/SettingRates";
+import { createSwitchNavigator } from "react-navigation";
 
 
 
-const PlayerNavigator = createStackNavigator(
+const PlayerNavigator = createSwitchNavigator(
     {
       Player:{
         screen: Player

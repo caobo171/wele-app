@@ -12,7 +12,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
-import { NavigationContext } from 'react-navigation';
+import { NavigationContext, NavigationScreenProp } from 'react-navigation';
 
 import { useCurrentUser, useMyResult } from '@/store/user/hooks';
 import { getMyresult, logOut } from '@/store/user/function';
@@ -133,9 +133,11 @@ const StyledButtonsGroup = styled.View`
   flex-direction: row;
   justify-content: center;
 `
+interface Props {
+  navigation: NavigationScreenProp<any>
+}
 
-
-const UserProfile = () => {
+const UserProfile = (props: Props) => {
 
   const currentUser = useCurrentUser()
   const myResults = useMyResult()
@@ -156,11 +158,10 @@ const UserProfile = () => {
     <Wrapper>
       <HeaderWrapper>
         <TouchableOpacity onPress={() => {
-          nav.navigate('Home')
+          props.navigation.navigate('Home')
         }}>
-          <View>
+          
             <StyledAntDesignIcon name={'arrowleft'} />
-          </View>
         </TouchableOpacity>
       </HeaderWrapper>
 

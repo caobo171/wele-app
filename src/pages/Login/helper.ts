@@ -1,6 +1,7 @@
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 import { firebase } from "@react-native-firebase/auth";
 import { GoogleSignin, User } from '@react-native-community/google-signin';
+import { Alert } from "react-native";
 
 export const loginWithFacebook = async () => {
 
@@ -23,27 +24,52 @@ export const loginWithFacebook = async () => {
         data.accessToken
     );
 
-    const user = await firebase.auth().signInWithCredential(credential);
-
-    return user
+    try {
+        const user = await firebase.auth().signInWithCredential(credential);
+        return user
+    } catch (err) {
+        if (err.code === 'auth/account-exists-with-different-credential') {
+            const user = await loginWithGoogle()
+            user.user.linkWithCredential(credential)
+            return user;
+        } else {
+            Alert.alert('Facebook Login Error', err)
+            return null
+        }
+    }
 }
 
 export const loginWithGoogle = async () => {
 
-    await GoogleSignin.configure({
-        scopes: [],
-        webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
-    });
-    const googleUser = await GoogleSignin.signIn();
-    console.log('1' , googleUser)
-    const {idToken, accessToken} = await GoogleSignin.getTokens()
-    console.log('2')
+    console.log('aaaaaaaaaaaa')
+    try {
+        await GoogleSignin.configure({
+            scopes: [],
+            webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
+        });
+    } catch (err) {
+        Alert.alert(err)
+    }
+
+
+    try {
+        await GoogleSignin.signIn();
+    } catch (err) {
+        Alert.alert(err)
+    }
+
+
+    //    try{
+    const { idToken, accessToken } = await GoogleSignin.getTokens()
+
     const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-    console.log('3')
-    const user  = await firebase.auth().signInWithCredential(credential);
-    console.log('4')
-    console.log('check user', user)
+
+    const user = await firebase.auth().signInWithCredential(credential);
+
     return user
+    //    }catch(err){
+    //        Alert.alert(err)
+    //    }
 }
 
 export const validateEmail = (email: string) => {
