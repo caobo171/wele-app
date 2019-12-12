@@ -40,5 +40,7 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
                 ...state,
                 currentUser: { ...state.currentUser, result: action.payload }
             }
+        }else{
+            return {...state}
         }
     })

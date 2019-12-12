@@ -23,14 +23,15 @@ import storage from '@/service/localStorage';
 import { usePlayerSettings } from '@/store/player/hooks';
 import globalPlayer from '@/service/playerService';
 import { updateSpeed, updatePlayback } from '@/store/player/functions';
+import { useTheme } from '@/store/theme/hook';
+import { ThemeMode } from '@/store/theme/ThemeWrapper';
 
 
 
 
 const Wrapper = styled(LinearGradient)`
-  margin-top: 5px;
-  height: 99%;
-  width: 96%;
+  height: 100%;
+  width: 100%;
   color: yellow;
   margin : auto;
 `;
@@ -98,8 +99,17 @@ const SettingRates = (props: Props) => {
     updatePlayback(playback)
   }
 
+  const theme = useTheme()
+  const gradient = theme === ThemeMode.LIGHT ? {
+    colors: ['#7a7a7a', '#b5b5b5', '#e6e6e6'],
+    locations: [0, 0.3, 0.5]
+  }: {
+    colors: ['#787878', '#333333', '#000000'],
+    locations: [0, 0.2, 0.5]
+  }
+
   return (
-    <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0,0.3,0.5]}>
+    <Wrapper colors={gradient.colors} locations={gradient.locations}>
         <StyledTouchableHighlight onPress={()=> {
             try{
                 props.navigation.navigate('Player')

@@ -66,7 +66,7 @@ export const CustomTabbar = (props) => {
 
 const MainBottomTabNavigator = createBottomTabNavigator(
     {
-        Home: {
+        HomeNavigator: {
             screen: HomeNavigator,
             navigationOptions: {
                 tabBarLabel: "Home",

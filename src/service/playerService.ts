@@ -8,7 +8,7 @@ import storage from "./localStorage"
 import { updatePosition, updateState, updateTrack } from "@/store/player/functions"
 import PodcastType from "@/store/podcast/types"
 import { updateSpeed, updatePlayBack } from "@/store/player/actions"
-import { updatePodcast } from "@/store/podcast/functions"
+import { updatePodcast, getPodcast } from "@/store/podcast/functions"
 
 
 import RNFS from 'react-native-fs'
@@ -81,6 +81,7 @@ class GlobalPlayer {
             const nextTrack = event.nextTrack
             const track = await this.getTrack(nextTrack)
             updateTrack(track)
+            getPodcast(track.id)
         })
     }
 
@@ -148,7 +149,7 @@ class GlobalPlayer {
 
     async pickTrack(podcast: PodcastType) {
 
-        console.log('pickTrack', podcast)
+        
         if (podcast.uri) {
         
             try{

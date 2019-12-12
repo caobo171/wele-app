@@ -3,8 +3,9 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import styled from 'styled-components/native';
 import { UserType } from '@store/user/types';
 import UserAvatar from '../../components/User/UserAvatar';
-import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import { NavigationContext } from 'react-navigation';
+import { useCurrentUser } from '@/store/user/hooks';
 const StyledUserSection = styled.View`
   height: 58px;
   width: 100%;
@@ -31,11 +32,11 @@ const StyledUserNameWrapper = styled.View`
   margin-left: 12px;
 `;
 
-const StyledName = styled.Text<{theme: CustomTheme}>`
+const StyledName = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 1px;
-  color: ${props=> props.theme.textColorH1};
+  color: ${props => props.theme.textColorH1};
 `;
 
 const StyledAvatarWrapper = styled.View`
@@ -85,6 +86,7 @@ interface Props {
 }
 const BillboardItem = React.memo((props: Props) => {
 
+  const user = useCurrentUser()
   const nav = useContext(NavigationContext)
   return (
     <StyledUserSection>
@@ -95,14 +97,14 @@ const BillboardItem = React.memo((props: Props) => {
         <UserAvatar user={props.user} />
       </StyledAvatarWrapper>
       <StyledUserNameWrapper>
-        <StyledName>{props.user.displayName}</StyledName>
+        <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
         <StyledSubDescription>{props.total.toFixed(1).toString()}{' scores'}</StyledSubDescription>
       </StyledUserNameWrapper>
       <StyledActionButtonGroup>
-        <StyledTouchableOpacity onPress ={()=>{
-            nav.navigate('AnotherProfile', {
-              user: props.user
-            })
+        <StyledTouchableOpacity onPress={() => {
+          nav.navigate('AnotherProfile', {
+            user: props.user
+          })
         }}>
           <StyledEntypoIcon name={'dots-three-vertical'} />
         </StyledTouchableOpacity>

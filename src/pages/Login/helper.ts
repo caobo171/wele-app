@@ -1,6 +1,7 @@
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 import { firebase } from "@react-native-firebase/auth";
 import { GoogleSignin, User } from '@react-native-community/google-signin';
+import { Alert } from "react-native";
 
 export const loginWithFacebook = async () => {
 
@@ -14,6 +15,7 @@ export const loginWithFacebook = async () => {
     }
 
     const data = await AccessToken.getCurrentAccessToken();
+    console.log('check user 1', data , result)
 
     if (!data) {
         throw new Error("Something went wrong obtaining access token");
@@ -23,9 +25,20 @@ export const loginWithFacebook = async () => {
         data.accessToken
     );
 
-    const user = await firebase.auth().signInWithCredential(credential);
-
-    return user
+    try{
+        const user = await firebase.auth().signInWithCredential(credential);
+        console.log('check user', user )
+        return user
+    }catch(err){
+        if(err.code==='auth/account-exists-with-different-credential'){
+            const user = await loginWithGoogle()
+            user.user.linkWithCredential(credential)
+            return user;
+        }else{
+            Alert.alert('Facebook Login Error', err)
+            return null
+        } 
+    }
 }
 
 export const loginWithGoogle = async () => {
@@ -34,15 +47,11 @@ export const loginWithGoogle = async () => {
         scopes: [],
         webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
     });
-    const googleUser = await GoogleSignin.signIn();
-    console.log('1' , googleUser)
+    await GoogleSignin.signIn();
     const {idToken, accessToken} = await GoogleSignin.getTokens()
-    console.log('2')
     const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-    console.log('3')
     const user  = await firebase.auth().signInWithCredential(credential);
-    console.log('4')
-    console.log('check user', user)
+    
     return user
 }
 

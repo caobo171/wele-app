@@ -1,10 +1,11 @@
 import { createStackNavigator } from "react-navigation-stack";
 import Billboard from "@/pages/Billboard";
 import AnotherProfile from "@/pages/UserProfile/AnotherUserProfile";
+import { createSwitchNavigator } from "react-navigation";
 
 
 
-const BillboardNavigator = createStackNavigator(
+const BillboardNavigator = createSwitchNavigator(
     {
       Billboard:{
         screen: Billboard
