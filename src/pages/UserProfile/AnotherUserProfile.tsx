@@ -7,23 +7,24 @@
  * @flow
  */
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { View, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationContext, NavigationScreenProp } from 'react-navigation';
 
-import {useAnotherUserResult } from '@/store/user/hooks';
-import { ThemeMode , CustomTheme } from '@/store/theme/ThemeWrapper';
+import { useAnotherUserResult } from '@/store/user/hooks';
+import { ThemeMode, CustomTheme } from '@/store/theme/ThemeWrapper';
 import ProfileChart from './Chart';
+import UserInfo from './UserInfo';
 
 
 
-const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
+const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
   width: 100%;
-  background-color: ${props=> props.theme.backgroundColor};
+  background-color: ${props => props.theme.backgroundColor};
 `;
 
 const HeaderWrapper = styled.View`
@@ -72,13 +73,13 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text<{theme: CustomTheme}>`
+const StyledName = styled.Text<{ theme: CustomTheme }>`
   width: 100%;
   text-align: center;
   font-size: 20px;
   letter-spacing: 3px;
   font-weight: 800; 
-  color: ${props=> props.theme.textColorH1}
+  color: ${props => props.theme.textColorH1}
 `
 
 const StyledLineCharWrapper = styled.View`
@@ -86,59 +87,48 @@ const StyledLineCharWrapper = styled.View`
 `
 
 interface Props {
-    navigation: NavigationScreenProp<any>
+  navigation: NavigationScreenProp<any>
 }
 
 const AnotherProfile = (props: Props) => {
 
-    const user = props.navigation.getParam('user', null)
-    const results = useAnotherUserResult(user)
+  const user = props.navigation.getParam('user', null)
+  const results = useAnotherUserResult(user)
 
-    const nav = useContext(NavigationContext)
+  const nav = useContext(NavigationContext)
 
-    return (
-        <Wrapper>
-            <HeaderWrapper>
-                <TouchableOpacity onPress={() => {
-                    nav.navigate('Billboard')
-                }}>
-                    <View>
-                        <StyledAntDesignIcon name={'arrowleft'} />
-                    </View>
-                </TouchableOpacity>
-            </HeaderWrapper>
+  const onGobackHandle = useCallback(()=>{
+    nav.navigate('Billboard')
+  },[])
+
+  return (
+    <Wrapper>
+      <HeaderWrapper>
+        <TouchableOpacity onPress={onGobackHandle}>
+          <View>
+            <StyledAntDesignIcon name={'arrowleft'} />
+          </View>
+        </TouchableOpacity>
+      </HeaderWrapper>
 
 
-            <StyledBodyWrapper>
-                <StyledSection>
+      <StyledBodyWrapper>
+        <UserInfo user={user} />
 
-                    <StyledSectionContent>
-                        <StyledUserWrapper size="big" >
-                            <StyledPodcastImage
-                                resizeMode={"contain"}
-                                source={{ uri: user.photoURL }}
-                            />
-                            <StyledName>
-                                {user.displayName}
-                            </StyledName>
-                        </StyledUserWrapper>
-                    </StyledSectionContent>
-                </StyledSection>
+        <StyledLineCharWrapper>
+          <ProfileChart results={results} />
+        </StyledLineCharWrapper>
 
-                <StyledLineCharWrapper>
-                    <ProfileChart results={results} />
-                </StyledLineCharWrapper>
+      </StyledBodyWrapper>
 
-            </StyledBodyWrapper>
-
-        </Wrapper>
-    );
+    </Wrapper>
+  );
 };
 
 
 
 AnotherProfile.navigationOptions = {
-    header: null
+  header: null
 };
 
 export default AnotherProfile;

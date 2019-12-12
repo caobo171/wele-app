@@ -93,13 +93,13 @@ function timeSince(date: Date) {
 
 export const NotificationItem = (props: Props) => {
   const nav = useContext(NavigationContext)
-  const onClickNotificationHandler = () => {
+  const onClickNotificationHandler = useCallback(() => {
     if (props.notification.type === 'weekly_podcast') {
       nav.navigate('PodcastList', {
         search: props.notification.message.match(/\d+/g)[0]
       })
     }
-  }
+  },[])
   return (
 
     <StyledWrapper onPress={onClickNotificationHandler}>

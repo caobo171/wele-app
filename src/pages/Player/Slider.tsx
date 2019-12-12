@@ -38,7 +38,7 @@ interface Props {
   position: number,
 }
 
-const PlayerSlider = (props: Props) => {
+const PlayerSlider = React.memo((props: Props) => {
   
   return (
     <React.Fragment>
@@ -58,6 +58,6 @@ const PlayerSlider = (props: Props) => {
       </StyledViewTimeIndicator>
     </React.Fragment>
   );
-};
+},(prev,next)=> prev.duration === next.duration && prev.position === next.position)
 
 export default PlayerSlider;

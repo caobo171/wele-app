@@ -25,7 +25,7 @@ const InjectedPodcastDetail =  ()=>{
 }
 
 
-const HomeNavigator = createSwitchNavigator({
+const HomeNavigator = createStackNavigator({
     Home: {
       screen: InjectedHome,
       navigationOptions: {

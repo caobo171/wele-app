@@ -26,7 +26,7 @@ interface Props {
 }
 
 
-const Main = (props: Props) => {
+const Main = React.memo((props: Props) => {
 
     return (
         <Wrapper>
@@ -34,8 +34,9 @@ const Main = (props: Props) => {
             <AnimatedWrapper podcast={props.podcast} />
         </Wrapper>
     );
-}
+},(prev,next)=> prev.podcast.id === next.podcast.id)
 
+//@ts-ignore
 Main.navigationOptions = {
     header: null
 }

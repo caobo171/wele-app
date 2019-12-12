@@ -7,15 +7,12 @@
  * @flow
  */
 
-import React, {useEffect , useState , useCallback, useContext} from 'react';
+import React from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {TouchableOpacity} from 'react-native';
-
-
-
 
 import styled from 'styled-components/native';
 import { NavigationScreenProp } from 'react-navigation';

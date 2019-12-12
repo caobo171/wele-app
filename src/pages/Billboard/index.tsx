@@ -11,12 +11,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { FlatList } from 'react-navigation';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
-import { UserType } from '@store/user/types'
-import { getResults } from '@store/user/function';
+import { UserType, MergeResultsType } from '@store/user/types'
 import { useResults } from '@store/user/hooks';
 import BillboardItem from './BillboardItem';
-import useAsync from 'react-use/lib/useAsync';
-import LoadingComponent from '@/components/Loading/Loading';
 import { useTheme } from '@/store/theme/hook';
 
 
@@ -57,20 +54,26 @@ const Billboard = React.memo(() => {
 
   const mergeResults = useResults()
 
-  // const state = useAsync(async () => {
-  //   return await getResults()
-  // })
-
   const theme = useTheme()
-  const gradient = theme === ThemeMode.LIGHT ? {
+
+
+  return <BillboardMemo mergeResults={mergeResults} theme={theme} />
+})
+
+interface Props{
+  theme: ThemeMode,
+  mergeResults: MergeResultsType[]
+}
+
+const BillboardMemo = React.memo((props: Props)=>{
+  const gradient = props.theme === ThemeMode.LIGHT ? {
     colors: ['#7a7a7a', '#b5b5b5', '#e6e6e6'],
     locations: [0, 0.3, 0.5]
   }: {
     colors: ['#787878', '#333333', '#000000'],
     locations: [0, 0.2, 0.5]
   }
-
-  return (
+  return(
     <Wrapper colors={gradient.colors} locations={gradient.locations}>
       <StyledBillboardHeader>
         <StyledHeaderImage resizeMode={'contain'} source={require('@/assets/cup.png')} width={64} height={72} />
@@ -82,7 +85,7 @@ const Billboard = React.memo(() => {
           <StyledBillboardContent>
             <FlatList
 
-              data={mergeResults.filter(e => e.user.weleEmail !== 'weenjoylearningenglish@gmail.com')}
+              data={props.mergeResults.filter(e => e.user.weleEmail !== 'weenjoylearningenglish@gmail.com')}
               renderItem={({ item, index }) => {
 
                 const user: UserType = item.user
@@ -95,8 +98,8 @@ const Billboard = React.memo(() => {
       }
 
     </Wrapper>
-  );
-})
+  )
+},(prev,next)=> prev.theme === next.theme && prev.mergeResults === next.mergeResults)
 
 
 //@ts-ignore

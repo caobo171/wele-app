@@ -23,11 +23,11 @@ const validdateHint = (hint: string)=>{
     return hint.replace(/&#39;/g,`'`).replace(/&quot;/g,`"`)
 }
 
-const Hint = (props: Props) => {
+const Hint = React.memo((props: Props) => {
 
     return (<StyldView>
         <StyledText>{validdateHint(props.hint)}</StyledText>
     </StyldView>)
-}
+},(prev,next)=> prev.hint ===  next.hint)
 
 export default Hint

@@ -46,7 +46,7 @@ const DescriptionSub = styled.Text`
 
 
 
-const Info = (props: PodcastType) => {
+const Info = React.memo((props: PodcastType) => {
 
   return (
     <StyledInfoWrapper>
@@ -63,6 +63,6 @@ const Info = (props: PodcastType) => {
       </StyleInfo>
     </StyledInfoWrapper>
   );
-};
+},(prev,next)=> prev.id === next.id);
 
 export default Info;

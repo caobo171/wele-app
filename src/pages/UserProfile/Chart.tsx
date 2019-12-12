@@ -15,7 +15,7 @@ interface Props {
 
 const WIDTH = Dimensions.get("window").width
 
-const ProfileChart = (props: Props) => {
+const ProfileChart = React.memo((props: Props) => {
 
     const theme = useContext(ThemeContext)
     const themeMode = useTheme()
@@ -64,6 +64,6 @@ const ProfileChart = (props: Props) => {
             color: theme.textColorH1
         }}
     />
-}
+},(prev,next)=> prev.results === next.results)
 
 export default ProfileChart ;

@@ -5,9 +5,10 @@ import PlayerNavigator from "./PlayerStackNavigator";
 import MainBottomTabNavigator from "./MainBottomTabNavigator"
 import NotificationNavigator from "./NotificationNavigator";
 import AnotherProfile from "@/pages/UserProfile/AnotherUserProfile";
+import { createSwitchNavigator } from "react-navigation";
 
 
-const RootNavigator = createStackNavigator(
+const RootNavigator = createSwitchNavigator(
     {
         PlayerNavigator: {
             screen: PlayerNavigator,

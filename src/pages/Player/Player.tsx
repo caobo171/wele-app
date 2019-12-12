@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import styled from 'styled-components/native';
 
 import ActionButtons from "./ActionButtons";
@@ -46,26 +46,24 @@ const Player = (props: Props) => {
     const nav = useContext(NavigationContext)
     const { state, position, playback, speed, } = usePlayer()
 
-    const onSlideCompleHandle = async (value: number) => {
+    const onSlideCompleHandle = useCallback(async (value: number) => {
         await globalPlayer.seekTo(value)
         await updateSliding(false)
         await updatePosition(position.duration,value)
-        
+    },[])
 
-    }
-
-    const onSlideStartHandle = async () => {
+    const onSlideStartHandle = useCallback(async () => {
         await updateSliding(true)
-    }
+    },[])
 
 
-    const onPlayBackHandle = async () => {
+    const onPlayBackHandle = useCallback(async () => {
         await globalPlayer.playBack(playback)
-    }
+    },[])
 
-    const onPausePlayHandle = () => {
+    const onPausePlayHandle = useCallback(() => {
         globalPlayer.playPause()
-    }
+    },[])
 
     return (
 
