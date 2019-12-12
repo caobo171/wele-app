@@ -40,12 +40,10 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
     }
 
     if (isNew && typeof isNew === 'string') {
-        console.log('aaaaaaaaaaaa this is here 1')
         await updateWELEEmail(user, isNew)
         return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
 
-        console.log('aaaaaaaaaaaa this is here 2')
         const userData: UserType = await getCurrentUserAsync(user.id)
         if(userData.email){
             return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))

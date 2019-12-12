@@ -62,12 +62,10 @@ const UserProfile = React.memo(() => {
   const currentUser = useCurrentUser()
   const myResults = useMyResult()
 
-
-  console.log('aaaaaaaaaaaaaa check user')
   const nav = useContext(NavigationContext)
 
   const state = useAsync(async () => {
-    console.log('check curreUser', currentUser)
+
     if (currentUser) {
       getMyresult(currentUser)
     }

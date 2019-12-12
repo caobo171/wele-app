@@ -142,7 +142,6 @@ const SettingRates = React.memo(() => {
                 try {
                     nav.navigate('Player')
                 } catch (err) {
-                    console.log('err', err)
                 }
             }}>.
                 <StyledColumnHeader>

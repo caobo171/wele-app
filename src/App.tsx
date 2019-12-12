@@ -1,6 +1,6 @@
 import React from "react";
 import store from "./store/store";
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Alert } from 'react-native';
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import SplashScreen from 'react-native-splash-screen'
 //@ts-ignore
@@ -27,12 +27,12 @@ const App = () => {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can access the folder');
+      
       } else {
-        console.log('Folder permission denied');
+        Alert.alert('Permssion Error','Folder permission denied');
       }
     } catch (err) {
-      console.warn(err);
+      Alert.alert('Permission Error',err);
     }
   }
   useEffectOnce(() => {

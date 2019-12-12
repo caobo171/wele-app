@@ -111,7 +111,6 @@ const SettingRates = (props: Props) => {
             try{
                 props.navigation.navigate('Player')
             }catch(err){
-                console.log('err', err)
             }
         }}>
                 <StyledColumnHeader>

@@ -41,7 +41,6 @@ export const loginWithFacebook = async () => {
 
 export const loginWithGoogle = async () => {
 
-    console.log('aaaaaaaaaaaa')
     try {
         await GoogleSignin.configure({
             scopes: [],
