@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 //@ts-ignore
@@ -23,12 +23,13 @@ import { NavigationContext } from 'react-navigation';
 import { updateRecentPodcast } from '@/store/podcast/functions';
 
 
-import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
+import { is } from '@babel/types';
 
-const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
+const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
   width: 100%;
-  background-color: ${props=> props.theme.backgroundColor};
+  background-color: ${props => props.theme.backgroundColor};
 `;
 
 const HeaderWrapper = styled.View`
@@ -62,13 +63,13 @@ const StyledUserWrapper = styled.View`
 `;
 
 
-const StyledPodcastImage = styled.Image<{theme: CustomTheme}>`
+const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
   height: 176;
   width: 100%;
   border-radius: 10;
   margin: 10px 0px 20px 0px;
 
-  ${props=> props.theme.name === ThemeMode.DARK && `
+  ${props => props.theme.name === ThemeMode.DARK && `
     opacity: 0.6;
   `}
 `;
@@ -79,14 +80,14 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text<{theme: CustomTheme}>`
+const StyledName = styled.Text<{ theme: CustomTheme }>`
   width: 80%;
   text-align: left;
   font-size: 20px;
   letter-spacing: 1px;
   font-weight: bold; 
   margin-bottom: 20px;
-  color: ${props=> props.theme.textColorH1};
+  color: ${props => props.theme.textColorH1};
 `
 
 const DescriptionInfo = styled.Text`
@@ -120,11 +121,11 @@ const StyledDescriptionWrapper = styled.View`
     flex: 1;
 `
 
-const StyledReadmore = styled.Text<{theme: CustomTheme}>`
+const StyledReadmore = styled.Text<{ theme: CustomTheme }>`
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 20px;
-    color: ${props=> props.theme.textColorH1};
+    color: ${props => props.theme.textColorH1};
 `;
 
 const StyledButtonWrapper = styled.View`
@@ -172,8 +173,11 @@ const PodcastDetail = () => {
   const currentPodcast = useCurrentPodcast()
   const nav = useContext(NavigationContext)
 
+  const onReadmoreHandle = useCallback(() => {
+    setIsBrief(!isBrief)
+  }, [isBrief])
 
-  const onPressPlayHandle = async () => {
+  const onPressPlayHandle = useCallback(async () => {
     try {
       const res = await globalPlayer.pickTrack(currentPodcast)
       if (res !== true) {
@@ -191,10 +195,30 @@ const PodcastDetail = () => {
       Alert.alert('Fail to open File ', err.toString())
     }
 
-  }
+  }, [currentPodcast.id])
+  return <PodcastDetailMemo
+    podcast={currentPodcast}
+    isBrief={isBrief}
+    onReadmoreHandle={onReadmoreHandle}
+
+    onPressPlayHandle={onPressPlayHandle}
+  />
+};
+
+
+interface Props {
+  podcast: PodcastType,
+  isBrief: boolean,
+  onReadmoreHandle: () => void,
+  onPressPlayHandle: () => void
+}
+
+const PodcastDetailMemo = React.memo((props: Props) => {
+  const nav = useContext(NavigationContext)
+
   return <React.Fragment>
     {
-      currentPodcast && (
+      props.podcast && (
         <Wrapper>
           <HeaderWrapper>
             <TouchableOpacity onPress={() => {
@@ -212,43 +236,43 @@ const PodcastDetail = () => {
               <StyledUserWrapper >
                 <StyledPodcastImage
                   resizeMode={"stretch"}
-                  source={{ uri: currentPodcast.imgUrl }}
+                  source={{ uri: props.podcast.imgUrl }}
                 />
                 <StyledName>
-                  {currentPodcast.name}
+                  {props.podcast.name}
                 </StyledName>
 
                 <DescriptionInfo>
-                  {currentPodcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{currentPodcast.narrator.displayName}
+                  {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
                 </DescriptionInfo>
 
                 <StyledButtonWrapper>
-                <TouchableOpacity onPress={onPressPlayHandle}>
-                  <StyledPlayButton>
-                    <StyledText >Open</StyledText>
-                  </StyledPlayButton>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={props.onPressPlayHandle}>
+                    <StyledPlayButton>
+                      <StyledText >Open</StyledText>
+                    </StyledPlayButton>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => Linking.openURL(currentPodcast.downloadLink ? currentPodcast.downloadLink : WELE_DEFAULT_LINK)}>
-                  <StyledDownloadButton >
-                    <StyledText >Download </StyledText>
-                  </StyledDownloadButton>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={() => Linking.openURL(props.podcast.downloadLink ? props.podcast.downloadLink : WELE_DEFAULT_LINK)}>
+                    <StyledDownloadButton >
+                      <StyledText >Download </StyledText>
+                    </StyledDownloadButton>
+                  </TouchableOpacity>
                 </StyledButtonWrapper>
-       
+
 
               </StyledUserWrapper>
 
               <StyledDescriptionWrapper>
                 <DescriptionMain>
                   {/* { trimText(reFormatText(PODCAST.description)) } */}
-                  {isBrief ? trimText(reFormatText(currentPodcast.description.replace(new RegExp('<br>', 'g'), '\n'))) :
-                    reFormatText(currentPodcast.description.replace(new RegExp('<br>', 'g'), '\n'))}
+                  {props.isBrief ? trimText(reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))) :
+                    reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))}
 
                 </DescriptionMain>
 
                 <TouchableOpacity>
-                  <StyledReadmore onPress={() => setIsBrief(!isBrief)}>{isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
+                  <StyledReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
                 </TouchableOpacity>
 
 
@@ -260,7 +284,7 @@ const PodcastDetail = () => {
       )
     }
   </React.Fragment>
-};
+}, (next, prev) => next.podcast.id === prev.podcast.id && next.isBrief === prev.isBrief)
 
 PodcastDetail.navigationOptions = {
   header: null

@@ -26,7 +26,6 @@ const MainAppScreen = () => {
 
   const status = useAsync(async () => {
     const rawUser = await firebase.auth().currentUser;
-    console.log(rawUser)
 
     if (rawUser) {
       const user = {

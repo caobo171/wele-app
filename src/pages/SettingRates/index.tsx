@@ -7,12 +7,12 @@
  * @flow
  */
 
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 
 
@@ -21,7 +21,7 @@ import styled from 'styled-components/native';
 import storage from '@/service/localStorage';
 import globalPlayer from '@/service/playerService';
 import { usePlayerSettings } from '@/store/player/hooks';
-import { updateSpeed , updatePlayback } from '@/store/player/functions';
+import { updateSpeed, updatePlayback } from '@/store/player/functions';
 import { NavigationContext } from 'react-navigation';
 
 const Wrapper = styled(LinearGradient)`
@@ -52,8 +52,8 @@ const StyledNumberView = styled(TouchableOpacity)`
     align-items: center;
     flex-direction: row;
 `
-const StyledNumberText = styled.Text<{check: boolean}>`
-    color: ${props => props.check ? 'green': '#737373'};
+const StyledNumberText = styled.Text<{ check: boolean }>`
+    color: ${props => props.check ? 'green' : '#737373'};
     font-weight: bold;
 `
 
@@ -78,68 +78,91 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
     font-size: 16px;
 `
 
-const SettingRates = () => {
-  const {playback, speed } = usePlayerSettings()
-  const nav = useContext(NavigationContext)
+interface SettingsPlaybackProps {
+    playback: number;
+}
 
-  const handleSetSpeed = (speed: number)=>{
-    storage.set('speed', speed.toString())
-    globalPlayer.fast(speed);
-    updateSpeed(speed)
-  }
+const SettingsPlayBack = React.memo((props: SettingsPlaybackProps) => {
+    const handleSetPlayback = (playback: number) => {
+        storage.set('playback', playback.toString())
+        updatePlayback(playback)
+    }
 
-  const handleSetPlayback = (playback: number)=>{
-    storage.set('playback', playback.toString())
-    updatePlayback(playback)
-  }
+    return <StyledValueColumn>
+        {
+            [5, 10, 15, 20, 25, 30].map(number => {
+                return <StyledNumberView key={number} onPress={() => handleSetPlayback(number)}>
+                    {props.playback === number && <StyledAntDesignIcon name="check" />}
+                    <StyledNumberText check={props.playback === number}>
+                        {number}s
+                </StyledNumberText>
+                </StyledNumberView>
+            })
+        }
+    </StyledValueColumn>
+}, (prev, next) => prev.playback === next.playback)
 
-  return (
-    <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0,0.3,0.5]}>
-        <StyledTouchableHighlight onPress={()=> {
-            try{
-                nav.navigate('Player')
-            }catch(err){
-                console.log('err', err)
+interface SettingsSpeedProps {
+    speed: number
+}
+
+const SettingsSpeed = React.memo((props: SettingsSpeedProps) => {
+
+    const handleSetSpeed = (speed: number) => {
+        storage.set('speed', speed.toString())
+        globalPlayer.fast(speed);
+        updateSpeed(speed)
+    }
+
+    return (
+        <StyledValueColumn>
+            {
+                [0.5, 0.7, 0.8, 1, 1.2, 1.5, 1.8, 2].map(number => {
+                    return <StyledNumberView key={number} onPress={() => handleSetSpeed(number)}>
+                        {props.speed === number && <StyledAntDesignIcon name="check" />}
+                        <StyledNumberText check={props.speed === number}>
+                            {number}x
+                </StyledNumberText>
+                    </StyledNumberView>
+                })
             }
-        }}>.
+        </StyledValueColumn>
+    )
+}, (prev, next) => prev.speed === next.speed)
+
+const SettingRates = React.memo(() => {
+    const { playback, speed } = usePlayerSettings()
+    const nav = useContext(NavigationContext)
+
+
+
+    return (
+        <Wrapper colors={['#7a7a7a', '#b5b5b5', '#e6e6e6']} locations={[0, 0.3, 0.5]}>
+            <StyledTouchableHighlight onPress={() => {
+                try {
+                    nav.navigate('Player')
+                } catch (err) {
+                }
+            }}>.
                 <StyledColumnHeader>
                     Change speed
                 </StyledColumnHeader>
                 <StyledColumnHeader>
-                    Change playback 
+                    Change playback
                 </StyledColumnHeader>
-        </StyledTouchableHighlight>
+            </StyledTouchableHighlight>
 
-        <StyledBillboardContent>
-            <StyledValueColumn>
-                {
-                    [0.5, 0.7 ,  0.8, 1, 1.2, 1.5, 1.8, 2].map(number=>{
-                        return <StyledNumberView  key={number} onPress={()=> handleSetSpeed(number)}>
-                            { speed === number && <StyledAntDesignIcon name="check"/>}
-                            <StyledNumberText check={speed === number}>
-                                {number}x
-                            </StyledNumberText>
-                        </StyledNumberView>
-                    }) 
-                }
-            </StyledValueColumn>
-            <StyledValueColumn>
-                {
-                    [ 5 , 10 , 15, 20, 25, 30 ].map(number=>{
-                        return <StyledNumberView  key={number} onPress={()=> handleSetPlayback(number)}>
-                            { playback === number && <StyledAntDesignIcon name="check"/>}
-                            <StyledNumberText check={playback === number}>
-                                {number}s
-                            </StyledNumberText>
-                        </StyledNumberView>
-                    }) 
-                }
-            </StyledValueColumn>
-        </StyledBillboardContent>
-    </Wrapper>
-  );
-};
+            <StyledBillboardContent>
+                <SettingsSpeed speed={speed} />
+                <SettingsPlayBack playback={playback} />
+            </StyledBillboardContent>
+        </Wrapper>
+    );
+});
 
+
+
+//@ts-ignore
 SettingRates.navigationOptions = {
     header: null,
 }

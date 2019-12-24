@@ -1,9 +1,9 @@
 
 
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { NavigationContext } from 'react-navigation';
 import styled from 'styled-components/native';
-import {CustomTheme} from '@store/theme/ThemeWrapper'
+import { CustomTheme } from '@store/theme/ThemeWrapper'
 
 //@ts-ignore
 import FeatherIcon from 'react-native-vector-icons/Feather';
@@ -12,6 +12,7 @@ import { useNotifications, useUnreadNotificationNumber } from '@store/notificati
 import { updateNotifications } from '@store/notification/functions';
 import { updateLastSeenOfUser } from '@/store/user/function';
 import { useCurrentUser } from '@/store/user/hooks';
+import { UserType } from '@/store/user/types';
 
 
 const StyledFeatherIcon = styled(FeatherIcon)`
@@ -20,8 +21,8 @@ const StyledFeatherIcon = styled(FeatherIcon)`
   margin: 8px 20px 0px 0px;
 `;
 
-const HeaderWrapper = styled.View<{theme: CustomTheme}>`
-  background-color: ${props=> props.theme.backgroundColor}
+const HeaderWrapper = styled.View<{ theme: CustomTheme }>`
+  background-color: ${props => props.theme.backgroundColor}
   height: 40px;
   flex-direction: row;
   justify-content: flex-end;
@@ -47,34 +48,38 @@ const StyledBadge = styled.Text`
     font-weight: bold;
 `
 
-
-
-const Header = () => {
+const Header = React.memo(() => {
 
     const unreadNumber = useUnreadNotificationNumber()
-    const nav = useContext(NavigationContext)
     const currentUser = useCurrentUser()
-    return (
-        <HeaderWrapper>
-
-            <TouchableOpacity onPress={() => {
-                updateNotifications()
-                updateLastSeenOfUser(currentUser)
-                nav.navigate('Notifications');
-            }}>
-                <StyledView>
-                    <StyledFeatherIcon name={'bell'} />
-                    {unreadNumber > 0 && <StyledBadge>{unreadNumber}</StyledBadge>}
-                </StyledView>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => nav.navigate('UserProfile')}>
-                <View>
-                    <StyledFeatherIcon name={'settings'} />
-                </View>
-            </TouchableOpacity>
-        </HeaderWrapper>
-    )
+    return <HeaderMemo unreadNumber={unreadNumber} currentUser={currentUser}/>
+})
+interface Props{
+    currentUser: UserType,
+    unreadNumber: number
 }
+const HeaderMemo = React.memo((props: Props) => {
+
+    const onNotificationClickHandle = useCallback(()=>{
+        updateNotifications()
+        updateLastSeenOfUser(props.currentUser)
+        nav.navigate('Notifications');
+    },[props.currentUser])
+    const nav = useContext(NavigationContext)
+    return <HeaderWrapper>
+        <TouchableOpacity onPress={onNotificationClickHandle}>
+            <StyledView>
+                <StyledFeatherIcon name={'bell'} />
+                {props.unreadNumber > 0 && <StyledBadge>{props.unreadNumber}</StyledBadge>}
+            </StyledView>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => nav.navigate('UserProfile')}>
+            <View>
+                <StyledFeatherIcon name={'settings'} />
+            </View>
+        </TouchableOpacity>
+    </HeaderWrapper>
+},(prev, next)=> prev.currentUser.id === next.currentUser.id && prev.unreadNumber === next.unreadNumber)
 
 
 

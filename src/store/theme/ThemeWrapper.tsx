@@ -87,7 +87,6 @@ const ThemeWrapper: React.FC<PropsWithChildren<{}>> = ({children})=>{
        
     },[themeMode])
 
-    console.log('check themeMOde', themeMode)
 
     return <ThemeProvider theme={getTheme(themeMode)}>
             <React.Fragment>{children}</React.Fragment> 
