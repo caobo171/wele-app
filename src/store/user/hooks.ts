@@ -13,10 +13,33 @@ export const useResults = () => {
 
     const weleEmail = user.weleEmail.toLowerCase().replace(/\s/g, '')
     if (user.weleEmail && results.get(weleEmail)) {
-      return {
-        user,
+
+      if(results.get(weleEmail).Total){
+
+        if(typeof results.get(weleEmail).Total  !== 'number'  ){
+          console.log('check ',results.get(weleEmail).Total ,  results.get(weleEmail))
+        }
+        return {
+            user,
+            //@ts-ignore
+            total: results.get(weleEmail) ? results.get(weleEmail).Total : 0 as number
+          }
+        
+      }else{
+        
+        const result = results.get(weleEmail)
+        const total:number = Object.keys(result)
+        .filter(key=> Number(result[key]) > -3 )
         //@ts-ignore
-        total: results.get(weleEmail) ? results.get(weleEmail).Total : 0 as number
+        .map( key => result[key])
+        .reduce( (val1, val2)=> val1 + val2)
+
+        console.log(result, total , Object.keys(result)
+        .filter(key=> Number(result[key]) > -3 ))
+        return {
+          user,
+          total
+        }
       }
     } else {
       return {
@@ -67,7 +90,9 @@ const transformResult = (result: ResultType | undefined) => {
   let tempTotal = 0;
   let totalArray = []
   let labelArray = []
-  const divider = Math.round(data.length / 6)
+
+  const DIVIDER  = 6 ;
+  const divider = Math.round(data.length / DIVIDER)
 
   for (let i = 0; i < data.length; i++) {
 
@@ -86,6 +111,12 @@ const transformResult = (result: ResultType | undefined) => {
   if (data.length - 1 % divider !== 0) {
     totalArray.push(tempTotal)
     labelArray.push(data[data.length - 1])
+  }
+
+  if(totalArray.length < DIVIDER){
+    totalArray = [0, 0 , 0 , 0 , 0  ].concat(totalArray);
+    labelArray = ['', '' , '' , '' , ''].concat(labelArray);
+    console.log(totalArray, labelArray)
   }
 
   return { totalArray, labelArray }

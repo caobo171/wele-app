@@ -40,47 +40,12 @@ const StyledBodyWrapper = styled.View`
 `;
 
 
-const StyledSection = styled.View`
-  width: 100%;
-  margin: 0 ;
-`;
-
-
-const StyledSectionContent = styled.View``;
-
-const StyledUserWrapper = styled.View<{ size: 'big' | 'medium' | 'small' }>`
-  width: 100%;
-  flex-direction: column;
-  border-style: solid;
-  border-color: #d4d4d4;
-  padding: 10px 10px 10px 10px;
-`;
-
-
-const StyledPodcastImage = styled.Image`
-  height: 100;
-  width: 100;
-  border-radius: 70;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-`;
-
 const StyledAntDesignIcon = styled(AntDesignIcon)`
   font-size: 28px;
   color: #a8a8a8;
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text<{ theme: CustomTheme }>`
-  width: 100%;
-  text-align: center;
-  font-size: 20px;
-  letter-spacing: 3px;
-  font-weight: 800; 
-  color: ${props => props.theme.textColorH1}
-`
 
 const StyledLineCharWrapper = styled.View`
   width: 80%;

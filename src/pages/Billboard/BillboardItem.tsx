@@ -98,7 +98,7 @@ const BillboardItem = React.memo((props: Props) => {
       </StyledAvatarWrapper>
       <StyledUserNameWrapper>
         <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
-        <StyledSubDescription>{props.total.toFixed(1).toString()}{' scores'}</StyledSubDescription>
+        <StyledSubDescription>{Number(props.total).toFixed(1).toString()}{' scores'}</StyledSubDescription>
       </StyledUserNameWrapper>
       <StyledActionButtonGroup>
         <StyledTouchableOpacity onPress={() => {
