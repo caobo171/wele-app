@@ -34,8 +34,6 @@ export const useResults = () => {
         .map( key => result[key])
         .reduce( (val1, val2)=> val1 + val2)
 
-        console.log(result, total , Object.keys(result)
-        .filter(key=> Number(result[key]) > -3 ))
         return {
           user,
           total

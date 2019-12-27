@@ -49,7 +49,7 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
             return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
 
         }else{
-            return  storex.dispatch(actions.setCurrentUser(null))
+            return  storex.dispatch(actions.setCurrentUser(user))
         }
         
     }

@@ -9,7 +9,6 @@ import LoadingComponent from "./components/Loading/Loading";
 import RootNavigator from "./navigation/AppContainer"
 import useEffectOnce from "react-use/lib/useEffectOnce";
 import globalPlayer from "./service/playerService";
-import presenceSystem from "./service/presenseSystem";
 import messageSystem from "./service/messageSystem";
 
 

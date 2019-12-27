@@ -98,10 +98,12 @@ const Login = () => {
   const [loginState, fetchLogin] = useAsyncFn(async () => {
     // Login with permissions
     const user = await loginWithFacebook()
+
     if (user.additionalUserInfo.isNewUser) {
       setFirstTime(true)
       setUser(user)
     } else {
+
       return await setCurrentUser({
         id: user.user.uid,
         displayName: user.user.displayName ? user.user.displayName : '',
@@ -174,7 +176,7 @@ const Login = () => {
   }
 
 
-  const condition = (currentUser && (!currentUser.weleEmail || firstTime))
+  const condition = (currentUser && (!currentUser.weleEmail)) || firstTime
 
 
   return (
@@ -205,7 +207,7 @@ const Login = () => {
 
         {(loginState.loading || loginGoogleState.loading) ? <LoadingComponent /> :
           <React.Fragment>
-            <LoginWithGoogle loginWithGoogle={onLoginWithGoogleHandle} />
+            {}
             {
               condition && (
                 <React.Fragment>
@@ -220,14 +222,15 @@ const Login = () => {
             }
 
             {!condition && (
-              <View
+              <React.Fragment
               // animation="bounce" easing="ease-out" iterationCount={Infinity}
               >
+                <LoginWithGoogle loginWithGoogle={onLoginWithGoogleHandle} />
                 <StyledButton onPress={onLoginFacebookHandle}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
                 </StyledButton>
-              </View>
+              </React.Fragment>
 
             )}
           </React.Fragment>}

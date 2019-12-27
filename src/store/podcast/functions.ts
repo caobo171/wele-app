@@ -55,6 +55,7 @@ export const updateRecentPodcast = async (newPodcast : PodcastType , storex= sto
 export const getAllPodcasts = async (storex= store)=> {
     const querySnapshots = await firestore()
     .collection(PODCAST_COLLECTION)
+    .orderBy(POSTDATE_PROPERTY)
     .get();
 
     let data = new Map<string, PodcastType>();
