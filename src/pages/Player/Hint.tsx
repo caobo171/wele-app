@@ -11,10 +11,9 @@ const StyledView = styled.ScrollView<{ theme: CustomTheme }>`
 `
 
 const StyledText = styled.Text<{ theme: CustomTheme }>`
-    margin-top: 16px;
-    font-size:  15px;
-    margin-bottom: 32px;
-    color: ${props => props.theme.textColorH1};
+    line-height: 26px;
+    font-size:  18px;
+    color: ${props => props.theme.textColorH3};
 `
 
 const StyledTextWrapper = styled.Text`
@@ -24,8 +23,9 @@ const StyledTextWrapper = styled.Text`
 
 
 const StyledHighLightText = styled.Text<{ theme: CustomTheme }>`
-    color: ${props => props.theme.name === 'light' ? '#69acff' : '#afbf45'};
-    font-size: 18px;
+    line-height: 26px;
+    font-size:  18px;
+    color: ${props => props.theme.textColorH1};
     font-weight: 700;
 `;
 
@@ -52,12 +52,12 @@ const transformText = (text: string): Array<{
     time: number,
     text: string
 }> => {
+    text = text.replace(/\n/g,' ')
     let arrayText = text.split(/(\[\w+\])/g);
     if (! /(\[\w+\])/.test(arrayText[0])) {
         arrayText.unshift('[0]')
     }
 
-    console.log(arrayText)
     let transformTextObjects: Array<{
         time: number,
         text: string
@@ -66,9 +66,12 @@ const transformText = (text: string): Array<{
     for (let i = 0; i < arrayText.length; i += 2) {
         transformTextObjects.push({
             time: Number(arrayText[i].match(/\d+/g)[0]),
-            text: arrayText[i + 1]
+            text:  arrayText[i + 1]
         })
+
+
     }
+
     return transformTextObjects
 
 }
@@ -82,7 +85,6 @@ const Hint = React.memo((props: Props) => {
 
     const hintObjects = transformText(props.hint)
 
-    console.log(hintObjects)
 
     if (hintObjects.length === 1) return (<StyledView>
         <StyledTextWrapper>

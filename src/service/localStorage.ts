@@ -34,6 +34,14 @@ class WeleLocalStorage {
         }
     }
 
+    setPodcastList = async(podcastList : PodcastType[]) => {
+        return await this.set('postcastlist',JSON.stringify(podcastList))
+    }
+
+    getPodcastList = async(): Promise<PodcastType[]>=>{
+        return await this.get('postcastlist','object',[])
+    }
+
     setRecentPodcasts = async (podcast:PodcastType, uri: string )=>{
 
         const podcastsStorage = await this.get('recent-podcasts', 'object', []) as PodcastType[]
