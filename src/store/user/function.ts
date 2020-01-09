@@ -5,6 +5,7 @@ import * as actions from './actions'
 import { UserType, ResultType } from "./types";
 import store from "../store";
 import { GoogleSignin } from "@react-native-community/google-signin";
+import storage from "@/service/localStorage";
 
 
 export const RESULTS_COLLECTION = "results"
@@ -35,20 +36,25 @@ const updateWELEEmail = async (user: UserType, weleEmail: string) => {
 
 export const setCurrentUser = async (user: UserType, isNew?: boolean | string, storex = store) => {
 
+    
     if (!user) {
         return storex.dispatch(actions.setCurrentUser(user))
     }
 
+    
     if (isNew && typeof isNew === 'string') {
         await updateWELEEmail(user, isNew)
+        await storage.setCurrentUser({ ...user, weleEmail: isNew })
         return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
 
         const userData: UserType = await getCurrentUserAsync(user.id)
         if(userData.email){
+            await storage.setCurrentUser({ ...userData, ...user })
             return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
 
         }else{
+            await storage.setCurrentUser(user)
             return  storex.dispatch(actions.setCurrentUser(user))
         }
         
@@ -58,6 +64,7 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 
 export const logOut = async (storex = store) => {
     await firebase.auth().signOut();
+    await storage.removeCurrentUser()
     try{
         await LoginManager.logOut()
     }catch(e){

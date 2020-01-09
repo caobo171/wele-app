@@ -22,18 +22,26 @@ const getStartDate = (d: Date) => {
 
 
 export const getPodcastThisWeek = async (storex = store) => {
-  const querySnapshots = await firestore()
-    .collection(PODCAST_COLLECTION)
-    .orderBy(POSTDATE_PROPERTY)
-    .startAt(getStartDate(new Date()))
-    .get();
+  const netState = await NetInfo.fetch()
+  console.log('check netState', netState.isConnected)
+  if (netState.isConnected) {
 
-  let data = new Map<string, PodcastType>();
-  querySnapshots.forEach((doc: any) => {
-    data = data.set(doc.id, { id: doc.id, ...doc.data() })
-  });
+    const querySnapshots = await firestore()
+      .collection(PODCAST_COLLECTION)
+      .orderBy(POSTDATE_PROPERTY)
+      .startAt(getStartDate(new Date()))
+      .get();
 
-  return await storex.dispatch(actions.getPodcastThisWeek(data))
+    let data = new Map<string, PodcastType>();
+    querySnapshots.forEach((doc: any) => {
+      data = data.set(doc.id, { id: doc.id, ...doc.data() })
+    });
+
+    return await storex.dispatch(actions.getPodcastThisWeek(data))
+  }else{
+    return 
+  }
+
 }
 
 export const updatePodcast = (podcast: PodcastType, storex = store) => {

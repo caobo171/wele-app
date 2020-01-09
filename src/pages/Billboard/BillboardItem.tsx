@@ -14,9 +14,9 @@ const StyledUserSection = styled.View`
 
 const StyledOrderIndicator = styled.Text<{ color: string }>`
   text-align: center;
-  flex: 0.5;
+  flex: 0.8;
   padding-top: 8px;
-  margin-right: 10px;
+  margin-right: 6px;
   border-bottom-width: 3px;
   border-color: #bababa;
   margin-bottom: 28px;

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import PodcastType from '@/store/podcast/types';
 import NotificationType from '@/store/notification/types';
 import { ThemeMode } from '@/store/theme/ThemeWrapper';
+import { UserType } from '@/store/user/types';
 
 const MAX_RECENT_PODCASTS = 5;
 class WeleLocalStorage {
@@ -11,6 +12,10 @@ class WeleLocalStorage {
 
     set = async (key:string, value: string)=>{
         await AsyncStorage.setItem(`@wele-${key}`, value )
+    }
+
+    removeItem = async(key:string)=>{
+        return await AsyncStorage.removeItem(`@wele-${key}`)
     }
 
     get = async (key:string , type : string , defaultValue?:any)=>{
@@ -37,6 +42,8 @@ class WeleLocalStorage {
     setPodcastList = async(podcastList : PodcastType[]) => {
         return await this.set('postcastlist',JSON.stringify(podcastList))
     }
+
+
 
     getPodcastList = async(): Promise<PodcastType[]>=>{
         return await this.get('postcastlist','object',[])
@@ -106,6 +113,20 @@ class WeleLocalStorage {
 
     getTheme = async ()=>{
         return await this.get('theme','string',ThemeMode.LIGHT)
+    }
+
+
+    setCurrentUser = async(user: UserType)=>{
+        return await this.set('user', JSON.stringify(user))
+    }
+
+    removeCurrentUser = async()=>{
+        return await this.removeItem('user')
+    }
+
+    getCurrentUser = async() : Promise<UserType | null >=>{
+        const res = this.get('user','object',  null)
+        return res
     }
 
 }
