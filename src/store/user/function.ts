@@ -6,6 +6,7 @@ import { UserType, ResultType } from "./types";
 import store from "../store";
 import { GoogleSignin } from "@react-native-community/google-signin";
 import storage from "@/service/localStorage";
+import NetInfo, { NetInfoCellularGeneration } from "@react-native-community/netinfo";
 
 
 export const RESULTS_COLLECTION = "results"
@@ -36,28 +37,34 @@ const updateWELEEmail = async (user: UserType, weleEmail: string) => {
 
 export const setCurrentUser = async (user: UserType, isNew?: boolean | string, storex = store) => {
 
-    
+
     if (!user) {
         return storex.dispatch(actions.setCurrentUser(user))
     }
 
-    
+    const netState = await NetInfo.fetch()
+    if (!netState.isConnected) {
+        return storex.dispatch(actions.setCurrentUser(user))
+    }
+
+
     if (isNew && typeof isNew === 'string') {
         await updateWELEEmail(user, isNew)
         await storage.setCurrentUser({ ...user, weleEmail: isNew })
         return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
 
+
         const userData: UserType = await getCurrentUserAsync(user.id)
-        if(userData.email){
+        if (userData.email) {
             await storage.setCurrentUser({ ...userData, ...user })
             return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
 
-        }else{
+        } else {
             await storage.setCurrentUser(user)
-            return  storex.dispatch(actions.setCurrentUser(user))
+            return storex.dispatch(actions.setCurrentUser(user))
         }
-        
+
     }
 };
 
@@ -65,18 +72,18 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 export const logOut = async (storex = store) => {
     await firebase.auth().signOut();
     await storage.removeCurrentUser()
-    try{
+    try {
         await LoginManager.logOut()
-    }catch(e){
-        
-    }
-   
-    try{
-        await GoogleSignin.signOut()
-    }catch(e){
+    } catch (e) {
 
     }
-    
+
+    try {
+        await GoogleSignin.signOut()
+    } catch (e) {
+
+    }
+
     return await storex.dispatch(actions.logOut())
 };
 
@@ -101,10 +108,10 @@ const getAllUsersAsync = (): Promise<Map<string, UserType>> => {
         ref.once('value', async (snapshots: any) => {
             await snapshots.forEach((snapshot: any) => {
                 const user: UserType = snapshot._snapshot.value
-                if(user.id){
+                if (user.id) {
                     users = users.set(user.id, { id: user.id, ...user })
                 }
-               
+
             })
 
             resolve(users)
@@ -184,9 +191,9 @@ const getResultsAsync = (): Promise<Map<string, ResultType>> => {
 export const getResults = async (storex = store) => {
     const results = await getResultsAsync()
 
-    if(results){
+    if (results) {
         return await storex.dispatch(actions.getResults(results))
     }
-    
+
 }
 

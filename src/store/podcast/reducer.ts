@@ -63,7 +63,7 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
             if (existPodcast ) {
                 listPodcast = listPodcast.set(podcast.id, {
                     ...existPodcast,
-                    uri: existPodcast.uri ? existPodcast.uri: null
+                    uri: existPodcast.uri ? existPodcast.uri: (podcast.uri ? podcast.uri : null)
                 })
             }
         })

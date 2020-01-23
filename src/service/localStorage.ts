@@ -71,10 +71,6 @@ class WeleLocalStorage {
         }
         podcasts.push(savePodcast)
 
-        if(podcasts.length > MAX_RECENT_PODCASTS) {
-            podcasts.shift()
-        }
-
         await this.set('recent-podcasts',JSON.stringify(podcasts))
     }
 

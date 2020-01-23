@@ -42,7 +42,10 @@ const MainAppScreen = () => {
       }
       return await setCurrentUser(null)
     }else{
+
+      console.log('okkkk ')
       const user = await storage.getCurrentUser()
+      console.log(user)
       return await setCurrentUser(user)
     }
 
