@@ -5,38 +5,75 @@ import { Alert } from "react-native";
 
 export const loginWithFacebook = async () => {
 
-    const result = await LoginManager.logInWithPermissions([
-        "public_profile",
-        "email"
-    ]);
-
-    if (result.isCancelled) {
-        throw new Error("User cancelled the login process");
-    }
-
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-        throw new Error("Something went wrong obtaining access token");
-    }
-
-    const credential = await firebase.auth.FacebookAuthProvider.credential(
-        data.accessToken
-    );
-
     try {
-        const user = await firebase.auth().signInWithCredential(credential);
-        return user
-    } catch (err) {
-        if (err.code === 'auth/account-exists-with-different-credential') {
-            const user = await loginWithGoogle()
-            user.user.linkWithCredential(credential)
-            return user;
-        } else {
-            Alert.alert('Facebook Login Error', err)
-            return null
+        const result = await LoginManager.logInWithPermissions([
+            "public_profile",
+            "email"
+        ]);
+
+        if (result.isCancelled) {
+            throw new Error("User cancelled the login process");
         }
+
+        const data = await AccessToken.getCurrentAccessToken();
+
+        if (!data) {
+            throw new Error("Something went wrong obtaining access token");
+        }
+
+        const credential = await firebase.auth.FacebookAuthProvider.credential(
+            data.accessToken
+        );
+
+        try {
+            const user = await firebase.auth().signInWithCredential(credential);
+            return user
+        } catch (err) {
+            if (err.code === 'auth/account-exists-with-different-credential') {
+                const user = await loginWithGoogle()
+                user.user.linkWithCredential(credential)
+                return user;
+            } else {
+                Alert.alert('Facebook Login Error', err)
+                return null
+            }
+        }
+
+    } catch (err) {
+        console.log(err)
     }
+    // const result = await LoginManager.logInWithPermissions([
+    //     "public_profile",
+    //     "email"
+    // ]);
+
+    // if (result.isCancelled) {
+    //     throw new Error("User cancelled the login process");
+    // }
+
+    // const data = await AccessToken.getCurrentAccessToken();
+
+    // if (!data) {
+    //     throw new Error("Something went wrong obtaining access token");
+    // }
+
+    // const credential = await firebase.auth.FacebookAuthProvider.credential(
+    //     data.accessToken
+    // );
+
+    // try {
+    //     const user = await firebase.auth().signInWithCredential(credential);
+    //     return user
+    // } catch (err) {
+    //     if (err.code === 'auth/account-exists-with-different-credential') {
+    //         const user = await loginWithGoogle()
+    //         user.user.linkWithCredential(credential)
+    //         return user;
+    //     } else {
+    //         Alert.alert('Facebook Login Error', err)
+    //         return null
+    //     }
+    // }
 }
 
 export const loginWithGoogle = async () => {
@@ -72,9 +109,9 @@ export const loginWithGoogle = async () => {
         return null
     }
 
-  
 
-    
+
+
     //    }catch(err){
     //        Alert.alert(err)
     //    }

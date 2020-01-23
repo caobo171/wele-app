@@ -50,6 +50,17 @@ export const updatePodcast = (podcast: PodcastType, storex = store) => {
 }
 
 
+export const updatePodcastNumber = async (podcast:PodcastType, storex = store) =>{
+  const { id, ...rest } = podcast
+
+  console.log(podcast)
+  await firestore().collection(PODCAST_COLLECTION).doc(podcast.id).update({
+      ...rest
+  })
+
+  return storex.dispatch(actions.updatePodcast(podcast))
+}
+
 export const getRecentPodcast = async (storex = store) => {
   const recentPodcasts = await storage.getRecentPodcasts()
 

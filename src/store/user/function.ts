@@ -2,7 +2,7 @@ import { firebase } from "@react-native-firebase/auth";
 import database from '@react-native-firebase/database';
 import { LoginManager } from "react-native-fbsdk"
 import * as actions from './actions'
-import { UserType, ResultType } from "./types";
+import { UserType, ResultType, ResultV2Type } from "./types";
 import store from "../store";
 import { GoogleSignin } from "@react-native-community/google-signin";
 import storage from "@/service/localStorage";
@@ -10,6 +10,8 @@ import NetInfo, { NetInfoCellularGeneration } from "@react-native-community/neti
 
 
 export const RESULTS_COLLECTION = "results"
+
+export const RESULTS_COLLECTION_V2 = 'resultsv2'
 
 export const USERS_COLLECTION = 'users'
 
@@ -186,6 +188,33 @@ const getResultsAsync = (): Promise<Map<string, ResultType>> => {
             resolve(results)
         })
     })
+}
+
+const getResultsMonthlyAsync = (): Promise<Map<string, ResultV2Type>> => {
+    return new Promise((resolve, reject) => {
+        let results = new Map<string, ResultV2Type>()
+        const ref = database().ref(`/${RESULTS_COLLECTION_V2}`)
+        ref.once('value', async (snapshots: any) => {
+            await snapshots.forEach((snapshot: any) => {
+                const id = convertId(snapshot._snapshot.key)
+                const result:number = Number(snapshot._snapshot.value)
+                results.set(id, {
+                    sum: result,
+                    id: id
+                })
+            })
+            resolve(results)
+        })
+    })
+}
+
+export const getResultsMonthly = async (storex = store) => {
+    const results = await getResultsMonthlyAsync()
+
+    if (results) {
+        return await storex.dispatch(actions.getResultsMonthly(results))
+    }
+
 }
 
 export const getResults = async (storex = store) => {

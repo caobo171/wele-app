@@ -13,7 +13,7 @@ import messageSystem from "@/service/messageSystem";
 
 
 import { useCurrentUser } from "./store/user/hooks";
-import { setCurrentUser, getAllUsers, getResults } from "./store/user/function";
+import { setCurrentUser, getAllUsers, getResults, getResultsMonthly } from "./store/user/function";
 import { getAllPodcasts } from "./store/podcast/functions";
 import storage from "./service/localStorage";
 
@@ -43,9 +43,8 @@ const MainAppScreen = () => {
       return await setCurrentUser(null)
     }else{
 
-      console.log('okkkk ')
       const user = await storage.getCurrentUser()
-      console.log(user)
+
       return await setCurrentUser(user)
     }
 
@@ -62,6 +61,7 @@ const MainAppScreen = () => {
       messageSystem.init(currentUser)
       getAllPodcasts()
       getResults()
+      getResultsMonthly()
     }
 
   }, [currentUser])

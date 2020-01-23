@@ -100,16 +100,22 @@ const BillboardItem = React.memo((props: Props) => {
         <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
         <StyledSubDescription>{Number(props.total).toFixed(1).toString()}{' scores'}</StyledSubDescription>
       </StyledUserNameWrapper>
-      <StyledActionButtonGroup>
-        <StyledTouchableOpacity onPress={() => {
-          nav.navigate('AnotherProfile', {
-            user: props.user
-          })
-        }}>
-          <StyledEntypoIcon name={'dots-three-vertical'} />
-        </StyledTouchableOpacity>
 
-      </StyledActionButtonGroup>
+      {
+        props.user.id !== '-1' && (
+          <StyledActionButtonGroup>
+            <StyledTouchableOpacity onPress={() => {
+              nav.navigate('AnotherProfile', {
+                user: props.user
+              })
+            }}>
+              <StyledEntypoIcon name={'dots-three-vertical'} />
+            </StyledTouchableOpacity>
+
+          </StyledActionButtonGroup>
+        )
+      }
+
     </StyledUserSection>
   )
 }, (prev, next) => (prev.total === next.total && prev.user.id === next.user.id && prev.index === next.index))
