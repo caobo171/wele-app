@@ -4,7 +4,6 @@ import NotificationType from '@/store/notification/types';
 import { ThemeMode } from '@/store/theme/ThemeWrapper';
 import { UserType } from '@/store/user/types';
 
-const MAX_RECENT_PODCASTS = 5;
 class WeleLocalStorage {
     constructor(){
 

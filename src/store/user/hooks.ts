@@ -133,8 +133,6 @@ const renderFakeUser = (email:string) :UserType => {
 }
 export const useResultsMonthly = () => {
 
-
-
   const users: Array<UserType> = useSelector((state: any) => [...state.user.listUsers.values()])
   const results = useSelector((state: { user: State }) => [...state.user.listResultMonthly.values()])
 

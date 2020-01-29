@@ -22,6 +22,7 @@ import { usePodcastThisWeek, useRecentPodcasts } from '@/store/podcast/hooks';
 
 import { CustomTheme } from '@store/theme/ThemeWrapper'
 import PodcastType from '@/store/podcast/types';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -93,10 +94,18 @@ interface PodcastsProps {
 }
 
 const PodcastsThisWeek = React.memo((props: PodcastsProps) => {
+
+  const onRefreshHandle = ()=>{
+    return  getRecentPodcast()
+  }
+  const [state, fetch] = useAsyncFn(onRefreshHandle)
+
   return <StyledSection>
     <StyledSectionTitle position="top">Podcast this week</StyledSectionTitle>
     <StyledSectionContent>
       <FlatList
+        refreshing={state.loading}
+        onRefresh={fetch}
         data={props.podcasts}
         renderItem={({ item }) => <PodcastThumbnail {...item} />}
         keyExtractor={item => item.id}

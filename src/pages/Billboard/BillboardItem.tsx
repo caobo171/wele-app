@@ -26,8 +26,8 @@ const StyledOrderIndicator = styled.Text<{ color: string }>`
   color: ${props => props.color} ;
 `;
 
-const StyledUserNameWrapper = styled.View`
-  flex: 8;
+const StyledUserNameWrapper = styled.View<{ isFake?: boolean }>`
+  flex:8;
   flex-direction: column;
   margin-left: 12px;
 `;
@@ -96,14 +96,15 @@ const BillboardItem = React.memo((props: Props) => {
       <StyledAvatarWrapper>
         <UserAvatar user={props.user} />
       </StyledAvatarWrapper>
-      <StyledUserNameWrapper>
+      <StyledUserNameWrapper isFake={props.user.id !== '-1'}>
         <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
         <StyledSubDescription>{Number(props.total).toFixed(1).toString()}{' scores'}</StyledSubDescription>
       </StyledUserNameWrapper>
 
-      {
-        props.user.id !== '-1' && (
-          <StyledActionButtonGroup>
+
+      <StyledActionButtonGroup>
+        {
+          props.user.id !== '-1' && (
             <StyledTouchableOpacity onPress={() => {
               nav.navigate('AnotherProfile', {
                 user: props.user
@@ -111,10 +112,10 @@ const BillboardItem = React.memo((props: Props) => {
             }}>
               <StyledEntypoIcon name={'dots-three-vertical'} />
             </StyledTouchableOpacity>
+          )
+        }
+      </StyledActionButtonGroup>
 
-          </StyledActionButtonGroup>
-        )
-      }
 
     </StyledUserSection>
   )
