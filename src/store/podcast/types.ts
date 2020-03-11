@@ -16,7 +16,8 @@ export default interface PodcastType {
     id: string,
     fileSize: number,
     uri?: string,
-    hint?: string
+    hint?: string,
+    timeListen?: number
 }
 
 export interface State {

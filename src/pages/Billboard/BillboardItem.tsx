@@ -14,9 +14,9 @@ const StyledUserSection = styled.View`
 
 const StyledOrderIndicator = styled.Text<{ color: string }>`
   text-align: center;
-  flex: 0.5;
+  flex: 0.8;
   padding-top: 8px;
-  margin-right: 10px;
+  margin-right: 6px;
   border-bottom-width: 3px;
   border-color: #bababa;
   margin-bottom: 28px;
@@ -26,8 +26,8 @@ const StyledOrderIndicator = styled.Text<{ color: string }>`
   color: ${props => props.color} ;
 `;
 
-const StyledUserNameWrapper = styled.View`
-  flex: 8;
+const StyledUserNameWrapper = styled.View<{ isFake?: boolean }>`
+  flex:8;
   flex-direction: column;
   margin-left: 12px;
 `;
@@ -96,20 +96,27 @@ const BillboardItem = React.memo((props: Props) => {
       <StyledAvatarWrapper>
         <UserAvatar user={props.user} />
       </StyledAvatarWrapper>
-      <StyledUserNameWrapper>
+      <StyledUserNameWrapper isFake={props.user.id !== '-1'}>
         <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
         <StyledSubDescription>{Number(props.total).toFixed(1).toString()}{' scores'}</StyledSubDescription>
       </StyledUserNameWrapper>
-      <StyledActionButtonGroup>
-        <StyledTouchableOpacity onPress={() => {
-          nav.navigate('AnotherProfile', {
-            user: props.user
-          })
-        }}>
-          <StyledEntypoIcon name={'dots-three-vertical'} />
-        </StyledTouchableOpacity>
 
+
+      <StyledActionButtonGroup>
+        {
+          props.user.id !== '-1' && (
+            <StyledTouchableOpacity onPress={() => {
+              nav.navigate('AnotherProfile', {
+                user: props.user
+              })
+            }}>
+              <StyledEntypoIcon name={'dots-three-vertical'} />
+            </StyledTouchableOpacity>
+          )
+        }
       </StyledActionButtonGroup>
+
+
     </StyledUserSection>
   )
 }, (prev, next) => (prev.total === next.total && prev.user.id === next.user.id && prev.index === next.index))

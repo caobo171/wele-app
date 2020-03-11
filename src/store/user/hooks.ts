@@ -13,34 +13,23 @@ export const useResults = () => {
 
     const weleEmail = user.weleEmail.toLowerCase().replace(/\s/g, '')
     if (user.weleEmail && results.get(weleEmail)) {
-
-      if(results.get(weleEmail).Total){
-
-        if(typeof results.get(weleEmail).Total  !== 'number'  ){
-          console.log('check ',results.get(weleEmail).Total ,  results.get(weleEmail))
-        }
-        return {
-            user,
-            //@ts-ignore
-            total: results.get(weleEmail) ? results.get(weleEmail).Total : 0 as number
-          }
         
-      }else{
-        
+
+
         const result = results.get(weleEmail)
+
         const total:number = Object.keys(result)
-        .filter(key=> Number(result[key]) > -3 )
+        .filter(key=> Number(result[key]) > -3 && key!== 'Total' )
         //@ts-ignore
         .map( key => result[key])
         .reduce( (val1, val2)=> val1 + val2)
 
-        console.log(result, total , Object.keys(result)
-        .filter(key=> Number(result[key]) > -3 ))
         return {
           user,
           total
         }
-      }
+
+
     } else {
       return {
         user,
@@ -52,6 +41,11 @@ export const useResults = () => {
   return mergeResults.sort((a, b) => b.total - a.total)
 }
 
+
+export const useUsers = ()=>{
+  const users: Array<UserType> = useSelector((state: any) => [...state.user.listUsers.values()])
+  return users
+}
 
 export const useCurrentUser = () => {
   const currentUser: UserType = useSelector((state: { user: State }) => state.user.currentUser)
@@ -116,7 +110,6 @@ const transformResult = (result: ResultType | undefined) => {
   if(totalArray.length < DIVIDER){
     totalArray = [0, 0 , 0 , 0 , 0  ].concat(totalArray);
     labelArray = ['', '' , '' , '' , ''].concat(labelArray);
-    console.log(totalArray, labelArray)
   }
 
   return { totalArray, labelArray }
@@ -128,6 +121,33 @@ export const useMyResult = () => {
   return results
 }
 
+
+const FAKE_IMAGE= 'https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-circle-128.png'
+const renderFakeUser = (email:string) :UserType => {
+  return {
+    id: '-1',
+    displayName: email,
+    email: email,
+    photoURL: FAKE_IMAGE
+  }
+}
+export const useResultsMonthly = () => {
+
+  const users: Array<UserType> = useSelector((state: any) => [...state.user.listUsers.values()])
+  const results = useSelector((state: { user: State }) => [...state.user.listResultMonthly.values()])
+
+  const rResults : MergeResultsType[] = results.map(result=>{
+
+    const id = result.id.toLowerCase().replace(/\s/g, '')
+    const user = users.find(e=> e.weleEmail.toLowerCase().replace(/\s/g, '') === id || e.email.toLowerCase().replace(/\s/g, '') === id)
+
+    return {
+      total: result.sum,
+      user: user ? user : renderFakeUser(result.id)
+    }
+  })
+  return rResults.sort((a,b)=> b.total - a.total)
+}
 
 export const useAnotherUserResult = (user: UserType) => {
   const weleEmail = user.weleEmail.toLowerCase().replace(/\s/g, '')

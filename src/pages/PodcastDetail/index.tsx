@@ -20,11 +20,11 @@ import storage from '@/service/localStorage';
 import PodcastType from '@/store/podcast/types';
 import { useCurrentPodcast } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
-import { updateRecentPodcast } from '@/store/podcast/functions';
+import { updateRecentPodcast, updatePodcastNumber } from '@/store/podcast/functions';
 
 
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
-import { is } from '@babel/types';
+import NetInfo from '@react-native-community/netinfo';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -183,8 +183,15 @@ const PodcastDetail = () => {
       if (res !== true) {
         const podcast: PodcastType = {
           ...currentPodcast,
+          timeListen: currentPodcast.timeListen ? currentPodcast.timeListen + 1 : 1,
           uri: res
         }
+
+        const netState = await NetInfo.fetch()
+        if(netState.isConnected){
+          await updatePodcastNumber(podcast)
+        }
+       
 
         await storage.setRecentPodcasts(currentPodcast, podcast.uri as string)
         updateRecentPodcast(podcast)

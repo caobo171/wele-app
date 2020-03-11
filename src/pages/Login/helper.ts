@@ -5,67 +5,113 @@ import { Alert } from "react-native";
 
 export const loginWithFacebook = async () => {
 
-    const result = await LoginManager.logInWithPermissions([
-        "public_profile",
-        "email"
-    ]);
-
-    if (result.isCancelled) {
-        throw new Error("User cancelled the login process");
-    }
-
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-        throw new Error("Something went wrong obtaining access token");
-    }
-
-    const credential = await firebase.auth.FacebookAuthProvider.credential(
-        data.accessToken
-    );
-
     try {
-        const user = await firebase.auth().signInWithCredential(credential);
-        return user
-    } catch (err) {
-        if (err.code === 'auth/account-exists-with-different-credential') {
-            const user = await loginWithGoogle()
-            user.user.linkWithCredential(credential)
-            return user;
-        } else {
-            Alert.alert('Facebook Login Error', err)
-            return null
+        const result = await LoginManager.logInWithPermissions([
+            "public_profile",
+            "email"
+        ]);
+
+        if (result.isCancelled) {
+            throw new Error("User cancelled the login process");
         }
+
+        const data = await AccessToken.getCurrentAccessToken();
+
+        if (!data) {
+            throw new Error("Something went wrong obtaining access token");
+        }
+
+        const credential = await firebase.auth.FacebookAuthProvider.credential(
+            data.accessToken
+        );
+
+        try {
+            const user = await firebase.auth().signInWithCredential(credential);
+            return user
+        } catch (err) {
+            if (err.code === 'auth/account-exists-with-different-credential') {
+                const user = await loginWithGoogle()
+                user.user.linkWithCredential(credential)
+                return user;
+            } else {
+                Alert.alert('Facebook Login Error', err)
+                return null
+            }
+        }
+
+    } catch (err) {
+        console.log(err)
     }
+    // const result = await LoginManager.logInWithPermissions([
+    //     "public_profile",
+    //     "email"
+    // ]);
+
+    // if (result.isCancelled) {
+    //     throw new Error("User cancelled the login process");
+    // }
+
+    // const data = await AccessToken.getCurrentAccessToken();
+
+    // if (!data) {
+    //     throw new Error("Something went wrong obtaining access token");
+    // }
+
+    // const credential = await firebase.auth.FacebookAuthProvider.credential(
+    //     data.accessToken
+    // );
+
+    // try {
+    //     const user = await firebase.auth().signInWithCredential(credential);
+    //     return user
+    // } catch (err) {
+    //     if (err.code === 'auth/account-exists-with-different-credential') {
+    //         const user = await loginWithGoogle()
+    //         user.user.linkWithCredential(credential)
+    //         return user;
+    //     } else {
+    //         Alert.alert('Facebook Login Error', err)
+    //         return null
+    //     }
+    // }
 }
 
 export const loginWithGoogle = async () => {
 
+    console.log('aaaaaaaaaaa')
     try {
         await GoogleSignin.configure({
             scopes: [],
             webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
         });
     } catch (err) {
+        console.log('aaaaaaaaaaa2')
         Alert.alert(err)
     }
 
 
     try {
         await GoogleSignin.signIn();
+        console.log('aaaaaaaaaaa3')
     } catch (err) {
         Alert.alert(err)
     }
 
 
-    //    try{
-    const { idToken, accessToken } = await GoogleSignin.getTokens()
+    try {
+        const { idToken, accessToken } = await GoogleSignin.getTokens()
+        const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
 
-    const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        const user = await firebase.auth().signInWithCredential(credential);
+        return user
+    } catch (err) {
+        console.log(err)
+        return null
+    }
 
-    const user = await firebase.auth().signInWithCredential(credential);
 
-    return user
+
+
     //    }catch(err){
     //        Alert.alert(err)
     //    }

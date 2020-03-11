@@ -1,12 +1,13 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import { UserType, ResultType, State } from './types'
+import { UserType, ResultType, State, ResultV2Type } from './types'
 
 const initialState: State = {
     currentUser: null,
     listUsers: new Map<string, UserType>(),
-    listResult: new Map<string, ResultType>()
+    listResult: new Map<string, ResultType>(),
+    listResultMonthly : new Map<string, ResultV2Type>()
 }
 
 export default createReducer<State, ActionType<typeof actions>>(initialState)
@@ -44,3 +45,7 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
             return {...state}
         }
     })
+    .handleAction(actions.getResultsMonthly,(state,action)=>({
+        ...state,
+        listResultMonthly: action.payload
+    }))

@@ -37,7 +37,7 @@ export const getTheme = (mode: ThemeMode) : CustomTheme =>{
             secondaryColor: '#ffffff',
             underlayColor: '#F9F9F9',
             textColorH1: '#4a4a4a',
-            textColorH2: '#434343',
+            textColorH2: '#5e5e5e',
             textColorH3: '#8c8c8c',
             submitButtonColor: '#595959',
             inputUnderPrimaryBackgroundColor: '#ffffff' ,

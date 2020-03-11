@@ -11,6 +11,12 @@ export  interface ResultType{
 }
 
 
+export interface ResultV2Type{
+    id: string,
+    sum: number
+}
+
+
 export interface UserType{
     displayName: string,
     email: string,
@@ -25,10 +31,11 @@ export interface UserType{
 export interface State {
     currentUser: null | UserType,
     listUsers: Map<string,UserType>,
-    listResult : Map<string, ResultType>
+    listResult : Map<string, ResultType>,
+    listResultMonthly: Map<string,ResultV2Type>
 }
 
 export interface MergeResultsType{
     user: UserType,
     total: number
-  }
+}

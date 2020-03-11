@@ -5,17 +5,17 @@ import Login from "./pages/Login";
 import { firebase } from "@react-native-firebase/auth";
 import useAsync from "react-use/lib/useAsync";
 import LoadingComponent from "./components/Loading/Loading";
-
-import RootNavigator from "./navigation/AppContainer"
+import NetInfo from "@react-native-community/netinfo";
+import RootNavigator from "@/navigation/AppContainer"
 import useEffectOnce from "react-use/lib/useEffectOnce";
-import globalPlayer from "./service/playerService";
-import presenceSystem from "./service/presenseSystem";
-import messageSystem from "./service/messageSystem";
+import globalPlayer from "@/service/playerService";
+import messageSystem from "@/service/messageSystem";
 
 
 import { useCurrentUser } from "./store/user/hooks";
-import { setCurrentUser, getAllUsers, getResults } from "./store/user/function";
+import { setCurrentUser, getAllUsers, getResults, getResultsMonthly } from "./store/user/function";
 import { getAllPodcasts } from "./store/podcast/functions";
+import storage from "./service/localStorage";
 
 
 
@@ -25,20 +25,29 @@ const MainAppScreen = () => {
   const currentUser = useCurrentUser()
 
   const status = useAsync(async () => {
-    const rawUser = await firebase.auth().currentUser;
+    const netState = await NetInfo.fetch()
+    if(netState.isConnected){
+      const rawUser = await firebase.auth().currentUser;
 
-    if (rawUser) {
-      const user = {
-        displayName: rawUser.displayName as string,
-        email: rawUser.email as string,
-        photoURL: rawUser.photoURL as string,
-        id: rawUser.uid
+      if (rawUser) {
+        const user = {
+          displayName: rawUser.displayName as string,
+          email: rawUser.email as string,
+          photoURL: rawUser.photoURL as string,
+          id: rawUser.uid
+        }
+  
+        return await setCurrentUser(user)
+  
       }
+      return await setCurrentUser(null)
+    }else{
+
+      const user = await storage.getCurrentUser()
 
       return await setCurrentUser(user)
-
     }
-    return await setCurrentUser(null)
+
   }, [])
 
 
@@ -52,6 +61,7 @@ const MainAppScreen = () => {
       messageSystem.init(currentUser)
       getAllPodcasts()
       getResults()
+      getResultsMonthly()
     }
 
   }, [currentUser])

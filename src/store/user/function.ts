@@ -2,12 +2,16 @@ import { firebase } from "@react-native-firebase/auth";
 import database from '@react-native-firebase/database';
 import { LoginManager } from "react-native-fbsdk"
 import * as actions from './actions'
-import { UserType, ResultType } from "./types";
+import { UserType, ResultType, ResultV2Type } from "./types";
 import store from "../store";
 import { GoogleSignin } from "@react-native-community/google-signin";
+import storage from "@/service/localStorage";
+import NetInfo, { NetInfoCellularGeneration } from "@react-native-community/netinfo";
 
 
 export const RESULTS_COLLECTION = "results"
+
+export const RESULTS_COLLECTION_V2 = 'resultsv2'
 
 export const USERS_COLLECTION = 'users'
 
@@ -35,41 +39,53 @@ const updateWELEEmail = async (user: UserType, weleEmail: string) => {
 
 export const setCurrentUser = async (user: UserType, isNew?: boolean | string, storex = store) => {
 
+
     if (!user) {
         return storex.dispatch(actions.setCurrentUser(user))
     }
 
+    const netState = await NetInfo.fetch()
+    if (!netState.isConnected) {
+        return storex.dispatch(actions.setCurrentUser(user))
+    }
+
+
     if (isNew && typeof isNew === 'string') {
         await updateWELEEmail(user, isNew)
+        await storage.setCurrentUser({ ...user, weleEmail: isNew })
         return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
 
+
         const userData: UserType = await getCurrentUserAsync(user.id)
-        if(userData.email){
+        if (userData.email) {
+            await storage.setCurrentUser({ ...userData, ...user })
             return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
 
-        }else{
-            return  storex.dispatch(actions.setCurrentUser(null))
+        } else {
+            await storage.setCurrentUser(user)
+            return storex.dispatch(actions.setCurrentUser(user))
         }
-        
+
     }
 };
 
 
 export const logOut = async (storex = store) => {
     await firebase.auth().signOut();
-    try{
+    await storage.removeCurrentUser()
+    try {
         await LoginManager.logOut()
-    }catch(e){
-        
-    }
-   
-    try{
-        await GoogleSignin.signOut()
-    }catch(e){
+    } catch (e) {
 
     }
-    
+
+    try {
+        await GoogleSignin.signOut()
+    } catch (e) {
+
+    }
+
     return await storex.dispatch(actions.logOut())
 };
 
@@ -94,10 +110,10 @@ const getAllUsersAsync = (): Promise<Map<string, UserType>> => {
         ref.once('value', async (snapshots: any) => {
             await snapshots.forEach((snapshot: any) => {
                 const user: UserType = snapshot._snapshot.value
-                if(user.id){
+                if (user.id) {
                     users = users.set(user.id, { id: user.id, ...user })
                 }
-               
+
             })
 
             resolve(users)
@@ -174,12 +190,39 @@ const getResultsAsync = (): Promise<Map<string, ResultType>> => {
     })
 }
 
+const getResultsMonthlyAsync = (): Promise<Map<string, ResultV2Type>> => {
+    return new Promise((resolve, reject) => {
+        let results = new Map<string, ResultV2Type>()
+        const ref = database().ref(`/${RESULTS_COLLECTION_V2}`)
+        ref.once('value', async (snapshots: any) => {
+            await snapshots.forEach((snapshot: any) => {
+                const id = convertId(snapshot._snapshot.key)
+                const result:number = Number(snapshot._snapshot.value)
+                results.set(id, {
+                    sum: result,
+                    id: id
+                })
+            })
+            resolve(results)
+        })
+    })
+}
+
+export const getResultsMonthly = async (storex = store) => {
+    const results = await getResultsMonthlyAsync()
+
+    if (results) {
+        return await storex.dispatch(actions.getResultsMonthly(results))
+    }
+
+}
+
 export const getResults = async (storex = store) => {
     const results = await getResultsAsync()
 
-    if(results){
+    if (results) {
         return await storex.dispatch(actions.getResults(results))
     }
-    
+
 }
 
