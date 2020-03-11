@@ -116,12 +116,25 @@ interface Props {
   podcasts: PodcastType[]
 }
 
+const ITEM_HEIGHT = 64;
+
 const PodcastListMemo = React.memo((props: Props) => {
+
+  const getItemLayout = useCallback((data, index)=>(
+    {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index})
+    
+  , [])
+
+  const renderItem = useCallback(({ item, index })=>{
+    return <PodcastItem {...item} />
+  },[])
+
   return (
     <StyledSectionContent>
       <FlatList
         data={props.podcasts}
-        renderItem={({ item, index }) => <PodcastItem {...item} />}
+        getItemLayout = {getItemLayout}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
       />
     </StyledSectionContent>
