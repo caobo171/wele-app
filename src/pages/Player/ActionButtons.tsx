@@ -50,8 +50,11 @@ const StyledBadge = styled.Text<{ theme: CustomTheme }>`
 
 const StyledPlayButton = styled(TouchableOpacity)`
   background-color: #545454;
-  border-radius: 50;
-  padding: 8px;
+  border-radius: 35px;
+  width: 70px;
+  height: 70px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledPlayBackButton = styled(TouchableOpacity)`
@@ -74,19 +77,11 @@ const ActionButtons = React.memo((props: Props) => {
         <StyledButtonText>{`${props.speed.toString()}x`}</StyledButtonText>
       </TouchableOpacity>
 
-      {/* <StyledPlayButton onPress={props.fastBackwardHandle}>
-        <StyledEntypoIcon sizeMode={"small"} name="controller-fast-backward" />
-      </StyledPlayButton> */}
-
       <StyledPlayButton onPress={props.onPausePlayHandle}>
         <StyledEntypoIcon sizeMode={'big'}
           name={props.playing ? "controller-paus" : "controller-play"}
         />
       </StyledPlayButton>
-      {/* 
-      <StyledPlayButton onPress={props.fastForwardHandle}>
-        <StyledEntypoIcon sizeMode={"small"} name="controller-fast-forward" />
-      </StyledPlayButton> */}
 
       <StyledPlayBackButton onPress={props.onPlayBackHandle}>
         <StyledFeatherIcon name="corner-up-left" />

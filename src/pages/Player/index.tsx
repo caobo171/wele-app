@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import PodcastType from '@store/podcast/types';
 import AnimatedWrapper from './AnimatedWrapper';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import StatusBarView from '@/components/UI/StatusbarView';
 const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
@@ -30,6 +31,7 @@ const Main = React.memo((props: Props) => {
 
     return (
         <Wrapper>
+            <StatusBarView/>
             <Header/>
             <AnimatedWrapper podcast={props.podcast} />
         </Wrapper>

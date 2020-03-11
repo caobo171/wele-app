@@ -25,6 +25,7 @@ import { updateRecentPodcast, updatePodcastNumber } from '@/store/podcast/functi
 
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import NetInfo from '@react-native-community/netinfo';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -166,7 +167,7 @@ const StyledText = styled.Text`
 
 const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_content/'
 
-const PodcastDetail = () => {
+const PodcastDetail = React.memo(() => {
 
   const [isBrief, setIsBrief] = useState(true)
 
@@ -210,7 +211,7 @@ const PodcastDetail = () => {
 
     onPressPlayHandle={onPressPlayHandle}
   />
-};
+})
 
 
 interface Props {
@@ -227,6 +228,7 @@ const PodcastDetailMemo = React.memo((props: Props) => {
     {
       props.podcast && (
         <Wrapper>
+          <StatusBarView/>
           <HeaderWrapper>
             <TouchableOpacity onPress={() => {
               nav.navigate('Home')
@@ -293,6 +295,7 @@ const PodcastDetailMemo = React.memo((props: Props) => {
   </React.Fragment>
 }, (next, prev) => next.podcast.id === prev.podcast.id && next.isBrief === prev.isBrief)
 
+//@ts-ignore
 PodcastDetail.navigationOptions = {
   header: null
 };

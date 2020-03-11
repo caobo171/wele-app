@@ -5,7 +5,7 @@ import storage from '@/service/localStorage'
 import { updateTheme } from './functions'
 import { useTheme } from './hook'
 import React , {useEffect} from 'react'
-import { StatusBar , StatusBarStyle} from 'react-native'
+import { StatusBar , StatusBarStyle, Platform} from 'react-native'
 
 export enum ThemeMode {
     LIGHT = 'light',
@@ -76,7 +76,7 @@ const ThemeWrapper: React.FC<PropsWithChildren<{}>> = ({children})=>{
 
     useEffect(()=>{
         const background = getTheme(themeMode).backgroundColor
-        StatusBar.setBackgroundColor(background)
+        Platform.OS === 'android' && StatusBar.setBackgroundColor(background)
         if(themeMode===ThemeMode.DARK){
             
             StatusBar.setBarStyle('light-content')

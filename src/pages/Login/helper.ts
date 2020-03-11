@@ -40,7 +40,6 @@ export const loginWithFacebook = async () => {
         }
 
     } catch (err) {
-        console.log(err)
     }
     // const result = await LoginManager.logInWithPermissions([
     //     "public_profile",
@@ -78,21 +77,18 @@ export const loginWithFacebook = async () => {
 
 export const loginWithGoogle = async () => {
 
-    console.log('aaaaaaaaaaa')
     try {
         await GoogleSignin.configure({
             scopes: [],
             webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
         });
     } catch (err) {
-        console.log('aaaaaaaaaaa2')
         Alert.alert(err)
     }
 
 
     try {
         await GoogleSignin.signIn();
-        console.log('aaaaaaaaaaa3')
     } catch (err) {
         Alert.alert(err)
     }
@@ -105,7 +101,6 @@ export const loginWithGoogle = async () => {
         const user = await firebase.auth().signInWithCredential(credential);
         return user
     } catch (err) {
-        console.log(err)
         return null
     }
 

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import store from "./store/store";
-import { PermissionsAndroid, Alert } from 'react-native';
+import { PermissionsAndroid, Alert, Platform } from 'react-native';
+
+import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+
+
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import SplashScreen from 'react-native-splash-screen'
 //@ts-ignore
@@ -12,7 +16,7 @@ import ThemeWrapper from "@store/theme/ThemeWrapper";
 console.disableYellowBox;
 const App = () => {
 
-  const requestPermission = async () => {
+  const requestPermissionAndroid =  useCallback(async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -34,9 +38,13 @@ const App = () => {
     } catch (err) {
       Alert.alert('Permission Error',err);
     }
-  }
+  }, [])
+
+  const requestPermissionIOS = useCallback(async ()=>{
+      const res = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+  }, [])
   useEffectOnce(() => {
-    requestPermission()
+    Platform.OS === 'android' ? requestPermissionAndroid() : requestPermissionIOS()
     SplashScreen.hide()
   })
 
