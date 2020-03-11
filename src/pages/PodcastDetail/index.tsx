@@ -25,6 +25,7 @@ import { updateRecentPodcast, updatePodcastNumber } from '@/store/podcast/functi
 
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import NetInfo from '@react-native-community/netinfo';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -227,6 +228,7 @@ const PodcastDetailMemo = React.memo((props: Props) => {
     {
       props.podcast && (
         <Wrapper>
+          <StatusBarView/>
           <HeaderWrapper>
             <TouchableOpacity onPress={() => {
               nav.navigate('Home')

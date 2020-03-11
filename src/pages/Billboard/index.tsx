@@ -18,6 +18,7 @@ import { useTheme } from '@/store/theme/hook';
 import Swiper from 'react-native-swiper'
 import BillboardMonthly from './BillboardMonthly';
 import { Dimensions } from 'react-native';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 const Wrapper = styled(LinearGradient) <{ theme: CustomTheme }>`
   width: 100%;
@@ -78,6 +79,7 @@ const BillboardMemo = React.memo((props: Props) => {
     }
   return (
     <Wrapper colors={gradient.colors} locations={gradient.locations}>
+      <StatusBarView/>
       <StyledBillboardHeader>
         <StyledHeaderImage resizeMode={'contain'} source={require('@/assets/cup.png')} width={64} height={72} />
         <StyledHeaderImage resizeMode={'contain'} source={require('@/assets/cup.png')} width={92} height={112} />

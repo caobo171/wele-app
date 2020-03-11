@@ -18,6 +18,7 @@ import PodcastType from '@/store/podcast/types';
 import { usePodcastList } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
 import SearchBox from './Searchbox';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -94,6 +95,7 @@ const PodcastList = () => {
       <Wrapper
         keyboardShouldPersistTaps={'always'}
       >
+        <StatusBarView/>
         <StyledBodyWrapper>
           <StyledSection>
             <SearchBox

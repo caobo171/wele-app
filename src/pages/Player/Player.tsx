@@ -18,6 +18,7 @@ import { NavigationContext } from 'react-navigation';
 import PodcastType from '@/store/podcast/types';
 import { updateSliding, updatePosition } from '@/store/player/functions';
 import { usePlayer } from '@/store/player/hooks';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 
 const StyledContent = styled.View`
@@ -68,6 +69,7 @@ const Player = React.memo((props: Props) => {
     return (
 
         <StyledContent>
+
             <Info
                 {...props.podcast}
             />

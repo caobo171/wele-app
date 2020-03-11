@@ -23,6 +23,7 @@ import { usePodcastThisWeek, useRecentPodcasts } from '@/store/podcast/hooks';
 import { CustomTheme } from '@store/theme/ThemeWrapper'
 import PodcastType from '@/store/podcast/types';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -75,6 +76,7 @@ const Home = () => {
         <Wrapper
           keyboardShouldPersistTaps={'always'}
         >
+          <StatusBarView/>
           <Header />
 
           <StyledBodyWrapper>

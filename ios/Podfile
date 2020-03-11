@@ -34,6 +34,8 @@ target 'WELE' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'GoogleSignIn', '~> 5.0.2'
+
   target 'WELETests' do
     inherit! :search_paths
     # Pods for testing

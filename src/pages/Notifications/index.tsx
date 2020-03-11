@@ -17,6 +17,7 @@ import NotificationItem  from './NotificationItem';
 import { useNotifications } from '@/store/notification/hooks';
 
 import {CustomTheme } from '@store/theme/ThemeWrapper'
+import StatusBarView from '@/components/UI/StatusbarView';
 
 const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   height: 100%;
@@ -61,6 +62,7 @@ const Notifications = () => {
   const nav = useContext(NavigationContext)
   return (
     <Wrapper>
+      <StatusBarView/>
       <HeaderWrapper>
         <TouchableOpacity onPress={() => { 
           nav.navigate('Home')

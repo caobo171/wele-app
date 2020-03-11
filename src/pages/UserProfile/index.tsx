@@ -23,6 +23,7 @@ import ProfileChart from './Chart';
 import { ThemeMode , CustomTheme } from '@/store/theme/ThemeWrapper';
 import UserInfo from './UserInfo';
 import GroupActionsButton from './GroupActionsButton';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 
 
@@ -75,6 +76,7 @@ const UserProfile = React.memo(() => {
 
   return (
     <Wrapper>
+      <StatusBarView/>
       <HeaderWrapper>
         <TouchableOpacity onPress={() => {
           nav.navigate('Home')

@@ -10,8 +10,11 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <Firebase.h>
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <RNGoogleSignin/RNGoogleSignin.h>
+
 
 
 @implementation AppDelegate
@@ -23,8 +26,13 @@
   
   [[FBSDKApplicationDelegate sharedInstance] application:application
     didFinishLaunchingWithOptions:launchOptions];
-  // For FB sdk
-
+  //
+  
+  // For firebase
+  if ([FIRApp defaultApp] == nil) {
+      [FIRApp configure];
+    }
+  //
   
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -45,15 +53,14 @@
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
+  
+  
   if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
     return YES;
   }
 
-  if ([RCTLinkingManager application:app openURL:url options:options]) {
-    return YES;
-  }
 
-  return NO;
+  return [[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options] || [RNGoogleSignin application:app openURL:url options:options];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

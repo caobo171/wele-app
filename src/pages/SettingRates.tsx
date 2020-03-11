@@ -22,6 +22,7 @@ import globalPlayer from '@/service/playerService';
 import { updateSpeed, updatePlayback } from '@/store/player/functions';
 import { useTheme } from '@/store/theme/hook';
 import { ThemeMode } from '@/store/theme/ThemeWrapper';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 
 
@@ -107,6 +108,7 @@ const SettingRates = (props: Props) => {
 
   return (
     <Wrapper colors={gradient.colors} locations={gradient.locations}>
+        <StatusBarView/>
         <StyledTouchableHighlight onPress={()=> {
             try{
                 props.navigation.navigate('Player')

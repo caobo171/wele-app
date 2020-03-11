@@ -1,6 +1,6 @@
 import React from "react";
 import store from "./store/store";
-import { PermissionsAndroid, Alert } from 'react-native';
+import { PermissionsAndroid, Alert, Platform } from 'react-native';
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import SplashScreen from 'react-native-splash-screen'
 //@ts-ignore
@@ -36,7 +36,7 @@ const App = () => {
     }
   }
   useEffectOnce(() => {
-    requestPermission()
+    Platform.OS === 'android' && requestPermission()
     SplashScreen.hide()
   })
 
