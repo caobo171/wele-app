@@ -8,21 +8,21 @@ import PlayerThumbnail from "@pages/Player/PlayerThumbnail";
 import { createStackNavigator } from 'react-navigation-stack';
 import { createSwitchNavigator } from 'react-navigation';
 
-const InjectedHome = ()=>{
+const InjectedHome = React.memo(()=>{
     return <PlayerThumbnail>
         <Home/>
     </PlayerThumbnail>
-}
+})
 
 
 
 
 
-const InjectedPodcastDetail =  ()=>{
+const InjectedPodcastDetail =  React.memo(()=>{
   return <PlayerThumbnail>
     <PodcastDetail/>
   </PlayerThumbnail>
-}
+})
 
 
 const HomeNavigator = createStackNavigator({

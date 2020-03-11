@@ -41,7 +41,7 @@ interface Props {
 }
 
 
-const Player = (props: Props) => {
+const Player = React.memo((props: Props) => {
 
     const nav = useContext(NavigationContext)
     const { state, position, playback, speed, } = usePlayer()
@@ -93,7 +93,7 @@ const Player = (props: Props) => {
         </StyledContent>
 
     );
-}
+})
 
 
 export default Player

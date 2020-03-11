@@ -25,7 +25,7 @@ const StyledHeaderText = styled.Text<{theme: CustomTheme}>`
 `;
 
 
-const Header = () => {
+const Header = React.memo(() => {
 
   const nav = useContext(NavigationContext)
   return (
@@ -48,6 +48,6 @@ const Header = () => {
       </TouchableOpacity>
     </HeaderWrapper>
   );
-};
+});
 
 export default Header;

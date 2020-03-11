@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { View, TouchableOpacity , ProgressBarAndroid } from 'react-native'
 import styled from "styled-components/native"
 
@@ -63,14 +63,14 @@ const trimText = (text:string) => {
     return text.substr(0, Math.min(text.length, length)) + "...";
   };
 
-const PlayerThumbnail = (props: any)=>{
+const PlayerThumbnail = React.memo((props: any)=>{
 
     const { state, position , track } = usePlayer()
 
     const nav = useContext(NavigationContext)
-    const navigateToPlayer = ()=>{
+    const navigateToPlayer = useCallback(()=>{
         nav.navigate('Player')
-    }
+    },[])
     return(
         <Wrapper>
             {props.children}
@@ -97,7 +97,7 @@ const PlayerThumbnail = (props: any)=>{
             )}
         </Wrapper>
     )
-}
+})
 
 
 export default PlayerThumbnail;

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 
 import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 
@@ -35,7 +35,7 @@ interface HomeIconProps {
     tintColor: string,
 }
 
-const HomeIcon = (props: HomeIconProps) => {
+const HomeIcon = React.memo((props: HomeIconProps) => {
     const unreadNumber = useUnreadNotificationNumber()
     return (
         <View>
@@ -43,25 +43,26 @@ const HomeIcon = (props: HomeIconProps) => {
             {unreadNumber > 0 && <StyledBadge>{unreadNumber}</StyledBadge>}
         </View>
     )
-}
+})
 
 
 const ConnectedHomeIcon = HomeIcon
 
-export const CustomTabbar = (props) => {
+export const CustomTabbar = memo((props) => {
 
     useEffectOnce(()=>{
         presenceSystem.init()
     })
     const theme = useContext(ThemeContext)
 
+    //@ts-ignore
     return <BottomTabBar {...props}
     activeTintColor={theme.name === ThemeMode.DARK ? "#bdbdbd":"#787878"}
     inactiveTintColor = {theme.name === ThemeMode.DARK ? "#787878":"#bdbdbd"}
     style={{
         backgroundColor: theme.backgroundColor
     }} ></BottomTabBar>
-}
+})
 
 
 const MainBottomTabNavigator = createBottomTabNavigator(

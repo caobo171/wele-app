@@ -17,7 +17,7 @@ interface Props {
   podcast: PodcastType
 }
 
-const AnimatedWrapper = (props: Props) => {
+const AnimatedWrapper = React.memo((props: Props) => {
   
   return (
     <React.Fragment>
@@ -32,7 +32,7 @@ const AnimatedWrapper = (props: Props) => {
     </React.Fragment>
 
   )
-};
+})
 
 
 export default AnimatedWrapper;
