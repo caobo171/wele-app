@@ -23,7 +23,7 @@ const getStartDate = (d: Date) => {
 
 export const getPodcastThisWeek = async (storex = store) => {
   const netState = await NetInfo.fetch()
-  console.log('check netState', netState.isConnected)
+
   if (netState.isConnected) {
 
     const querySnapshots = await firestore()
@@ -52,8 +52,6 @@ export const updatePodcast = (podcast: PodcastType, storex = store) => {
 
 export const updatePodcastNumber = async (podcast:PodcastType, storex = store) =>{
   const { id, ...rest } = podcast
-
-  console.log(podcast)
   await firestore().collection(PODCAST_COLLECTION).doc(podcast.id).update({
       ...rest
   })

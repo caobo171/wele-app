@@ -2,6 +2,28 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
+	<!-- For permission -->
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Apple Music</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera usage</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone Usage</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Reminder usage</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Reminder usage</string>
+
+
+	<key>NSMediaLibraryUsageDescription</key>
+	<string>MediaLibrary usage</string>
+	<!-- -->
+
+
+    <!-- Fix react native icons -->
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -9,6 +31,8 @@
 		<string>Feather.ttf</string>
 		<string>Entypo.ttf</string>
 	</array>
+	<!-- reference to react native icons docs for more info -->
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -44,6 +68,8 @@
 			</array>
 		</dict>
 	</array>
+
+	<!-- For fb sdk -->
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>

@@ -167,7 +167,7 @@ const StyledText = styled.Text`
 
 const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_content/'
 
-const PodcastDetail = () => {
+const PodcastDetail = React.memo(() => {
 
   const [isBrief, setIsBrief] = useState(true)
 
@@ -211,7 +211,7 @@ const PodcastDetail = () => {
 
     onPressPlayHandle={onPressPlayHandle}
   />
-};
+})
 
 
 interface Props {
@@ -295,6 +295,7 @@ const PodcastDetailMemo = React.memo((props: Props) => {
   </React.Fragment>
 }, (next, prev) => next.podcast.id === prev.podcast.id && next.isBrief === prev.isBrief)
 
+//@ts-ignore
 PodcastDetail.navigationOptions = {
   header: null
 };
