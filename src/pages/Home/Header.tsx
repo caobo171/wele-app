@@ -13,6 +13,7 @@ import { updateNotifications } from '@store/notification/functions';
 import { updateLastSeenOfUser } from '@/store/user/function';
 import { useCurrentUser } from '@/store/user/hooks';
 import { UserType } from '@/store/user/types';
+import Touchable from '@/components/UI/Touchable';
 
 
 const StyledFeatherIcon = styled(FeatherIcon)`
@@ -65,19 +66,24 @@ const HeaderMemo = React.memo((props: Props) => {
         updateLastSeenOfUser(props.currentUser)
         nav.navigate('Notifications');
     },[props.currentUser])
+
     const nav = useContext(NavigationContext)
+
+    const navigateToUserProfile = useCallback(()=>{
+        nav.navigate('UserProfile')
+    },[])
     return <HeaderWrapper>
-        <TouchableOpacity onPress={onNotificationClickHandle}>
+        <Touchable onPress={onNotificationClickHandle}>
             <StyledView>
                 <StyledFeatherIcon name={'bell'} />
                 {props.unreadNumber > 0 && <StyledBadge>{props.unreadNumber}</StyledBadge>}
             </StyledView>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => nav.navigate('UserProfile')}>
+        </Touchable>
+        <Touchable onPress={navigateToUserProfile}>
             <View>
                 <StyledFeatherIcon name={'settings'} />
             </View>
-        </TouchableOpacity>
+        </Touchable>
     </HeaderWrapper>
 },(prev, next)=> prev.currentUser.id === next.currentUser.id && prev.unreadNumber === next.unreadNumber)
 

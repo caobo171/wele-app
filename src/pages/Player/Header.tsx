@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
@@ -28,21 +28,25 @@ const StyledHeaderText = styled.Text<{theme: CustomTheme}>`
 const Header = React.memo(() => {
 
   const nav = useContext(NavigationContext)
+
+  const navigateHome = useCallback(()=>{
+    nav.navigate("Home");
+  }, [])
+
+  const navigateToPodcastDetail = useCallback(()=>{
+    nav.navigate("PodcastDetail");
+  }, [])
   return (
     <HeaderWrapper>
       <TouchableOpacity
-        onPress={() => {
-          nav.navigate("PodcastDetail");
-        }}
+        onPress={navigateToPodcastDetail}
       >
         <StyledAntEntypoIcon name={"chevron-thin-down"} />
       </TouchableOpacity>
       <StyledHeaderText>We EnJoy Learning English</StyledHeaderText>
 
       <TouchableOpacity
-        onPress={() => {
-          nav.navigate("Home");
-        }}
+        onPress={navigateHome}
       >
         <StyledAntEntypoIcon name={"dots-three-vertical"} />
       </TouchableOpacity>

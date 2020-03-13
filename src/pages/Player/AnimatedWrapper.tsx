@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Player from './Player';
 import PodcastType from '@store/podcast/types';
 import Hint from './Hint'
@@ -14,11 +14,17 @@ import Hint from './Hint'
 import Swiper from 'react-native-swiper'
 
 interface Props {
-  podcast: PodcastType
+  podcast: PodcastType,
+  isSent: boolean
 }
 
 const AnimatedWrapper = React.memo((props: Props) => {
-  
+
+  const existResult = useMemo(
+    () => props.isSent
+      && props.podcast.result
+      && props.podcast.hint.replace(/\s/g, '') !== '', [])
+
   return (
     <React.Fragment>
       {
@@ -26,7 +32,7 @@ const AnimatedWrapper = React.memo((props: Props) => {
           <Player podcast={props.podcast} /> :
           <Swiper>
             <Player podcast={props.podcast} />
-            <Hint hint={props.podcast.hint} />
+            <Hint hint={existResult ? props.podcast.result : props.podcast.hint} />
           </Swiper>
       }
     </React.Fragment>

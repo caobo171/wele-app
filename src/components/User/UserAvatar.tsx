@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components/native';
 import { UserType } from '@store/user/types';
 import { useSelector } from 'react-redux';
@@ -31,29 +31,47 @@ const StyledDot = styled.View<{ isOnline: boolean }>`
 `
 
 interface Props {
-  user: UserType | null
+  user: UserType | null,
+  index? : number
 }
 
+const IMAGES = [
+  require('@/assets/deadpool.jpeg'),
+  require('@/assets/ironman.jpeg'),
+  require('@/assets/thor.jpeg'),
+  require('@/assets/wolf.jpeg')
+]
 
-const DEFAUTL_IMAGE = "https://image.flaticon.com/icons/png/512/17/17004.png"
-const UserAvatar = (props: Props) => {
+
+
+const UserAvatar = React.memo((props: Props) => {
 
   //@ts-ignore
   const user = useSelector((state: any) => (state.user.listUsers.get(props.user ? props.user.id : '-1')))
 
+  const renderAvatar = useCallback(()=>{
+    if(props.user && props.user.photoURL && props.user.id !== '-1') {
+      return (<StyledAvatar
+      resizeMode={'contain'}
+      source={{
+        uri: props.user.photoURL
+      }}
+    />)
+    }else{
+      return (<StyledAvatar
+        resizeMode={'contain'}
+        source={IMAGES[props.index? props.index % 4: 0]}
+      />)
+    }
+  },[props.index, props.user])
 
   return (
     <StyledWrapper>
-      <StyledAvatar
-        resizeMode={'contain'}
-        source={{
-          uri: props.user ? props.user.photoURL : DEFAUTL_IMAGE
-        }}
-      />
+      {renderAvatar()}
       {user && user.online && <StyledDot isOnline={user.online ? user.online : false} />}
     </StyledWrapper>
   )
-}
+})
 
 
 export default UserAvatar

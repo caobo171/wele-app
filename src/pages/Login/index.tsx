@@ -19,6 +19,7 @@ import { loginWithFacebook, validateEmail, loginWithGoogle } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import LoadingComponent from '@/components/Loading/Loading';
+import Touchable from '@/components/UI/Touchable';
 
 const Wrapper = styled.View<{ theme: CustomTheme }>`
   height: 100%;
@@ -43,7 +44,7 @@ const StyledButtonWrapper = styled.View`
     flex: 1;
 `
 
-const StyledButton = styled(TouchableOpacity)`
+const StyledButton = styled(Touchable)`
   flex-direction: row;
   width: 70%;
   background-color: #4267b2;

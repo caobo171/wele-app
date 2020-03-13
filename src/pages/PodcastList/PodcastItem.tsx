@@ -6,6 +6,7 @@ import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import PodcastType from "@/store/podcast/types";
 import { getPodcast } from "@/store/podcast/functions";
 import { NavigationContext } from "react-navigation";
+import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
 
 const StyledPodcastWrapper = styled.View<{ size: 'big' | 'medium', theme: CustomTheme }>`
   background-color: ${props => props.theme.backgroundColor};
@@ -25,11 +26,19 @@ const StyledImageWrapper = styled.View`
   flex: 1.2;
 `;
 
-const Title = styled.Text<{theme: CustomTheme}>`
+const StyledUIBackgroundImage = styled(UIBackgroundImage)`
+  height: 60px;
+  width: 80px;
+  margin-top: 4px;
+  margin-left: auto;
+  margin-right: auto;
+`
+
+const Title = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
   font-size: 12px;
   margin-bottom: 5px;
-  color: ${props=> props.theme.textColorH1}
+  color: ${props => props.theme.textColorH1}
 `;
 
 
@@ -42,15 +51,9 @@ const DescriptionSub = styled.Text`
   font-size: 10px;
 `;
 
-const StyledPodcastImage = styled.Image<{theme: CustomTheme}>`
-  height: 60px;
-  width: 80px;
-  margin-top: 4px;
-  margin-left: auto;
-  margin-right: auto;
-  ${props => props.theme.name === ThemeMode.DARK && `
-  opacity: 0.6;
-  `}
+const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
+  width: 100%;
+  height: 100%;
 `;
 
 
@@ -76,10 +79,13 @@ const PodcastItem = (props: Props) => {
     >
       <StyledPodcastWrapper size="big">
         <StyledImageWrapper>
-          <StyledPodcastImage
-            resizeMode={"contain"}
-            source={{ uri: props.imgUrl }}
-          />
+          <StyledUIBackgroundImage>
+            <StyledPodcastImage
+              resizeMode={"contain"}
+              source={{ uri: props.imgUrl }}
+            />
+          </StyledUIBackgroundImage>
+
         </StyledImageWrapper>
 
 

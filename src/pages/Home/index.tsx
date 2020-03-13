@@ -95,12 +95,16 @@ interface PodcastsProps {
   podcasts: PodcastType[]
 }
 
+const renderItem = ({ item }) => <PodcastThumbnail {...item} />
+
 const PodcastsThisWeek = React.memo((props: PodcastsProps) => {
 
   const onRefreshHandle = ()=>{
     return  getRecentPodcast()
   }
   const [state, fetch] = useAsyncFn(onRefreshHandle)
+
+
 
   return <StyledSection>
     <StyledSectionTitle position="top">Podcast this week</StyledSectionTitle>
@@ -109,7 +113,7 @@ const PodcastsThisWeek = React.memo((props: PodcastsProps) => {
         refreshing={state.loading}
         onRefresh={fetch}
         data={props.podcasts}
-        renderItem={({ item }) => <PodcastThumbnail {...item} />}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
       />
     </StyledSectionContent>
@@ -123,7 +127,7 @@ const RecentPodcast = React.memo((props: PodcastsProps) => {
     <StyledSectionContent>
       <FlatList
         data={props.podcasts}
-        renderItem={({ item, index }) => <PodcastThumbnail {...item} />}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
       />
     </StyledSectionContent>

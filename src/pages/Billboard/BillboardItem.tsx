@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import styled from 'styled-components/native';
 import { UserType } from '@store/user/types';
@@ -6,6 +6,7 @@ import UserAvatar from '../../components/User/UserAvatar';
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import { NavigationContext } from 'react-navigation';
 import { useCurrentUser } from '@/store/user/hooks';
+import Touchable from '@/components/UI/Touchable';
 const StyledUserSection = styled.View`
   height: 58px;
   width: 100%;
@@ -61,7 +62,7 @@ const StyledActionButtonGroup = styled.View`
   flex: 2;
 `;
 
-const StyledTouchableOpacity = styled.TouchableOpacity`
+const StyledTouchableOpacity = styled(Touchable)`
   height: 100%;
 `
 
@@ -88,13 +89,19 @@ const BillboardItem = React.memo((props: Props) => {
 
   const user = useCurrentUser()
   const nav = useContext(NavigationContext)
+
+  const navigateToAnotherProfile = useCallback(()=>{
+    nav.navigate('AnotherProfile', {
+      user: props.user
+    })
+  },[props.user])
   return (
     <StyledUserSection>
       <StyledOrderIndicator color={renderColor(props.index)}>
         {props.index + 1}
       </StyledOrderIndicator>
       <StyledAvatarWrapper>
-        <UserAvatar user={props.user} />
+        <UserAvatar user={props.user} index={props.index} />
       </StyledAvatarWrapper>
       <StyledUserNameWrapper isFake={props.user.id !== '-1'}>
         <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
@@ -105,11 +112,7 @@ const BillboardItem = React.memo((props: Props) => {
       <StyledActionButtonGroup>
         {
           props.user.id !== '-1' && (
-            <StyledTouchableOpacity onPress={() => {
-              nav.navigate('AnotherProfile', {
-                user: props.user
-              })
-            }}>
+            <StyledTouchableOpacity onPress={navigateToAnotherProfile}>
               <StyledEntypoIcon name={'dots-three-vertical'} />
             </StyledTouchableOpacity>
           )

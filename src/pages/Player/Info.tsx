@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import PodcastType from "@store/podcast/types";
 
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
 
 
 const StyledInfoWrapper = styled.View`
@@ -14,12 +15,8 @@ const StyledInfoWrapper = styled.View`
 `;
 
 const StyledPodcastImage = styled.Image`
-  height: 200;
-  width: 96%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  width: 100%;
+  height: 100%
 `;
 
 const StyleInfo = styled.View`
@@ -44,16 +41,27 @@ const DescriptionSub = styled.Text`
   font-size: 10px;
 `;
 
+const StyledUIBackgroundImage= styled(UIBackgroundImage)`
+  height: 200;
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`
 
 
 const Info = React.memo((props: PodcastType) => {
 
   return (
     <StyledInfoWrapper>
+      <StyledUIBackgroundImage>
       <StyledPodcastImage
         resizeMode={"contain"}
         source={{ uri: props.imgUrl }}
       />
+      </StyledUIBackgroundImage>
+
       <StyleInfo>
         <StyledNameText>{props.name}</StyledNameText>
         <DescriptionSub>

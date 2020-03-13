@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { View, TouchableOpacity} from 'react-native';
@@ -72,15 +72,13 @@ const UserProfile = React.memo(() => {
     }
   }, [currentUser.id])
 
-
+ const goBackHandle = useCallback(()=> nav.goBack(),[])
 
   return (
     <Wrapper>
       <StatusBarView/>
       <HeaderWrapper>
-        <TouchableOpacity onPress={() => {
-          nav.navigate('Home')
-        }}>
+        <TouchableOpacity onPress={goBackHandle}>
           
             <StyledAntDesignIcon name={'arrowleft'} />
         </TouchableOpacity>
