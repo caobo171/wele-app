@@ -4,10 +4,11 @@ import NotificationType from '@store/notification/types'
 import { NavigationContext } from 'react-navigation';
 
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import UIBackgroundImage from '@/components/UI/UIBackgroundImage';
 
 const StyledImage = styled.Image`
-  height: 46px;
-  width: 46px;
+  height: 100%;
+  width: 100%;
   border-radius: 50;
 
 `;
@@ -49,7 +50,11 @@ const StyledContentWrapper = styled.View`
     flex-direction: column;
     flex: 5;
 `
-
+const StyledUIBackgroundImage = styled(UIBackgroundImage)`
+  height: 46px;
+  width: 46px;
+  border-radius: 50px;
+`
 
 interface Props {
   notification: NotificationType,
@@ -104,7 +109,10 @@ export const NotificationItem = (props: Props) => {
 
     <StyledWrapper onPress={onClickNotificationHandler}>
       <StyledImageWrapper>
+        <StyledUIBackgroundImage>
         <StyledImage source={{ uri: props.notification.imgUrl }} />
+        </StyledUIBackgroundImage>
+     
       </StyledImageWrapper>
       <StyledContentWrapper>
         <StyledText>{props.notification.title && <StyledTitle>[{props.notification.title.toUpperCase()}]</StyledTitle>} {TrimText(props.notification.message)}</StyledText>

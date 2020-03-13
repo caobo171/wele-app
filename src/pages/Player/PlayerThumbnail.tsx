@@ -71,6 +71,10 @@ const PlayerThumbnail = React.memo((props: any)=>{
     const navigateToPlayer = useCallback(()=>{
         nav.navigate('Player')
     },[])
+
+    const playPauseHandle = useCallback(()=>{
+        globalPlayer.playPause()
+    }, [])
     return(
         <Wrapper>
             {props.children}
@@ -86,9 +90,7 @@ const PlayerThumbnail = React.memo((props: any)=>{
                         <TouchableOpacity onPress = {navigateToPlayer}>
                             <StyledText>{trimText( track ? track.title : '')}</StyledText>
                         </TouchableOpacity>
-                        <StyledPlayButton onPress ={()=>{
-                            globalPlayer.playPause()
-                        }}> 
+                        <StyledPlayButton onPress ={playPauseHandle}> 
                             <StyledEntypoIcon name={globalPlayer.isPlaying(state) ? "controller-paus" : "controller-play"} />
                         </StyledPlayButton>
                         

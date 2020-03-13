@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components/native';
 import Header from "./Header";
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import PodcastType from '@store/podcast/types';
 import AnimatedWrapper from './AnimatedWrapper';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import StatusBarView from '@/components/UI/StatusbarView';
+import { useAnotherUserResult, useCurrentUser } from '@/store/user/hooks';
 const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
@@ -29,11 +30,18 @@ interface Props {
 
 const Main = React.memo((props: Props) => {
 
+    const user = useCurrentUser()
+    const currentResult = useAnotherUserResult(user);
+    const podcastNumber = useMemo(()=>  Number(props.podcast.name.match(/(\d+)/)[0]), [props.podcast]);
+    const isSent = useMemo(()=>  currentResult.labelArray.indexOf(podcastNumber) > -1, [podcastNumber]);
+
+    console.log(props.podcast)
+
     return (
         <Wrapper>
             <StatusBarView/>
             <Header/>
-            <AnimatedWrapper podcast={props.podcast} />
+            <AnimatedWrapper podcast={props.podcast} isSent = {isSent} />
         </Wrapper>
     );
 },(prev,next)=> prev.podcast.id === next.podcast.id)

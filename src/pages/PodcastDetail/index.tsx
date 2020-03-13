@@ -26,6 +26,7 @@ import { updateRecentPodcast, updatePodcastNumber } from '@/store/podcast/functi
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import NetInfo from '@react-native-community/netinfo';
 import StatusBarView from '@/components/UI/StatusbarView';
+import UIBackgroundImage from '@/components/UI/UIBackgroundImage';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -65,15 +66,18 @@ const StyledUserWrapper = styled.View`
 
 
 const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
-  height: 176;
+  height: 100%;
+  width: 100%;
+  border-radius: 10;
+`;
+
+
+const StyledUIBackgroundImage = styled(UIBackgroundImage)`
+  height: 200px;
   width: 100%;
   border-radius: 10;
   margin: 10px 0px 20px 0px;
-
-  ${props => props.theme.name === ThemeMode.DARK && `
-    opacity: 0.6;
-  `}
-`;
+`
 
 const StyledAntDesignIcon = styled(AntDesignIcon)`
   font-size: 28px;
@@ -182,8 +186,9 @@ const PodcastDetail = React.memo(() => {
     try {
       const res = await globalPlayer.pickTrack(currentPodcast)
       if (res !== true) {
+        const {uri, ...rest} = currentPodcast
         const podcast: PodcastType = {
-          ...currentPodcast,
+          ...rest,
           timeListen: currentPodcast.timeListen ? currentPodcast.timeListen + 1 : 1,
           uri: res
         }
@@ -245,10 +250,13 @@ const PodcastDetailMemo = React.memo((props: Props) => {
           <StyledBodyWrapper>
             <StyledContent>
               <StyledUserWrapper >
-                <StyledPodcastImage
-                  resizeMode={"stretch"}
-                  source={{ uri: props.podcast.imgUrl }}
-                />
+                <StyledUIBackgroundImage>
+                  <StyledPodcastImage
+                    resizeMode={"stretch"}
+                    source={{ uri: props.podcast.imgUrl }}
+                  />
+                </StyledUIBackgroundImage>
+
                 <StyledName>
                   {props.podcast.name}
                 </StyledName>

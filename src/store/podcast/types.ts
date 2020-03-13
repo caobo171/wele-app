@@ -17,6 +17,7 @@ export default interface PodcastType {
     fileSize: number,
     uri?: string,
     hint?: string,
+    result?:string,
     timeListen?: number
 }
 

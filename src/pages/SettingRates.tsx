@@ -23,6 +23,7 @@ import { updateSpeed, updatePlayback } from '@/store/player/functions';
 import { useTheme } from '@/store/theme/hook';
 import { ThemeMode } from '@/store/theme/ThemeWrapper';
 import StatusBarView from '@/components/UI/StatusbarView';
+import Touchable from '@/components/UI/Touchable';
 
 
 
@@ -48,7 +49,7 @@ const StyledValueColumn = styled.View`
     flex-direction: column;
 `
 
-const StyledNumberView = styled(TouchableOpacity)`
+const StyledNumberView = styled(Touchable)`
     flex: 1;
     justify-content: center;
     align-items: center;
@@ -68,7 +69,7 @@ const StyledColumnHeader = styled.Text`
     color: #dcdcdc;
 `
 
-const StyledTouchableHighlight = styled.TouchableOpacity`
+const StyledTouchableHighlight = styled(Touchable)`
     flex: 1;
     padding-top: 20px;
     justify-content: center;

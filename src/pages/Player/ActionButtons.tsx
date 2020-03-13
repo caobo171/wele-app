@@ -3,6 +3,7 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import EntypoIcon from "react-native-vector-icons/Entypo";
+import Touchable from '@components/UI/Touchable'
 //@ts-ignore
 import FeatherIcon from "react-native-vector-icons/Feather";
 
@@ -48,7 +49,7 @@ const StyledBadge = styled.Text<{ theme: CustomTheme }>`
   color: ${props => props.theme.textColorH2};
 `;
 
-const StyledPlayButton = styled(TouchableOpacity)`
+const StyledPlayButton = styled(Touchable)`
   background-color: #545454;
   border-radius: 35px;
   width: 70px;
@@ -57,7 +58,7 @@ const StyledPlayButton = styled(TouchableOpacity)`
   align-items: center;
 `;
 
-const StyledPlayBackButton = styled(TouchableOpacity)`
+const StyledPlayBackButton = styled(Touchable)`
   position: relative;
 `;
 
@@ -91,6 +92,7 @@ const ActionButtons = React.memo((props: Props) => {
   );
 }, (prev, next) => prev.playback === next.playback
   && prev.playing === next.playing
-  && prev.speed === next.speed);
+  && prev.speed === next.speed
+  && prev.onPlayBackHandle === next.onPlayBackHandle);
 
 export default ActionButtons;
