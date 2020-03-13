@@ -30,7 +30,7 @@ const AnimatedWrapper = React.memo((props: Props) => {
       {
         (!props.podcast.hint || props.podcast.hint.replace(/\s/g, '') === '') ?
           <Player podcast={props.podcast} /> :
-          <Swiper>
+          <Swiper   loop={false}>
             <Player podcast={props.podcast} />
             <Hint hint={existResult ? props.podcast.result : props.podcast.hint} />
           </Swiper>
