@@ -123,7 +123,7 @@ class GlobalPlayer {
     async addTrack(podcast: PodcastType, uri: string) {
         await TrackPlayer.add({
             id: podcast.id,
-            url: uri,
+            url: encodeURI(uri),
             title: podcast.name,
             artist: podcast.source,
             artwork: podcast.imgUrl,
@@ -155,13 +155,15 @@ class GlobalPlayer {
     async pickTrack(podcast: PodcastType) {
         if (podcast.uri) {
 
-            console.log(podcast.uri)
+            // console.log(podcast.uri)
             try{
-                const res =await RNFS.stat(podcast.uri)
+                const res =await RNFS.stat(podcast.uri.replace(/%20/g,' ' ))
+
+                console.log(podcast.uri, res)
                 if(res && res.isFile()){
-                    await this.addTrack(podcast, podcast.uri)
+                    await this.addTrack(podcast, res.path)
                     await TrackPlayer.play()
-                    return podcast.uri
+                    return res.path
                 }
             }catch(e){
                 console.log(e)
@@ -174,19 +176,48 @@ class GlobalPlayer {
                 type: [DocumentPicker.types.audio]
             })
 
-            // console.log('check res', res)
+
             if (res && Number(res.size) === podcast.fileSize) {
                 let correctPath = res.uri;
+
                 if (Platform.OS === 'ios') {
                     const split = res.uri.split('/');
                     const name = split.pop();
                     const inbox = split.pop();
-                    correctPath = `file://${RNFS.TemporaryDirectoryPath}${inbox}/${name}`.replace(/%20/g, ' ');
-                    await this.addTrack(podcast, correctPath)
-                    await TrackPlayer.play();
 
-                    return correctPath
+                    correctPath = `file://${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
+                    const files = await RNFS.readDir(`${RNFS.TemporaryDirectoryPath}${inbox}`)
+
+
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].name === name.replace(/%20/g, '')) {
+                            await this.addTrack(podcast, 'file://' + files[i].path)
+                            await TrackPlayer.play();
+                            return 'file://' + files[i].path;
+
+                        }
+                    }
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].name === name.replace(/%20/g, ' ')) {
+                            if (/\s/.test(name) || /%20/.test(name)) {
+                                const alterPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${name.replace(/%20/g, '').replace(/\s/, '')}`
+                                const alterFilePath = `file://${alterPath}`;
+                                const res = await RNFS.moveFile(files[i].path, alterPath);
+                                await setTimeout(()=>{
+                                    console.log('End TIme OUt !!')
+                                }, 500)
+                                await this.addTrack(podcast, alterFilePath);
+                                await TrackPlayer.play();
+                                return alterFilePath;
+                            }
+                        }
+                    }
+
+                    await this.addTrack(podcast, correctPath);
+                    await TrackPlayer.play();
+                    return correctPath;
                 } else {
+
                     if (res.uri.indexOf('com.android.providers') !== -1) {
                         const stats = await RNGRP.getRealPathFromURI(res.uri)// Relative path obtained from document picker
                         var str1 = "file://";
@@ -194,10 +225,10 @@ class GlobalPlayer {
                         correctPath = str1.concat(str2);
                         await this.addTrack(podcast, correctPath)
                         await TrackPlayer.play();
-    
+
                         return correctPath
                     }
-            
+
                 }
 
                 await this.addTrack(podcast, correctPath)

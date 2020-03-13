@@ -224,15 +224,17 @@ interface Props {
 const PodcastDetailMemo = React.memo((props: Props) => {
   const nav = useContext(NavigationContext)
 
+  const goBackHandle = useCallback(()=>{
+    nav.goBack()
+  }, [])
+
   return <React.Fragment>
     {
       props.podcast && (
         <Wrapper>
           <StatusBarView/>
           <HeaderWrapper>
-            <TouchableOpacity onPress={() => {
-              nav.navigate('Home')
-            }}>
+            <TouchableOpacity onPress={goBackHandle}>
               <View>
                 <StyledAntDesignIcon name={'arrowleft'} />
               </View>

@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React, { useContext }  from 'react';
+import React, { useContext, useCallback }  from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { View, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
@@ -54,12 +54,19 @@ const StyledPageTitleText = styled.Text<{theme: CustomTheme}>`
 `
 
 
+const ITEM_HEIGHT = 46;
 
 const Notifications = () => {
     
   const notifications = useNotifications()
 
   const nav = useContext(NavigationContext)
+
+
+  const getItemLayout = useCallback((data, index)=>(
+    {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index})
+    
+  , [])
   return (
     <Wrapper>
       <StatusBarView/>
@@ -76,6 +83,7 @@ const Notifications = () => {
         </StyledPageTitleText>
       </HeaderWrapper>
       <FlatList
+        getItemLayout = {getItemLayout}
         data = {notifications}
         renderItem = {({item})=> <NotificationItem notification= {item}/>}
         keyExtractor = {item => item.id}

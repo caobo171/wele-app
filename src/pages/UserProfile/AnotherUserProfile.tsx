@@ -18,6 +18,7 @@ import { useAnotherUserResult } from '@/store/user/hooks';
 import { ThemeMode, CustomTheme } from '@/store/theme/ThemeWrapper';
 import ProfileChart from './Chart';
 import UserInfo from './UserInfo';
+import StatusBarView from '@/components/UI/StatusbarView';
 
 
 
@@ -68,6 +69,7 @@ const AnotherProfile = (props: Props) => {
 
   return (
     <Wrapper>
+      <StatusBarView/>
       <HeaderWrapper>
         <TouchableOpacity onPress={onGobackHandle}>
           <View>

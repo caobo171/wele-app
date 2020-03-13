@@ -13,7 +13,7 @@ import NavigatorTree from "./MainWrapper";
 import ThemeWrapper from "@store/theme/ThemeWrapper";
 
 
-console.disableYellowBox;
+console.disableYellowBox = true;
 const App = () => {
 
   const requestPermissionAndroid =  useCallback(async () => {
