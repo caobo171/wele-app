@@ -12,6 +12,10 @@ import { Provider } from "react-redux";
 import NavigatorTree from "./MainWrapper";
 import ThemeWrapper from "@store/theme/ThemeWrapper";
 
+import {screensEnabled} from 'react-native-screens';
+
+screensEnabled();
+
 
 console.disableYellowBox = true;
 const App = () => {

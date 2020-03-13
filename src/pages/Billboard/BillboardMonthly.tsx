@@ -12,7 +12,7 @@ import styled from 'styled-components/native';
 import { FlatList } from 'react-navigation';
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import { UserType, MergeResultsType } from '@store/user/types'
-import { useResults, useResultsMonthly, useUsers } from '@store/user/hooks';
+import { useResultsMonthly } from '@store/user/hooks';
 import BillboardItem from './BillboardItem';
 
 const StyledBillboardContent = styled.View`

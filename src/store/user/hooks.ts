@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux'
 import { UserType, MergeResultsType, ResultType, State } from './types'
-
+import {createSelector } from 'reselect';
 
 // Only users who used app are displayed in the following list
+
 export const useResults = () => {
 
   const results: Map<string, ResultType> = useSelector((state: { user: State }) => state.user.listResult);

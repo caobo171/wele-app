@@ -12,7 +12,7 @@ import styled from 'styled-components/native';
 import { FlatList } from 'react-navigation';
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import { UserType, MergeResultsType } from '@store/user/types'
-import { useResults } from '@store/user/hooks';
+import { useResults, useResultsSelector } from '@store/user/hooks';
 import BillboardItem from './BillboardItem';
 import { useTheme } from '@/store/theme/hook';
 import Swiper from 'react-native-swiper'
