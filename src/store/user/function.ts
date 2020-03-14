@@ -103,9 +103,10 @@ export const updateLastSeenOfUser = async (user: UserType, storex = store) => {
 }
 
 
-const getAllUsersAsync = (): Promise<Map<string, UserType>> => {
+const getAllUsersAsync = (): Promise<actions.getAllUserParams> => {
     return new Promise((resolve, reject) => {
         let users = new Map<string, UserType>()
+        let byWeleEmail = new Map<string, UserType>()
         const ref = database().ref(`/users`);
         ref.once('value', async (snapshots: any) => {
             await snapshots.forEach((snapshot: any) => {
@@ -114,17 +115,22 @@ const getAllUsersAsync = (): Promise<Map<string, UserType>> => {
                     users = users.set(user.id, { id: user.id, ...user })
                 }
 
+                if(user.weleEmail || user.email){
+                    const mapId = (user.weleEmail? user.weleEmail : user.email).toLowerCase().replace(/\s/g, '')
+                    byWeleEmail = byWeleEmail.set(mapId, user)
+                }
+
             })
 
-            resolve(users)
+        resolve({users, byWeleEmail})
         })
     })
 }
 
 
 export const getAllUsers = async (storex = store) => {
-    const users = await getAllUsersAsync()
-    return storex.dispatch(actions.getAllUsers(users))
+    const {users, byWeleEmail} = await getAllUsersAsync()
+    return storex.dispatch(actions.getAllUsers({users, byWeleEmail}))
 }
 
 const validateKey = (email: string) => {

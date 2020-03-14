@@ -30,6 +30,7 @@ export interface UserType{
 
 export interface State {
     currentUser: null | UserType,
+    byWeleEmail: Map<string,UserType>
     listUsers: Map<string,UserType>,
     listResult : Map<string, ResultType>,
     listResultMonthly: Map<string,ResultV2Type>
