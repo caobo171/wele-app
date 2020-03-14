@@ -68,7 +68,7 @@ class WeleLocalStorage {
         if(existPodcast){
             podcasts = podcasts.filter(e=> e.id === existPodcast.id)
         }
-        podcasts.push(savePodcast)
+        podcasts.unshift(savePodcast)
 
         await this.set('recent-podcasts',JSON.stringify(podcasts))
     }
