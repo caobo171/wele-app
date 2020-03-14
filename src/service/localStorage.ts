@@ -64,9 +64,9 @@ class WeleLocalStorage {
 
 
 
-        const existPodcastIndex = podcasts.findIndex(e=> e.id === savePodcast.id)
-        if(existPodcastIndex){
-            podcasts = podcasts.splice(existPodcastIndex,1)
+        const existPodcast = podcasts.find(e=> e.id === savePodcast.id)
+        if(existPodcast){
+            podcasts = podcasts.filter(e=> e.id === existPodcast.id)
         }
         podcasts.push(savePodcast)
 
