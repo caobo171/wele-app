@@ -14,11 +14,12 @@ export const resultsSelector = createSelector(
       if (user.weleEmail && results.get(weleEmail)) {
         const result = results.get(weleEmail)
 
-        const total: number = Object.keys(result)
+        const scores: number[] = Object.keys(result)
           .filter(key => Number(result[key]) > -3 && key !== 'Total')
           //@ts-ignore
           .map(key => result[key])
-          .reduce((val1, val2) => val1 + val2)
+        
+        const total = scores.length > 0 ? scores.reduce((val1, val2) => val1 + val2) : 0 
 
         return {
           user,
@@ -129,8 +130,8 @@ const FAKE_IMAGE = 'https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-sh
 const renderFakeUser = (email: string, name?: string): UserType => {
   return {
     id: '-1',
-    displayName: email,
-    email: name ? name : email,
+    displayName: name ? name : email,
+    email,
     photoURL: FAKE_IMAGE
   }
 }
@@ -147,7 +148,6 @@ const resultsMonthSelector = createSelector(
     const rResults: MergeResultsType[] = results.map(result => {
       const id = result.id.toLowerCase().replace(/\s/g, '')
       const user = users.get(id)
-
       const resultV1 = listResult.get(id);
 
       const name = resultV1 ?

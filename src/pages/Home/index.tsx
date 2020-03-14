@@ -62,8 +62,11 @@ const StyledSectionContent = styled.View``;
 const Home = () => {
 
   const state = useAsync(async () => {
+    console.log('aaaa')
     await getPodcastThisWeek()
+    console.log('bbbbb')
     await getRecentPodcast()
+    console.log('ccc')
   }, [])
 
 
