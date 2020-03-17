@@ -8,7 +8,7 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { TouchableOpacity, Alert, View, StyleSheet } from "react-native";
+import { TouchableOpacity, Alert, View, StyleSheet, Text } from "react-native";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
@@ -102,6 +102,30 @@ const StyledTextInput = styled.TextInput`
 const StyledTextNote = styled.Text`
 
 `
+const styles = StyleSheet.create({
+  appleButton: {
+    width: 260,
+    height: 45,
+    margin: 10,
+  },
+  header: {
+    margin: 10,
+    marginTop: 0,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'pink',
+  },
+  horizontal: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+});
 
 
 const Login = () => {
@@ -354,9 +378,15 @@ const Login = () => {
                   <StyledText>Login With Facebook</StyledText>
                 </StyledButton>
 
-                <StyledButton1 onPress={onLoginWithAppleHandle} >
-                    <StyledText>Login With Apple</StyledText>
-                </StyledButton1>
+                <View style={[styles.horizontal]} >
+                  <AppleButton
+                         style={styles.appleButton}
+                         cornerRadius={5}
+                         buttonStyle={AppleButton.Style.BLACK}
+                         buttonType={AppleButton.Type.SIGN_IN}
+                         onPress={onLoginWithAppleHandle}
+                       />
+                </View>
 
 
 
