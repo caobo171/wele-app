@@ -8,18 +8,28 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { TouchableOpacity, Alert, View } from "react-native";
+import { TouchableOpacity, Alert, View, StyleSheet } from "react-native";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import LoginWithGoogle from './LoginWithGoogle'
 import * as Animatable from 'react-native-animatable';
-import { loginWithFacebook, validateEmail, loginWithGoogle } from './helper';
+import { loginWithFacebook, validateEmail, loginWithGoogle, loginWithApple } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import LoadingComponent from '@/components/Loading/Loading';
 import Touchable from '@/components/UI/Touchable';
+
+import { AppleButton } from '@invertase/react-native-apple-authentication';
+import appleAuth, {
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+  AppleAuthCredentialState,
+} from '@invertase/react-native-apple-authentication';
+// import { firebase } from "@react-native-firebase/auth";
+
+
 
 const Wrapper = styled.View<{ theme: CustomTheme }>`
   height: 100%;
@@ -48,6 +58,13 @@ const StyledButton = styled(Touchable)`
   flex-direction: row;
   width: 70%;
   background-color: #4267b2;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40px;
+`
+const StyledButton1 = styled(Touchable)`
+  flex-direction: row;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   height: 40px;
@@ -116,6 +133,32 @@ const Login = () => {
     }
   })
 
+  //Login Apple
+  const [loginAppleState, fetchAppleLogin] = useAsyncFn(async () => {
+    // Login with permissions
+    const user = await loginWithApple()
+
+    if (user.additionalUserInfo.isNewUser) {
+      return await setCurrentUser({
+        id: user.user.uid,
+        displayName: user.user.displayName ? user.user.displayName : '',
+        email: user.user.email ? user.user.email : '',
+        photoURL: user.user.photoURL ? user.user.photoURL : ''
+      }, user.user.email)
+    } else {
+
+      return await setCurrentUser({
+        id: user.user.uid,
+        displayName: user.user.displayName ? user.user.displayName : '',
+        email: user.user.email ? user.user.email : '',
+        photoURL: user.user.photoURL ? user.user.photoURL : ''
+      }, false)
+
+
+
+    }
+  })
+
   const [loginGoogleState, fetchLoginGoogle] = useAsyncFn(async () => {
     const user = await loginWithGoogle()
     if (user.additionalUserInfo.isNewUser) {
@@ -144,6 +187,10 @@ const Login = () => {
   const onLoginWithGoogleHandle = async () => {
     fetchLoginGoogle()
   }
+  const onLoginWithAppleHandle = async () => {
+    fetchAppleLogin()
+  }
+
   const onTextChangeHandle = useCallback((value: string) => {
     setEmail(value)
   }, [email])
@@ -151,6 +198,79 @@ const Login = () => {
   const onConfirmEmailChangeHandle = useCallback((value: string) => {
     setConfirmEmail(value)
   }, [confirmEmail])
+
+
+    // //apple sign in
+    //   const  appleSignIn = (result) => {
+    //     console.log('Resssult',result);
+    //   };
+    //
+    //   const styles = StyleSheet.create({
+    //     container: {
+    //       flex: 1,
+    //       justifyContent: 'center',
+    //       alignItems: 'center'
+    //     },
+    //     appleBtn: { height: 44, width: 200 }
+    //   });
+
+//     async function onAppleButtonPress() {
+//         console.warn('Beginning Apple Authentication');
+//
+//         try {
+//             const appleAuthRequestResponse = await appleAuth.performRequest({
+//               requestedOperation: AppleAuthRequestOperation.LOGIN,
+//               requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+//             });
+//
+//             console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+//
+//             const {
+//               user: newUser,
+//               email,
+//               nonce,
+//               identityToken,
+//               realUserStatus /* etc */,
+//             } = appleAuthRequestResponse;
+//
+//             user = newUser;
+//
+//             fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+//               updateCredentialStateForUser(`Error: ${error.code}`),
+//             );
+//
+//             if (identityToken) {
+//               // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+//               console.log(nonce, identityToken);
+//               const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+//               const userCredential = await firebase.auth().signInWithCredential(appleCredential);
+//
+//               // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+//               console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
+//
+//             } else {
+//               // no token - failed sign-in?
+//             }
+//
+//
+//
+//             if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
+//               console.log("I'm a real person!");
+//             }
+//
+//             console.log(`Apple Authentication Completed, ${user}, ${email}`);
+//           } catch (error) {
+//             if (error.code === AppleAuthError.CANCELED) {
+//               console.warn('User canceled Apple Sign in.');
+//             } else {
+//               console.error(error);
+//             }
+//           }
+// }
+
+
+
+
 
 
 
@@ -206,7 +326,7 @@ const Login = () => {
 
       <StyledButtonWrapper>
 
-        {(loginState.loading || loginGoogleState.loading) ? <LoadingComponent /> :
+        {(loginState.loading || loginGoogleState.loading || loginAppleState.loading) ? <LoadingComponent /> :
           <React.Fragment>
             {}
             {
@@ -227,11 +347,27 @@ const Login = () => {
               // animation="bounce" easing="ease-out" iterationCount={Infinity}
               >
                 <LoginWithGoogle loginWithGoogle={onLoginWithGoogleHandle} />
+
+
                 <StyledButton onPress={onLoginFacebookHandle}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
                 </StyledButton>
+
+                <StyledButton1 onPress={onLoginWithAppleHandle} >
+                    <StyledText>Login With Apple</StyledText>
+                </StyledButton1>
+
+
+
+
+
+
+
+
+
               </React.Fragment>
+
 
             )}
           </React.Fragment>}
