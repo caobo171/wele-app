@@ -38,6 +38,7 @@
 				<string>com.googleusercontent.apps.703244105810-t3m1ll7r81no2smg6mmtliguml7jrh2r</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
