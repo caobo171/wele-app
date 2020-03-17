@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* WELETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WELETests.m */; };
 		0B4821CF24188B73003B24D7 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4821CE24188B73003B24D7 /* dummy.swift */; };
-		0B4821D124188FC7003B24D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B4821D024188FC6003B24D7 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		20DA56938F5D9E4330061E6E /* libPods-WELE-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA97CB4A9F93526046BB6FC /* libPods-WELE-tvOS.a */; };
+		21AD790D241BC8780002F78E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21AD790C241BC8780002F78E /* GoogleService-Info.plist */; };
+		21AD790F241BD0C30002F78E /* Icon-App-40x40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 21AD790E241BD0C30002F78E /* Icon-App-40x40@3x.png */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -49,7 +50,6 @@
 		08A157F812B96AB78F2E5F56 /* Pods-WELE-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WELE-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-WELE-tvOSTests/Pods-WELE-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		0B4821CD24188B72003B24D7 /* WELE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WELE-Bridging-Header.h"; sourceTree = "<group>"; };
 		0B4821CE24188B73003B24D7 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
-		0B4821D024188FC6003B24D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0B4821D32418994E003B24D7 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		0B4821D42418994E003B24D7 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		0B4821D52418994E003B24D7 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -74,6 +74,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WELE/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WELE/main.m; sourceTree = "<group>"; };
 		2129E5233C55321694418B8B /* Pods-WELE-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WELE-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-WELE-tvOSTests/Pods-WELE-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		21AD790C241BC8780002F78E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		21AD790E241BD0C30002F78E /* Icon-App-40x40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-App-40x40@3x.png"; path = "../../../Desktop/icon1/ios/AppIcon.appiconset/Icon-App-40x40@3x.png"; sourceTree = "<group>"; };
+		21AD7910241BDB2D0002F78E /* WELE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WELE.entitlements; path = WELE/WELE.entitlements; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* WELE-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WELE-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* WELE-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WELE-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		764D53E22A238810E5476CF2 /* Pods-WELE-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WELE-tvOS.release.xcconfig"; path = "Target Support Files/Pods-WELE-tvOS/Pods-WELE-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -169,6 +172,7 @@
 		13B07FAE1A68108700A75B9A /* WELE */ = {
 			isa = PBXGroup;
 			children = (
+				21AD7910241BDB2D0002F78E /* WELE.entitlements */,
 				0B4821D2241898EF003B24D7 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -179,6 +183,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				0B4821CE24188B73003B24D7 /* dummy.swift */,
 				0B4821CD24188B72003B24D7 /* WELE-Bridging-Header.h */,
+				21AD790E241BD0C30002F78E /* Icon-App-40x40@3x.png */,
 			);
 			name = WELE;
 			sourceTree = "<group>";
@@ -221,7 +226,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				0B4821D024188FC6003B24D7 /* GoogleService-Info.plist */,
+				21AD790C241BC8780002F78E /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* WELE */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* WELETests */,
@@ -342,6 +347,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 344GLKB8TW;
 						LastSwiftMigration = 1130;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -391,7 +397,8 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				0B4821D124188FC7003B24D7 /* GoogleService-Info.plist in Resources */,
+				21AD790D241BC8780002F78E /* GoogleService-Info.plist in Resources */,
+				21AD790F241BD0C30002F78E /* Icon-App-40x40@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -748,8 +755,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = WELE/WELE.entitlements;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 344GLKB8TW;
 				INFOPLIST_FILE = WELE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -757,7 +766,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.WELEiOS;
 				PRODUCT_NAME = WELE;
 				SWIFT_OBJC_BRIDGING_HEADER = "WELE-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -772,7 +781,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = WELE/WELE.entitlements;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = 344GLKB8TW;
 				INFOPLIST_FILE = WELE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -780,7 +791,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.WELEiOS;
 				PRODUCT_NAME = WELE;
 				SWIFT_OBJC_BRIDGING_HEADER = "WELE-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

@@ -41,8 +41,16 @@ target 'WELE' do
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
 #  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+
+  pod 'FBSDKCoreKit', '5.8.0'
+  pod 'FBSDKLoginKit', '5.8.0'
+  pod 'FBSDKShareKit', '5.8.0'
+
+	
   
   
+
+  pod 'react-native-apple-authentication', :path => '../node_modules/react-native-apple-authentication'
 
   target 'WELETests' do
     inherit! :search_paths

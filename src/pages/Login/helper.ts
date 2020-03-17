@@ -3,6 +3,12 @@ import { firebase } from "@react-native-firebase/auth";
 import { GoogleSignin, User } from '@react-native-community/google-signin';
 import { Alert } from "react-native";
 
+import appleAuth, {
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+  AppleAuthCredentialState,
+} from '@invertase/react-native-apple-authentication';
+
 export const loginWithFacebook = async () => {
 
     try {
@@ -43,6 +49,67 @@ export const loginWithFacebook = async () => {
     }
 
 }
+export const loginWithApple = async () => {
+
+  console.warn('Beginning Apple Authentication');
+
+  try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: AppleAuthRequestOperation.LOGIN,
+        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+      });
+
+      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+      const {
+        user: newUser,
+        email,
+        nonce,
+        identityToken,
+        realUserStatus /* etc */,
+      } = appleAuthRequestResponse;
+
+      user = newUser;
+
+      fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+        updateCredentialStateForUser(`Error: ${error.code}`),
+      );
+      // console.log("identityToken", identityToken);
+
+      if (identityToken) {
+        // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+        console.log(nonce, identityToken);
+        const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+        const userCredential = await firebase.auth().signInWithCredential(appleCredential);
+        return userCredential;
+        console.log(userCredential,'userCredential');
+
+        // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+        console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
+
+      } else {
+        // no token - failed sign-in?
+        console.log("Fail to Sign in");
+
+
+      }
+
+
+
+      if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
+        console.log("I'm a real person!");
+      }
+
+      console.log(`Apple Authentication Completed, ${user}, ${email}`);
+    } catch (error) {
+      if (error.code === AppleAuthError.CANCELED) {
+        console.warn('User canceled Apple Sign in.');
+      } else {
+        console.error(error);
+      }
+    }
+
+}
 
 export const loginWithGoogle = async () => {
 
@@ -68,6 +135,8 @@ export const loginWithGoogle = async () => {
         const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
 
         const user = await firebase.auth().signInWithCredential(credential);
+        console.log(user,'user');
+
         return user
     } catch (err) {
         return null
@@ -79,5 +148,3 @@ export const validateEmail = (email: string) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
-
-
