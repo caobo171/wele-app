@@ -1,4 +1,163 @@
 PODS:
+  - abseil/algorithm (0.20190808):
+    - abseil/algorithm/algorithm (= 0.20190808)
+    - abseil/algorithm/container (= 0.20190808)
+  - abseil/algorithm/algorithm (0.20190808)
+  - abseil/algorithm/container (0.20190808):
+    - abseil/algorithm/algorithm
+    - abseil/base/core_headers
+    - abseil/meta/type_traits
+  - abseil/base (0.20190808):
+    - abseil/base/atomic_hook (= 0.20190808)
+    - abseil/base/base (= 0.20190808)
+    - abseil/base/base_internal (= 0.20190808)
+    - abseil/base/bits (= 0.20190808)
+    - abseil/base/config (= 0.20190808)
+    - abseil/base/core_headers (= 0.20190808)
+    - abseil/base/dynamic_annotations (= 0.20190808)
+    - abseil/base/endian (= 0.20190808)
+    - abseil/base/log_severity (= 0.20190808)
+    - abseil/base/malloc_internal (= 0.20190808)
+    - abseil/base/pretty_function (= 0.20190808)
+    - abseil/base/spinlock_wait (= 0.20190808)
+    - abseil/base/throw_delegate (= 0.20190808)
+  - abseil/base/atomic_hook (0.20190808)
+  - abseil/base/base (0.20190808):
+    - abseil/base/atomic_hook
+    - abseil/base/base_internal
+    - abseil/base/config
+    - abseil/base/core_headers
+    - abseil/base/dynamic_annotations
+    - abseil/base/log_severity
+    - abseil/base/spinlock_wait
+    - abseil/meta/type_traits
+  - abseil/base/base_internal (0.20190808):
+    - abseil/meta/type_traits
+  - abseil/base/bits (0.20190808):
+    - abseil/base/core_headers
+  - abseil/base/config (0.20190808)
+  - abseil/base/core_headers (0.20190808):
+    - abseil/base/config
+  - abseil/base/dynamic_annotations (0.20190808)
+  - abseil/base/endian (0.20190808):
+    - abseil/base/config
+    - abseil/base/core_headers
+  - abseil/base/log_severity (0.20190808):
+    - abseil/base/core_headers
+  - abseil/base/malloc_internal (0.20190808):
+    - abseil/base/base
+    - abseil/base/config
+    - abseil/base/core_headers
+    - abseil/base/dynamic_annotations
+    - abseil/base/spinlock_wait
+  - abseil/base/pretty_function (0.20190808)
+  - abseil/base/spinlock_wait (0.20190808):
+    - abseil/base/core_headers
+  - abseil/base/throw_delegate (0.20190808):
+    - abseil/base/base
+    - abseil/base/config
+  - abseil/memory (0.20190808):
+    - abseil/memory/memory (= 0.20190808)
+  - abseil/memory/memory (0.20190808):
+    - abseil/base/core_headers
+    - abseil/meta/type_traits
+  - abseil/meta (0.20190808):
+    - abseil/meta/type_traits (= 0.20190808)
+  - abseil/meta/type_traits (0.20190808):
+    - abseil/base/config
+  - abseil/numeric/int128 (0.20190808):
+    - abseil/base/config
+    - abseil/base/core_headers
+  - abseil/strings/internal (0.20190808):
+    - abseil/base/core_headers
+    - abseil/base/endian
+    - abseil/meta/type_traits
+  - abseil/strings/strings (0.20190808):
+    - abseil/base/base
+    - abseil/base/bits
+    - abseil/base/config
+    - abseil/base/core_headers
+    - abseil/base/endian
+    - abseil/base/throw_delegate
+    - abseil/memory/memory
+    - abseil/meta/type_traits
+    - abseil/numeric/int128
+    - abseil/strings/internal
+  - abseil/time (0.20190808):
+    - abseil/time/internal (= 0.20190808)
+    - abseil/time/time (= 0.20190808)
+  - abseil/time/internal (0.20190808):
+    - abseil/time/internal/cctz (= 0.20190808)
+  - abseil/time/internal/cctz (0.20190808):
+    - abseil/time/internal/cctz/civil_time (= 0.20190808)
+    - abseil/time/internal/cctz/includes (= 0.20190808)
+    - abseil/time/internal/cctz/time_zone (= 0.20190808)
+  - abseil/time/internal/cctz/civil_time (0.20190808)
+  - abseil/time/internal/cctz/includes (0.20190808)
+  - abseil/time/internal/cctz/time_zone (0.20190808):
+    - abseil/time/internal/cctz/civil_time
+  - abseil/time/time (0.20190808):
+    - abseil/base/base
+    - abseil/base/core_headers
+    - abseil/numeric/int128
+    - abseil/strings/strings
+    - abseil/time/internal/cctz/civil_time
+    - abseil/time/internal/cctz/time_zone
+  - abseil/types (0.20190808):
+    - abseil/types/any (= 0.20190808)
+    - abseil/types/bad_any_cast (= 0.20190808)
+    - abseil/types/bad_any_cast_impl (= 0.20190808)
+    - abseil/types/bad_optional_access (= 0.20190808)
+    - abseil/types/bad_variant_access (= 0.20190808)
+    - abseil/types/compare (= 0.20190808)
+    - abseil/types/optional (= 0.20190808)
+    - abseil/types/span (= 0.20190808)
+    - abseil/types/variant (= 0.20190808)
+  - abseil/types/any (0.20190808):
+    - abseil/base/config
+    - abseil/base/core_headers
+    - abseil/meta/type_traits
+    - abseil/types/bad_any_cast
+    - abseil/utility/utility
+  - abseil/types/bad_any_cast (0.20190808):
+    - abseil/base/config
+    - abseil/types/bad_any_cast_impl
+  - abseil/types/bad_any_cast_impl (0.20190808):
+    - abseil/base/base
+    - abseil/base/config
+  - abseil/types/bad_optional_access (0.20190808):
+    - abseil/base/base
+    - abseil/base/config
+  - abseil/types/bad_variant_access (0.20190808):
+    - abseil/base/base
+    - abseil/base/config
+  - abseil/types/compare (0.20190808):
+    - abseil/base/core_headers
+    - abseil/meta/type_traits
+  - abseil/types/optional (0.20190808):
+    - abseil/base/base_internal
+    - abseil/base/config
+    - abseil/base/core_headers
+    - abseil/memory/memory
+    - abseil/meta/type_traits
+    - abseil/types/bad_optional_access
+    - abseil/utility/utility
+  - abseil/types/span (0.20190808):
+    - abseil/algorithm/algorithm
+    - abseil/base/core_headers
+    - abseil/base/throw_delegate
+    - abseil/meta/type_traits
+  - abseil/types/variant (0.20190808):
+    - abseil/base/base_internal
+    - abseil/base/config
+    - abseil/base/core_headers
+    - abseil/meta/type_traits
+    - abseil/types/bad_variant_access
+    - abseil/utility/utility
+  - abseil/utility/utility (0.20190808):
+    - abseil/base/base_internal
+    - abseil/base/config
+    - abseil/meta/type_traits
   - AppAuth (1.3.0):
     - AppAuth/Core (= 1.3.0)
     - AppAuth/ExternalUserAgent (= 1.3.0)
@@ -28,48 +187,48 @@ PODS:
     - FBSDKShareKit/Share (= 5.8.0)
   - FBSDKShareKit/Share (5.8.0):
     - FBSDKCoreKit (~> 5.0)
-  - Firebase/Auth (6.8.1):
+  - Firebase/Auth (6.13.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 6.2.3)
-  - Firebase/Core (6.8.1):
+    - FirebaseAuth (~> 6.4.0)
+  - Firebase/Core (6.13.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 6.1.1)
-  - Firebase/CoreOnly (6.8.1):
-    - FirebaseCore (= 6.2.3)
-  - Firebase/Database (6.8.1):
+    - FirebaseAnalytics (= 6.1.6)
+  - Firebase/CoreOnly (6.13.0):
+    - FirebaseCore (= 6.4.0)
+  - Firebase/Database (6.13.0):
     - Firebase/CoreOnly
-    - FirebaseDatabase (~> 6.1.0)
-  - Firebase/Firestore (6.8.1):
+    - FirebaseDatabase (~> 6.1.2)
+  - Firebase/Firestore (6.13.0):
     - Firebase/CoreOnly
-    - FirebaseFirestore (~> 1.5.0)
-  - Firebase/Messaging (6.8.1):
+    - FirebaseFirestore (~> 1.8.0)
+  - Firebase/Messaging (6.13.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 4.1.4)
-  - FirebaseAnalytics (6.1.1):
-    - FirebaseCore (~> 6.2)
+    - FirebaseMessaging (~> 4.1.9)
+  - FirebaseAnalytics (6.1.6):
+    - FirebaseCore (~> 6.4)
     - FirebaseInstanceID (~> 4.2)
-    - GoogleAppMeasurement (= 6.1.1)
+    - GoogleAppMeasurement (= 6.1.6)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
-    - nanopb (~> 0.3)
+    - nanopb (= 0.3.9011)
   - FirebaseAnalyticsInterop (1.5.0)
-  - FirebaseAuth (6.2.3):
+  - FirebaseAuth (6.4.2):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.2)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.2)
     - GoogleUtilities/Environment (~> 6.2)
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseAuthInterop (1.1.0)
-  - FirebaseCore (6.2.3):
+  - FirebaseCore (6.4.0):
     - FirebaseCoreDiagnostics (~> 1.0)
     - FirebaseCoreDiagnosticsInterop (~> 1.0)
     - GoogleUtilities/Environment (~> 6.2)
     - GoogleUtilities/Logger (~> 6.2)
-  - FirebaseCoreDiagnostics (1.2.0):
+  - FirebaseCoreDiagnostics (1.2.2):
     - FirebaseCoreDiagnosticsInterop (~> 1.2)
-    - GoogleDataTransportCCTSupport (~> 1.3)
+    - GoogleDataTransportCCTSupport (~> 2.0)
     - GoogleUtilities/Environment (~> 6.5)
     - GoogleUtilities/Logger (~> 6.5)
     - nanopb (~> 0.3.901)
@@ -78,21 +237,19 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - leveldb-library (~> 1.22)
-  - FirebaseFirestore (1.5.1):
+  - FirebaseFirestore (1.8.3):
+    - abseil/algorithm (= 0.20190808)
+    - abseil/base (= 0.20190808)
+    - abseil/memory (= 0.20190808)
+    - abseil/meta (= 0.20190808)
+    - abseil/strings/strings (= 0.20190808)
+    - abseil/time (= 0.20190808)
+    - abseil/types (= 0.20190808)
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.2)
-    - FirebaseFirestore/abseil-cpp (= 1.5.1)
     - "gRPC-C++ (= 0.0.9)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 0.3.901)
-    - Protobuf (~> 3.1)
-  - FirebaseFirestore/abseil-cpp (1.5.1):
-    - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 6.2)
-    - "gRPC-C++ (= 0.0.9)"
-    - leveldb-library (~> 1.22)
-    - nanopb (~> 0.3.901)
-    - Protobuf (~> 3.1)
   - FirebaseInstanceID (4.2.7):
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
@@ -116,37 +273,37 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - GoogleAppMeasurement (6.1.1):
+  - GoogleAppMeasurement (6.1.6):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
-    - nanopb (~> 0.3)
-  - GoogleDataTransport (4.0.0)
-  - GoogleDataTransportCCTSupport (1.4.0):
-    - GoogleDataTransport (~> 4.0)
+    - nanopb (= 0.3.9011)
+  - GoogleDataTransport (5.0.0)
+  - GoogleDataTransportCCTSupport (2.0.0):
+    - GoogleDataTransport (~> 5.0)
     - nanopb (~> 0.3.901)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/AppDelegateSwizzler (6.5.1):
+  - GoogleUtilities/AppDelegateSwizzler (6.5.2):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.5.1)
-  - GoogleUtilities/Logger (6.5.1):
+  - GoogleUtilities/Environment (6.5.2)
+  - GoogleUtilities/Logger (6.5.2):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.5.1):
+  - GoogleUtilities/MethodSwizzler (6.5.2):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.5.1):
+  - GoogleUtilities/Network (6.5.2):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.5.1)"
-  - GoogleUtilities/Reachability (6.5.1):
+  - "GoogleUtilities/NSData+zlib (6.5.2)"
+  - GoogleUtilities/Reachability (6.5.2):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.5.1):
+  - GoogleUtilities/UserDefaults (6.5.2):
     - GoogleUtilities/Logger
   - "gRPC-C++ (0.0.9)":
     - "gRPC-C++/Implementation (= 0.0.9)"
@@ -182,7 +339,7 @@ PODS:
     - RNPermissions
   - Permission-PhotoLibrary (2.0.9):
     - RNPermissions
-  - Protobuf (3.11.3)
+  - Protobuf (3.11.4)
   - React (0.60.5):
     - React-Core (= 0.60.5)
     - React-DevSupport (= 0.60.5)
@@ -228,6 +385,8 @@ PODS:
     - React-cxxreact (= 0.60.5)
     - React-jsi (= 0.60.5)
   - React-jsinspector (0.60.5)
+  - react-native-apple-authentication (1.0.6):
+    - React
   - react-native-document-picker (3.2.4):
     - React
   - react-native-fbsdk (1.1.1):
@@ -275,28 +434,30 @@ PODS:
     - React-Core (= 0.60.5)
   - React-RCTWebSocket (0.60.5):
     - React-Core (= 0.60.5)
+  - RNAppleAuthentication (0.1.1):
+    - React
   - RNCAsyncStorage (1.6.3):
     - React
-  - RNFBApp (6.0.3):
-    - Firebase/Core (~> 6.8.1)
+  - RNFBApp (6.3.4):
+    - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBAuth (6.0.3):
-    - Firebase/Auth (~> 6.8.1)
-    - Firebase/Core (~> 6.8.1)
-    - React
-    - RNFBApp
-  - RNFBDatabase (6.0.3):
-    - Firebase/Core (~> 6.8.1)
-    - Firebase/Database (~> 6.8.1)
+  - RNFBAuth (6.3.4):
+    - Firebase/Auth (~> 6.13.0)
+    - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBFirestore (6.0.3):
-    - Firebase/Core (~> 6.8.1)
-    - Firebase/Firestore (~> 6.8.1)
+  - RNFBDatabase (6.3.4):
+    - Firebase/Core (~> 6.13.0)
+    - Firebase/Database (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBMessaging (6.0.3):
-    - Firebase/Messaging (~> 6.8.1)
+  - RNFBFirestore (6.3.4):
+    - Firebase/Core (~> 6.13.0)
+    - Firebase/Firestore (~> 6.13.0)
+    - React
+    - RNFBApp
+  - RNFBMessaging (6.3.4):
+    - Firebase/Messaging (~> 6.13.0)
     - React
     - RNFBApp
   - RNFS (2.16.2):
@@ -321,6 +482,10 @@ PODS:
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - FBSDKCoreKit (= 5.8.0)
+  - FBSDKLoginKit (= 5.8.0)
+  - FBSDKShareKit (= 5.8.0)
+  - Firebase/Auth (~> 6.13.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (~> 5.0.2)
@@ -333,6 +498,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-apple-authentication (from `../node_modules/react-native-apple-authentication`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -349,6 +515,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
@@ -367,6 +534,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - abseil
     - AppAuth
     - boost-for-react-native
     - BoringSSL-GRPC
@@ -425,6 +593,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-apple-authentication:
+    :path: "../node_modules/react-native-apple-authentication"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-fbsdk:
@@ -457,6 +627,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNFBApp:
@@ -489,6 +661,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  abseil: 18063d773f5366ff8736a050fe035a28f635fd27
   AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -497,25 +670,25 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: e7dcac0aabcfb09d0166998edd95fe3b05a0ce5d
   FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
   FBSDKShareKit: abc29e1bb4f9f59f679adf1ae191006d68455f96
-  Firebase: 9cbe4e5b5eaafa05dc932be58b7c8c3820d71e88
-  FirebaseAnalytics: 843c7f64a8f9c79f0d03281197ebe7bb1d58d477
+  Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
+  FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
-  FirebaseAuth: e7f86c2dfc57281cd01f7da5e4b40e01e4510a4a
+  FirebaseAuth: ce45d7c5d46bed90159f3a73b6efbe8976ed3573
   FirebaseAuthInterop: a0f37ae05833af156e72028f648d313f7e7592e9
-  FirebaseCore: e9d9bd1dae61c1e82bc1e0e617a9d832392086a0
-  FirebaseCoreDiagnostics: 5e78803ab276bc5b50340e3c539c06c3de35c649
+  FirebaseCore: 307ea2508df730c5865334e41965bd9ea344b0e5
+  FirebaseCoreDiagnostics: e9b4cd8ba60dee0f2d13347332e4b7898cca5b61
   FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
   FirebaseDatabase: 0144e0706a4761f1b0e8679572eba8095ddb59be
-  FirebaseFirestore: 5ee8bdb959541f0d55352f2d681efb03b9742a43
+  FirebaseFirestore: 52120e2833f804a874ba1a9f59aab864a8ae2286
   FirebaseInstanceID: ebd2ea79ee38db0cb5f5167b17a0d387e1cc7b6e
   FirebaseMessaging: 089b7a4991425783384acc8bcefcd78c0af913bd
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  GoogleAppMeasurement: 86a82f0e1f20b8eedf8e20326530138fd71409de
-  GoogleDataTransport: 47fe3b8e1673e5187dfd615656a3c5034f150d69
-  GoogleDataTransportCCTSupport: 36f69887fd212db6d7ef4dd45ba44523717a434e
+  GoogleAppMeasurement: dfe55efa543e899d906309eaaac6ca26d249862f
+  GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
+  GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
+  GoogleUtilities: ad0f3b691c67909d03a3327cc205222ab8f42e0e
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
@@ -524,7 +697,7 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Permission-MediaLibrary: 753f49bb6e08e34347e8a781263db44750b4b73e
   Permission-PhotoLibrary: 42d41b53adefcfa94f42fb628f143d97136120bd
-  Protobuf: 0e94afe3b47cb11876eb6aee296638711a24bf75
+  Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
@@ -532,6 +705,7 @@ SPEC CHECKSUMS:
   React-jsi: 4d8c9efb6312a9725b18d6fc818ffc103f60fec2
   React-jsiexecutor: 90ad2f9db09513fc763bc757fdc3c4ff8bde2a30
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
+  react-native-apple-authentication: f0317f01addb58a91cc8c1a2d41ca258ccf7eca0
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-fbsdk: b94a83971c496a35803f38b921aec6d637ba07b5
   react-native-netinfo: 817823a90f13ced48413875c0820df04c3aae28d
@@ -548,12 +722,13 @@ SPEC CHECKSUMS:
   React-RCTText: b074d89033583d4f2eb5faf7ea2db3a13c7553a2
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
+  RNAppleAuthentication: 9cca53676f5f010ffbf33eb99604383bfe0eb020
   RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
-  RNFBApp: 92ae594c85e82e1e68434049b2a37e1f584cf8b9
-  RNFBAuth: edc2e5986b92f0dfd0076b312caf7871a1646ed8
-  RNFBDatabase: d7777fb4e6e312321a26f0ff5f5ef3a669bc2215
-  RNFBFirestore: 781a0084ac0f152e859fb150bb3409a522abeee7
-  RNFBMessaging: 5a82056efc1bf45a8467121d1a531feca34b9fa4
+  RNFBApp: 7d4006751de8bb5cafa2e8d2e7d94ee250df81db
+  RNFBAuth: ed8b865db45f7ded9dbf535e390cba2ba672aede
+  RNFBDatabase: 1201eb94eff3ab457d3e898fb5c347ddc67e00db
+  RNFBFirestore: 04c1eb90463c208ee072988d463c74bec09d08c1
+  RNFBMessaging: 51cc7f6beaf4c4feac6f18ea941bba5854e3d9c6
   RNFS: 0d4191b1052bef9ce70deff00a5b4169c62bbd9b
   RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
   RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
@@ -564,6 +739,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: 91a246e48d6e30dcb153a4ecc9e4758891fc2cda
+PODFILE CHECKSUM: d9f1e392109b44a167f8265179ac28862a3a7e8e
 
 COCOAPODS: 1.9.1

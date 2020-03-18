@@ -8,18 +8,23 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { TouchableOpacity, Alert, View } from "react-native";
+import { TouchableOpacity, Alert, View, StyleSheet, Text, Button, Platform } from "react-native";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import LoginWithGoogle from './LoginWithGoogle'
 import * as Animatable from 'react-native-animatable';
-import { loginWithFacebook, validateEmail, loginWithGoogle } from './helper';
+import { loginWithFacebook, validateEmail, loginWithGoogle, loginWithApple } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import LoadingComponent from '@/components/Loading/Loading';
 import Touchable from '@/components/UI/Touchable';
+
+import { AppleButton } from '@invertase/react-native-apple-authentication';
+
+
+
 
 const Wrapper = styled.View<{ theme: CustomTheme }>`
   height: 100%;
@@ -53,6 +58,7 @@ const StyledButton = styled(Touchable)`
   height: 40px;
 `
 
+
 const StyledFeatherIcon = styled(FeatherIcon)`
     margin: auto;
     text-align: center;
@@ -85,6 +91,31 @@ const StyledTextInput = styled.TextInput`
 const StyledTextNote = styled.Text`
 
 `
+const styles = StyleSheet.create({
+  appleButton: {
+    width: 260,
+    height: 45,
+    margin: 10,
+    marginTop: 0
+  },
+  header: {
+    margin: 10,
+    marginTop: 0,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'pink',
+  },
+  horizontal: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+});
 
 
 const Login = () => {
@@ -116,6 +147,23 @@ const Login = () => {
     }
   })
 
+  //Login Apple
+  const [loginAppleState, fetchAppleLogin] = useAsyncFn(async () => {
+    // Login with permissions
+    const user = await loginWithApple()
+    if(user){
+      return await setCurrentUser({
+        id: user.id,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: 'https://cdn2.iconfinder.com/data/icons/apple-inspire-black/100/Apple-21-512.png'
+      }, user.email)
+    }else{
+      setCurrentUser(null);
+    }
+
+  })
+
   const [loginGoogleState, fetchLoginGoogle] = useAsyncFn(async () => {
     const user = await loginWithGoogle()
     if (user.additionalUserInfo.isNewUser) {
@@ -137,13 +185,6 @@ const Login = () => {
     }
   })
 
-  const onLoginFacebookHandle = async () => {
-    fetchLogin()
-  }
-
-  const onLoginWithGoogleHandle = async () => {
-    fetchLoginGoogle()
-  }
   const onTextChangeHandle = useCallback((value: string) => {
     setEmail(value)
   }, [email])
@@ -206,7 +247,7 @@ const Login = () => {
 
       <StyledButtonWrapper>
 
-        {(loginState.loading || loginGoogleState.loading) ? <LoadingComponent /> :
+        {(loginState.loading || loginGoogleState.loading || loginAppleState.loading) ? <LoadingComponent /> :
           <React.Fragment>
             {}
             {
@@ -226,12 +267,25 @@ const Login = () => {
               <React.Fragment
               // animation="bounce" easing="ease-out" iterationCount={Infinity}
               >
-                <LoginWithGoogle loginWithGoogle={onLoginWithGoogleHandle} />
-                <StyledButton onPress={onLoginFacebookHandle}>
+                <LoginWithGoogle loginWithGoogle={fetchLoginGoogle} />
+
+
+                <StyledButton onPress={fetchLogin}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
                 </StyledButton>
+
+                {Platform.OS === 'ios' && <View style={[styles.horizontal]} >
+                  <AppleButton
+                    style={styles.appleButton}
+                    buttonStyle={AppleButton.Style.BLACK}
+                    buttonType={AppleButton.Type.SIGN_IN}
+                    onPress={fetchAppleLogin}
+                  />
+                </View>}
+
               </React.Fragment>
+
 
             )}
           </React.Fragment>}

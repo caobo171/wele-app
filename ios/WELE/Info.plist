@@ -2,43 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
-	<!-- For permission -->
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Apple Music</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera usage</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Microphone Usage</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>Reminder usage</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>Reminder usage</string>
-
-
-	<key>NSMediaLibraryUsageDescription</key>
-	<string>MediaLibrary usage</string>
-	<!-- -->
-
-
-    <!-- Fix react native icons -->
-	<key>UIAppFonts</key>
-	<array>
-		<string>AntDesign.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>Feather.ttf</string>
-		<string>Entypo.ttf</string>
-	</array>
-	<!-- reference to react native icons docs for more info -->
-
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Wele</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconFile</key>
+	<string>Icon-App-40x40@3x.png</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -67,11 +38,10 @@
 				<string>com.googleusercontent.apps.703244105810-t3m1ll7r81no2smg6mmtliguml7jrh2r</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
-
-	<!-- For fb sdk -->
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>466646053929673</string>
 	<key>FacebookDisplayName</key>
@@ -108,8 +78,27 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Apple Music</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera usage</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMediaLibraryUsageDescription</key>
+	<string>MediaLibrary usage</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone Usage</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Reminder usage</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>Feather.ttf</string>
+		<string>Entypo.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

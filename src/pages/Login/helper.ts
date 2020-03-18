@@ -3,6 +3,14 @@ import { firebase } from "@react-native-firebase/auth";
 import { GoogleSignin, User } from '@react-native-community/google-signin';
 import { Alert } from "react-native";
 
+import appleAuth, {
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+  AppleAuthCredentialState,
+  AppleAuthRealUserStatus,
+  AppleAuthError,
+} from '@invertase/react-native-apple-authentication';
+
 export const loginWithFacebook = async () => {
 
     try {
@@ -43,6 +51,56 @@ export const loginWithFacebook = async () => {
     }
 
 }
+export const loginWithApple = async () => {
+
+  console.warn('Beginning Apple Authentication');
+
+  try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: AppleAuthRequestOperation.LOGIN,
+        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+      });
+
+      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+      const {
+        user: id,
+        email,
+        nonce,
+        identityToken,
+        fullName,
+        realUserStatus /* etc */,
+      } = appleAuthRequestResponse;
+
+
+      const user = {
+        id: id.replace(/\./g, ''), 
+        email,
+        displayName: Object.values(fullName).filter(e=> e!==null).join(' ')
+      }
+
+
+      // console.log("identityToken", identityToken);
+
+      if (identityToken) {
+        // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+          return user
+      } else {
+        // no token - failed sign-in?
+        Alert.alert("Fail to Sign in");
+
+        return null
+      }
+    } catch (error) {
+      console.log(error)
+      if (error.code === AppleAuthError.CANCELED) {
+        console.warn('User canceled Apple Sign in.');
+      } else {
+        console.error(error);
+      }
+    }
+
+}
 
 export const loginWithGoogle = async () => {
 
@@ -68,6 +126,8 @@ export const loginWithGoogle = async () => {
         const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
 
         const user = await firebase.auth().signInWithCredential(credential);
+        console.log(user,'user');
+
         return user
     } catch (err) {
         return null
@@ -79,5 +139,3 @@ export const validateEmail = (email: string) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
-
-
