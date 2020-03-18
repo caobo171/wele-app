@@ -81,7 +81,7 @@ export const loginWithApple = async () => {
         console.log(nonce, identityToken);
         const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
         const userCredential = await firebase.auth().signInWithCredential(appleCredential);
-        return userCredential;
+        return userCredential
         console.log(userCredential,'userCredential');
 
         // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
@@ -90,6 +90,7 @@ export const loginWithApple = async () => {
       } else {
         // no token - failed sign-in?
         console.log("Fail to Sign in");
+        return null
 
 
       }
