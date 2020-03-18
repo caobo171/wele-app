@@ -61,7 +61,7 @@ export const loginWithApple = async () => {
         requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
       });
 
-
+      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
 
       const {
         user: newUser,
@@ -73,20 +73,19 @@ export const loginWithApple = async () => {
 
       const user = newUser;
 
-      console.log(appleAuthRequestResponse)
-      
+
+      // console.log("identityToken", identityToken);
 
       if (identityToken) {
         // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
         console.log(nonce, identityToken);
-        try{
-          const appleCredential = await firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
-          const userCredential = await firebase.auth().signInWithCredential(appleCredential);
-          return userCredential;
-        }catch(err){
-          console.log(err)
-        }
-  
+        const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+        const userCredential = await firebase.auth().signInWithCredential(appleCredential);
+        return userCredential;
+        console.log(userCredential,'userCredential');
+
+        // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+        console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
 
       } else {
         // no token - failed sign-in?
