@@ -25,10 +25,11 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
         listUsers: action.payload.users,
         byWeleEmail : action.payload.byWeleEmail
     }))
-    .handleAction(actions.setCurrentUser, (state, action) => ({
+    .handleAction(actions.setCurrentUser, (state, action) => {
+        return {
         ...state,
         currentUser: action.payload
-    }))
+    }})
     .handleAction(actions.logOut, (state, action) => ({
         ...state,
         currentUser: null

@@ -44,11 +44,9 @@ const App = () => {
     }
   }, [])
 
-  const requestPermissionIOS = useCallback(async ()=>{
-      const res = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
-  }, [])
+
   useEffectOnce(() => {
-    Platform.OS === 'android' ? requestPermissionAndroid() : requestPermissionIOS()
+    Platform.OS === 'android' && requestPermissionAndroid() 
     SplashScreen.hide()
   })
 

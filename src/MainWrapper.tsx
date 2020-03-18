@@ -25,29 +25,8 @@ const MainAppScreen = () => {
   const currentUser = useCurrentUser()
 
   const status = useAsync(async () => {
-    const netState = await NetInfo.fetch()
-    if(netState.isConnected){
-      const rawUser = await firebase.auth().currentUser;
-
-      if (rawUser) {
-        const user = {
-          displayName: rawUser.displayName as string,
-          email: rawUser.email as string,
-          photoURL: rawUser.photoURL as string,
-          id: rawUser.uid
-        }
-  
-        return await setCurrentUser(user)
-  
-      }
-      return await setCurrentUser(null)
-    }else{
-
       const user = await storage.getCurrentUser()
-
       return await setCurrentUser(user)
-    }
-
   }, [])
 
 

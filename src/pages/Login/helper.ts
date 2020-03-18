@@ -64,43 +64,35 @@ export const loginWithApple = async () => {
       console.log('appleAuthRequestResponse', appleAuthRequestResponse);
 
       const {
-        user: newUser,
+        user: id,
         email,
         nonce,
         identityToken,
+        fullName,
         realUserStatus /* etc */,
       } = appleAuthRequestResponse;
 
-      const user = newUser;
+
+      const user = {
+        id: id.replace(/\./g, ''), 
+        email,
+        displayName: Object.values(fullName).filter(e=> e!==null).join(' ')
+      }
 
 
       // console.log("identityToken", identityToken);
 
       if (identityToken) {
         // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-        console.log(nonce, identityToken);
-        const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
-        const userCredential = await firebase.auth().signInWithCredential(appleCredential);
-        return userCredential;
-        console.log(userCredential,'userCredential');
-
-        // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
-        console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
-
+          return user
       } else {
         // no token - failed sign-in?
-        console.log("Fail to Sign in");
+        Alert.alert("Fail to Sign in");
 
-
+        return null
       }
-
-
-      if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
-        console.log("I'm a real person!");
-      }
-
-      console.log(`Apple Authentication Completed, ${user}, ${email}`);
     } catch (error) {
+      console.log(error)
       if (error.code === AppleAuthError.CANCELED) {
         console.warn('User canceled Apple Sign in.');
       } else {
