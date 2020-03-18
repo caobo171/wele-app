@@ -4,6 +4,7 @@ import * as actions from './actions'
 import { UserType, ResultType, State, ResultV2Type } from './types'
 
 const initialState: State = {
+    byWeleEmail: new Map<string, UserType>(),
     currentUser: null,
     listUsers: new Map<string, UserType>(),
     listResult: new Map<string, ResultType>(),
@@ -21,12 +22,14 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
     })
     .handleAction(actions.getAllUsers, (state, action) => ({
         ...state,
-        listUsers: action.payload
+        listUsers: action.payload.users,
+        byWeleEmail : action.payload.byWeleEmail
     }))
-    .handleAction(actions.setCurrentUser, (state, action) => ({
+    .handleAction(actions.setCurrentUser, (state, action) => {
+        return {
         ...state,
         currentUser: action.payload
-    }))
+    }})
     .handleAction(actions.logOut, (state, action) => ({
         ...state,
         currentUser: null

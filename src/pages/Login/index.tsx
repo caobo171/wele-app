@@ -8,7 +8,7 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { TouchableOpacity, Alert, View, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, Alert, View, StyleSheet, Text, Button, Platform } from "react-native";
 import FeatherIcon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components/native';
 import { setCurrentUser } from '@store/user/function';
@@ -22,12 +22,7 @@ import LoadingComponent from '@/components/Loading/Loading';
 import Touchable from '@/components/UI/Touchable';
 
 import { AppleButton } from '@invertase/react-native-apple-authentication';
-import appleAuth, {
-  AppleAuthRequestOperation,
-  AppleAuthRequestScope,
-  AppleAuthCredentialState,
-} from '@invertase/react-native-apple-authentication';
-// import { firebase } from "@react-native-firebase/auth";
+
 
 
 
@@ -62,13 +57,7 @@ const StyledButton = styled(Touchable)`
   margin-right: auto;
   height: 40px;
 `
-const StyledButton1 = styled(Touchable)`
-  flex-direction: row;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 40px;
-`
+
 
 const StyledFeatherIcon = styled(FeatherIcon)`
     margin: auto;
@@ -107,6 +96,7 @@ const styles = StyleSheet.create({
     width: 260,
     height: 45,
     margin: 10,
+    marginTop: 0
   },
   header: {
     margin: 10,
@@ -161,26 +151,17 @@ const Login = () => {
   const [loginAppleState, fetchAppleLogin] = useAsyncFn(async () => {
     // Login with permissions
     const user = await loginWithApple()
-
-    if (user.additionalUserInfo.isNewUser) {
+    if(user){
       return await setCurrentUser({
-        id: user.user.uid,
-        displayName: user.user.displayName ? user.user.displayName : '',
-        email: user.user.email ? user.user.email : '',
-        photoURL: user.user.photoURL ? user.user.photoURL : ''
-      }, user.user.email)
-    } else {
-
-      return await setCurrentUser({
-        id: user.user.uid,
-        displayName: user.user.displayName ? user.user.displayName : '',
-        email: user.user.email ? user.user.email : '',
-        photoURL: user.user.photoURL ? user.user.photoURL : ''
-      }, false)
-
-
-
+        id: user.id,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: 'https://cdn2.iconfinder.com/data/icons/apple-inspire-black/100/Apple-21-512.png'
+      }, user.email)
+    }else{
+      setCurrentUser(null);
     }
+
   })
 
   const [loginGoogleState, fetchLoginGoogle] = useAsyncFn(async () => {
@@ -204,17 +185,6 @@ const Login = () => {
     }
   })
 
-  const onLoginFacebookHandle = async () => {
-    fetchLogin()
-  }
-
-  const onLoginWithGoogleHandle = async () => {
-    fetchLoginGoogle()
-  }
-  const onLoginWithAppleHandle = async () => {
-    fetchAppleLogin()
-  }
-
   const onTextChangeHandle = useCallback((value: string) => {
     setEmail(value)
   }, [email])
@@ -222,79 +192,6 @@ const Login = () => {
   const onConfirmEmailChangeHandle = useCallback((value: string) => {
     setConfirmEmail(value)
   }, [confirmEmail])
-
-
-    // //apple sign in
-    //   const  appleSignIn = (result) => {
-    //     console.log('Resssult',result);
-    //   };
-    //
-    //   const styles = StyleSheet.create({
-    //     container: {
-    //       flex: 1,
-    //       justifyContent: 'center',
-    //       alignItems: 'center'
-    //     },
-    //     appleBtn: { height: 44, width: 200 }
-    //   });
-
-//     async function onAppleButtonPress() {
-//         console.warn('Beginning Apple Authentication');
-//
-//         try {
-//             const appleAuthRequestResponse = await appleAuth.performRequest({
-//               requestedOperation: AppleAuthRequestOperation.LOGIN,
-//               requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-//             });
-//
-//             console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-//
-//             const {
-//               user: newUser,
-//               email,
-//               nonce,
-//               identityToken,
-//               realUserStatus /* etc */,
-//             } = appleAuthRequestResponse;
-//
-//             user = newUser;
-//
-//             fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-//               updateCredentialStateForUser(`Error: ${error.code}`),
-//             );
-//
-//             if (identityToken) {
-//               // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-//               console.log(nonce, identityToken);
-//               const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
-//               const userCredential = await firebase.auth().signInWithCredential(appleCredential);
-//
-//               // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
-//               console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
-//
-//             } else {
-//               // no token - failed sign-in?
-//             }
-//
-//
-//
-//             if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
-//               console.log("I'm a real person!");
-//             }
-//
-//             console.log(`Apple Authentication Completed, ${user}, ${email}`);
-//           } catch (error) {
-//             if (error.code === AppleAuthError.CANCELED) {
-//               console.warn('User canceled Apple Sign in.');
-//             } else {
-//               console.error(error);
-//             }
-//           }
-// }
-
-
-
-
 
 
 
@@ -370,31 +267,22 @@ const Login = () => {
               <React.Fragment
               // animation="bounce" easing="ease-out" iterationCount={Infinity}
               >
-                <LoginWithGoogle loginWithGoogle={onLoginWithGoogleHandle} />
+                <LoginWithGoogle loginWithGoogle={fetchLoginGoogle} />
 
 
-                <StyledButton onPress={onLoginFacebookHandle}>
+                <StyledButton onPress={fetchLogin}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
                 </StyledButton>
 
-                <View style={[styles.horizontal]} >
+                {Platform.OS === 'ios' && <View style={[styles.horizontal]} >
                   <AppleButton
-                         style={styles.appleButton}
-                         cornerRadius={5}
-                         buttonStyle={AppleButton.Style.BLACK}
-                         buttonType={AppleButton.Type.SIGN_IN}
-                         onPress={onLoginWithAppleHandle}
-                       />
-                </View>
-
-
-
-
-
-
-
-
+                    style={styles.appleButton}
+                    buttonStyle={AppleButton.Style.BLACK}
+                    buttonType={AppleButton.Type.SIGN_IN}
+                    onPress={fetchAppleLogin}
+                  />
+                </View>}
 
               </React.Fragment>
 

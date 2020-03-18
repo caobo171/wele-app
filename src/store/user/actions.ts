@@ -10,9 +10,13 @@ export const updateUser = createAction('user/UPDATE_USER',
 
 export const logOut = createAction('user/LOG_OUT',()=> null)<null>()
 
+export type getAllUserParams = {
+    users: Map<string, UserType>,
+    byWeleEmail: Map<string, UserType>
+}
 
 export const getAllUsers = createAction('user/GET_ALL_USER', 
-(users: Map<string, UserType>)=> users)<Map<string, UserType>>()
+({users, byWeleEmail}: getAllUserParams)=> ({users, byWeleEmail}))<getAllUserParams>()
 
 
 

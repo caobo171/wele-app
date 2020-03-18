@@ -117,8 +117,8 @@ android {
         applicationId "com.wele"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.11"
+        versionCode 15
+        versionName "2.1"
 
 
         // very important

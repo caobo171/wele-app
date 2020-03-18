@@ -8,6 +8,7 @@ import { GoogleSignin } from "@react-native-community/google-signin";
 import storage from "@/service/localStorage";
 import NetInfo, { NetInfoCellularGeneration } from "@react-native-community/netinfo";
 
+import CurrentUser from '@/service/CurrentUser';
 
 export const RESULTS_COLLECTION = "results"
 
@@ -16,6 +17,19 @@ export const RESULTS_COLLECTION_V2 = 'resultsv2'
 export const USERS_COLLECTION = 'users'
 
 export const TOTAL_PROPERTY = 'Total'
+
+const validateKey = (email: string) => {
+    return email
+        .replace('.', 'weledotwele')
+        .replace('[', 'weleopenwele')
+        .replace(']', 'weleclosewele')
+        .replace('#', 'welesharpwele')
+        .replace('$', 'weledollarwele')
+        .replace('.', 'weledotwele')
+        .replace('.', 'weledotwele')
+        .replace('.', 'weledotwele')
+} 
+
 
 const getCurrentUserAsync = (id: string): Promise<UserType> => {
     return new Promise((resolve, reject) => {
@@ -28,17 +42,27 @@ const getCurrentUserAsync = (id: string): Promise<UserType> => {
 }
 
 const updateWELEEmail = async (user: UserType, weleEmail: string) => {
-    const ref = database().ref(`/${USERS_COLLECTION}/${user.id}`)
-    await ref.set({
-        ...user,
-        weleEmail
-    })
+    try{
+        const ref = database().ref(`/${USERS_COLLECTION}/${user.id}`)
+
+        console.log(ref);
+        return await ref.set({
+            ...user,
+            weleEmail
+        })
+         
+    }catch(err){
+        console.log(err)
+        return 
+    }
+    
 
 }
 
 
 export const setCurrentUser = async (user: UserType, isNew?: boolean | string, storex = store) => {
 
+    console.log(user)
 
     if (!user) {
         return storex.dispatch(actions.setCurrentUser(user))
@@ -46,23 +70,36 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 
     const netState = await NetInfo.fetch()
     if (!netState.isConnected) {
+        CurrentUser.setUser(user)
         return storex.dispatch(actions.setCurrentUser(user))
     }
 
 
+
+    console.log(isNew && typeof isNew === 'string', isNew)
+
     if (isNew && typeof isNew === 'string') {
+
+        console.log('aaaaaaa')
         await updateWELEEmail(user, isNew)
+        console.log('bbbbbb')
         await storage.setCurrentUser({ ...user, weleEmail: isNew })
+        console.log('cccccc')
+        await CurrentUser.setUser(user);
+        console.log('ow vao day roi ne ')
         return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
 
 
         const userData: UserType = await getCurrentUserAsync(user.id)
         if (userData.email) {
-            await storage.setCurrentUser({ ...userData, ...user })
-            return storex.dispatch(actions.setCurrentUser({ ...userData, ...user }))
+            const setUser = { ...userData, ...user }
+            CurrentUser.setUser(setUser);
+            await storage.setCurrentUser(setUser)
+            return storex.dispatch(actions.setCurrentUser(setUser))
 
         } else {
+            CurrentUser.setUser(user)
             await storage.setCurrentUser(user)
             return storex.dispatch(actions.setCurrentUser(user))
         }
@@ -72,8 +109,12 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 
 
 export const logOut = async (storex = store) => {
-    await firebase.auth().signOut();
+    try{
+        await firebase.auth().signOut();
+    }catch(err){}
+  
     await storage.removeCurrentUser()
+
     try {
         await LoginManager.logOut()
     } catch (e) {
@@ -103,41 +144,44 @@ export const updateLastSeenOfUser = async (user: UserType, storex = store) => {
 }
 
 
-const getAllUsersAsync = (): Promise<Map<string, UserType>> => {
+const getAllUsersAsync = (): Promise<actions.getAllUserParams> => {
     return new Promise((resolve, reject) => {
         let users = new Map<string, UserType>()
+        let byWeleEmail = new Map<string, UserType>()
         const ref = database().ref(`/users`);
         ref.once('value', async (snapshots: any) => {
+            console.log(snapshots)
             await snapshots.forEach((snapshot: any) => {
                 const user: UserType = snapshot._snapshot.value
                 if (user.id) {
                     users = users.set(user.id, { id: user.id, ...user })
                 }
 
+                if(user.weleEmail || user.email){
+                    const mapId = (user.weleEmail? user.weleEmail : user.email).toLowerCase().replace(/\s/g, '')
+                    byWeleEmail = byWeleEmail.set(mapId, user)
+                }
+
             })
 
-            resolve(users)
+        resolve({users, byWeleEmail})
         })
     })
 }
 
 
 export const getAllUsers = async (storex = store) => {
-    const users = await getAllUsersAsync()
-    return storex.dispatch(actions.getAllUsers(users))
+    console.log('aaaaaaaa');
+    try{
+        const {users, byWeleEmail} = await getAllUsersAsync()
+        console.log({users, byWeleEmail})
+        return storex.dispatch(actions.getAllUsers({users, byWeleEmail}))
+    }catch(err){
+        console.log(err);
+    }
+  
 }
 
-const validateKey = (email: string) => {
-    return email
-        .replace('.', 'weledotwele')
-        .replace('[', 'weleopenwele')
-        .replace(']', 'weleclosewele')
-        .replace('#', 'welesharpwele')
-        .replace('$', 'weledollarwele')
-        .replace('.', 'weledotwele')
-        .replace('.', 'weledotwele')
-        .replace('.', 'weledotwele')
-}
 
 
 const getMyResultAsync = (user: UserType): Promise<ResultType> => {
@@ -218,8 +262,10 @@ export const getResultsMonthly = async (storex = store) => {
 }
 
 export const getResults = async (storex = store) => {
+    console.log('aaaaaa')
     const results = await getResultsAsync()
 
+    console.log(results);
     if (results) {
         return await storex.dispatch(actions.getResults(results))
     }
