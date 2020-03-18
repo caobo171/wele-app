@@ -46,6 +46,7 @@ target 'WELE' do
   pod 'FBSDKLoginKit', '5.8.0'
   pod 'FBSDKShareKit', '5.8.0'
 
+  pod 'Firebase/Auth', '~> 6.13.0'
 	
   
   

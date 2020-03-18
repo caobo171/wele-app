@@ -7,6 +7,8 @@ import appleAuth, {
   AppleAuthRequestOperation,
   AppleAuthRequestScope,
   AppleAuthCredentialState,
+  AppleAuthRealUserStatus,
+  AppleAuthError,
 } from '@invertase/react-native-apple-authentication';
 
 export const loginWithFacebook = async () => {
@@ -59,7 +61,7 @@ export const loginWithApple = async () => {
         requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
       });
 
-      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
 
       const {
         user: newUser,
@@ -69,23 +71,22 @@ export const loginWithApple = async () => {
         realUserStatus /* etc */,
       } = appleAuthRequestResponse;
 
-      user = newUser;
+      const user = newUser;
 
-      fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-        updateCredentialStateForUser(`Error: ${error.code}`),
-      );
-      // console.log("identityToken", identityToken);
+      console.log(appleAuthRequestResponse)
+      
 
       if (identityToken) {
         // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
         console.log(nonce, identityToken);
-        const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
-        const userCredential = await firebase.auth().signInWithCredential(appleCredential);
-        return userCredential;
-        console.log(userCredential,'userCredential');
-
-        // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
-        console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
+        try{
+          const appleCredential = await firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+          const userCredential = await firebase.auth().signInWithCredential(appleCredential);
+          return userCredential;
+        }catch(err){
+          console.log(err)
+        }
+  
 
       } else {
         // no token - failed sign-in?
@@ -93,7 +94,6 @@ export const loginWithApple = async () => {
 
 
       }
-
 
 
       if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
