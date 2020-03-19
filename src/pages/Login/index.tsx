@@ -270,10 +270,10 @@ const Login = () => {
                 <LoginWithGoogle loginWithGoogle={fetchLoginGoogle} />
 
 
-                <StyledButton onPress={fetchLogin}>
+                {Platform.OS === 'android' &&<StyledButton onPress={fetchLogin}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
-                </StyledButton>
+                </StyledButton>}
 
                 {Platform.OS === 'ios' && <View style={[styles.horizontal]} >
                   <AppleButton
