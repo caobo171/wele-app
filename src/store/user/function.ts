@@ -80,14 +80,11 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 
     if (isNew && typeof isNew === 'string') {
 
-        console.log('aaaaaaa')
-        await updateWELEEmail(user, isNew)
-        console.log('bbbbbb')
-        await storage.setCurrentUser({ ...user, weleEmail: isNew })
-        console.log('cccccc')
+        const weleEmail = isNew.toLowerCase().replace(/\s/g, '');
+        await updateWELEEmail(user, weleEmail)
+        await storage.setCurrentUser({ ...user, weleEmail })
         await CurrentUser.setUser(user);
-        console.log('ow vao day roi ne ')
-        return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
+        return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail }))
     } else {
 
 
