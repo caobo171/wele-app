@@ -65,8 +65,6 @@ const Billboard = React.memo(() => {
 
   const mergeResults = useResults()
 
-  console.log(mergeResults);
-
   const theme = useTheme()
 
 

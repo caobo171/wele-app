@@ -44,15 +44,12 @@ const getCurrentUserAsync = (id: string): Promise<UserType> => {
 const updateWELEEmail = async (user: UserType, weleEmail: string) => {
     try{
         const ref = database().ref(`/${USERS_COLLECTION}/${user.id}`)
-
-        console.log(ref);
         return await ref.set({
             ...user,
             weleEmail
         })
          
     }catch(err){
-        console.log(err)
         return 
     }
     
@@ -61,8 +58,6 @@ const updateWELEEmail = async (user: UserType, weleEmail: string) => {
 
 
 export const setCurrentUser = async (user: UserType, isNew?: boolean | string, storex = store) => {
-
-    console.log(user)
 
     if (!user) {
         return storex.dispatch(actions.setCurrentUser(user))
@@ -74,17 +69,15 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
         return storex.dispatch(actions.setCurrentUser(user))
     }
 
-
-
-    console.log(isNew && typeof isNew === 'string', isNew)
-
     if (isNew && typeof isNew === 'string') {
 
-        const weleEmail = isNew.toLowerCase().replace(/\s/g, '');
-        await updateWELEEmail(user, weleEmail)
-        await storage.setCurrentUser({ ...user, weleEmail })
+        await updateWELEEmail(user, isNew)
+
+        await storage.setCurrentUser({ ...user, weleEmail: isNew })
+
         await CurrentUser.setUser(user);
-        return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail }))
+
+        return storex.dispatch(actions.setCurrentUser({ ...user, weleEmail: isNew }))
     } else {
 
 
@@ -147,7 +140,6 @@ const getAllUsersAsync = (): Promise<actions.getAllUserParams> => {
         let byWeleEmail = new Map<string, UserType>()
         const ref = database().ref(`/users`);
         ref.once('value', async (snapshots: any) => {
-            console.log(snapshots)
             await snapshots.forEach((snapshot: any) => {
                 const user: UserType = snapshot._snapshot.value
                 if (user.id) {
@@ -168,13 +160,10 @@ const getAllUsersAsync = (): Promise<actions.getAllUserParams> => {
 
 
 export const getAllUsers = async (storex = store) => {
-    console.log('aaaaaaaa');
     try{
         const {users, byWeleEmail} = await getAllUsersAsync()
-        console.log({users, byWeleEmail})
         return storex.dispatch(actions.getAllUsers({users, byWeleEmail}))
     }catch(err){
-        console.log(err);
     }
   
 }
@@ -184,7 +173,7 @@ export const getAllUsers = async (storex = store) => {
 const getMyResultAsync = (user: UserType): Promise<ResultType> => {
     if (user.weleEmail) {
         return new Promise((resolve, reject) => {
-            const email = user.weleEmail as string
+            const email = user.weleEmail as string 
             const reConvertEmail = validateKey(email)
             const resultRef = database().ref(`/${RESULTS_COLLECTION}/${reConvertEmail}`)
             resultRef.once('value', async (snapshots: any) => {
@@ -197,7 +186,13 @@ const getMyResultAsync = (user: UserType): Promise<ResultType> => {
 }
 
 export const getMyresult = async (user: UserType, storex = store) => {
-    const result = await getMyResultAsync(user)
+    const result = await getMyResultAsync({
+        photoURL: 'blbal',
+        id: 'agaga', 
+        displayName:'a',
+        email: 'damyenndc47@gmail.com',
+        weleEmail:'damyenndc47@gmail.com'
+    })
     return storex.dispatch(actions.getMyResult(result))
 }
 
@@ -259,10 +254,8 @@ export const getResultsMonthly = async (storex = store) => {
 }
 
 export const getResults = async (storex = store) => {
-    console.log('aaaaaa')
     const results = await getResultsAsync()
 
-    console.log(results);
     if (results) {
         return await storex.dispatch(actions.getResults(results))
     }

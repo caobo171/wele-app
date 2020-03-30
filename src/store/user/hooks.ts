@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { UserType, MergeResultsType, ResultType, State } from './types'
 import { createSelector } from 'reselect';
+import { rEmail } from '@/pages/Login/helper';
 
 // Only users who used app are displayed in the following list
 
@@ -181,4 +182,20 @@ const createAnotherResultSelector = (user: UserType) => {
 
 export const useAnotherUserResult = (user: UserType) => {
   return useSelector(createAnotherResultSelector(user))
+}
+
+
+const createSentPodcastReducer = (user: UserType) => {
+  return createSelector(
+    (state: {user: State}) =>  state.user.listResult
+    , (listResult) => {
+      const mail = user.weleEmail ? user.weleEmail : user.email
+      const results = listResult.get( rEmail(mail) )
+      return results
+    }
+  )
+}
+
+export const useIsSentPodcast = (user: UserType ) => {
+  return useSelector(createSentPodcastReducer(user))
 }

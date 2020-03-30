@@ -154,19 +154,14 @@ class GlobalPlayer {
 
     async pickTrack(podcast: PodcastType) {
         if (podcast.uri) {
-
-            // console.log(podcast.uri)
             try{
                 const res =await RNFS.stat(podcast.uri.replace(/%20/g,' ' ))
-
-                console.log(podcast.uri, res)
                 if(res && res.isFile()){
                     await this.addTrack(podcast, res.path)
                     await TrackPlayer.play()
                     return res.path
                 }
             }catch(e){
-                console.log(e)
             }
 
         }
