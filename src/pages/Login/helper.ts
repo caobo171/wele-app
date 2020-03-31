@@ -1,7 +1,9 @@
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 import { firebase } from "@react-native-firebase/auth";
 import { GoogleSignin, User } from '@react-native-community/google-signin';
-import { Alert } from "react-native";
+import { Alert, PermissionsAndroid } from "react-native";
+import VersionCheck from 'react-native-version-check';
+import {Linking } from 'react-native';
 
 import appleAuth, {
   AppleAuthRequestOperation,
@@ -144,3 +146,5 @@ export const validateEmail = (email: string) => {
 export const rEmail = (email: string) => {
     return email.toLowerCase().replace(/\s/g, '');
 }
+
+

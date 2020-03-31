@@ -45,6 +45,7 @@
     "react-native-swiper": "^1.5.14",
     "react-native-track-player": "1.1.8",
     "react-native-vector-icons": "^6.6.0",
+    "react-native-version-check": "^3.4.0",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.9.4",
     "react-navigation-tabs": "^2.5.6",

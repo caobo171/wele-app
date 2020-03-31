@@ -1,8 +1,7 @@
 import React, { useCallback } from "react";
 import store from "./store/store";
-import { PermissionsAndroid, Alert, Platform } from 'react-native';
 
-import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+import {check} from 'react-native-permissions';
 
 
 import useEffectOnce from 'react-use/lib/useEffectOnce'
@@ -20,33 +19,10 @@ screensEnabled();
 console.disableYellowBox = true;
 const App = () => {
 
-  const requestPermissionAndroid =  useCallback(async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Wele Tool Permissions',
-          message:
-            'Wele Tool App needs access to your Foler ' +
-            'so you can play your own playlist.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      
-      } else {
-        Alert.alert('Permssion Error','Folder permission denied');
-      }
-    } catch (err) {
-      Alert.alert('Permission Error',err);
-    }
-  }, [])
+
 
 
   useEffectOnce(() => {
-    Platform.OS === 'android' && requestPermissionAndroid() 
     SplashScreen.hide()
   })
 

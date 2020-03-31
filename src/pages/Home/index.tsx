@@ -10,8 +10,8 @@
 import React, { useEffect } from 'react';
 
 import useAsync from "react-use/lib/useAsync";
-import { FlatList } from 'react-native';
-
+import { FlatList, Platform } from 'react-native';
+import {requestPermissionAndroid, checkUpdate} from '@/service/util' 
 import PodcastThumbnail from './PodcastThumbnail'
 
 import styled from 'styled-components/native';
@@ -63,6 +63,10 @@ const StyledSectionContent = styled.View``;
 const Home = () => {
 
   const state = useAsync(async () => {
+
+
+    Platform.OS === 'android' && requestPermissionAndroid() 
+    await checkUpdate();
     await getPodcastThisWeek()
     await getRecentPodcast()
   }, [])
