@@ -7,7 +7,7 @@
  * @flow
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import styled from 'styled-components/native';
 import Header from "./Header";
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ import PodcastType from '@store/podcast/types';
 import AnimatedWrapper from './AnimatedWrapper';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import StatusBarView from '@/components/UI/StatusbarView';
-import { useAnotherUserResult, useCurrentUser } from '@/store/user/hooks';
+import { useAnotherUserResult, useCurrentUser, useIsSentPodcast } from '@/store/user/hooks';
 const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
@@ -31,11 +31,12 @@ interface Props {
 const Main = React.memo((props: Props) => {
 
     const user = useCurrentUser()
-    const currentResult = useAnotherUserResult(user);
-    const podcastNumber = useMemo(()=>  Number(props.podcast.name.match(/(\d+)/)[0]), [props.podcast]);
-    const isSent = useMemo(()=>  currentResult.labelArray.indexOf(podcastNumber) > -1, [podcastNumber]);
+    const currentResult = useIsSentPodcast(user);
 
-    console.log(props.podcast)
+
+    const podcastNumber = useMemo(()=>  Number(props.podcast.name.match(/(\d+)/)[0]), [props.podcast]);
+    const isSent = useMemo(()=>  (currentResult && currentResult[podcastNumber]) ? true: false , [podcastNumber]);
+
 
     return (
         <Wrapper>

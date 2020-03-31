@@ -7,6 +7,7 @@ import PodcastType from "@/store/podcast/types";
 import { getPodcast } from "@/store/podcast/functions";
 import { NavigationContext } from "react-navigation";
 import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
+import Constants from "@/Constants";
 
 const StyledPodcastWrapper = styled.View<{ size: 'big' | 'medium', theme: CustomTheme }>`
   background-color: ${props => props.theme.backgroundColor};
@@ -36,7 +37,7 @@ const StyledUIBackgroundImage = styled(UIBackgroundImage)`
 
 const Title = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
-  font-size: 12px;
+  font-size: ${Constants.PODCAST_ITEM_FONTSIZE}px;
   margin-bottom: 5px;
   color: ${props => props.theme.textColorH1}
 `;
@@ -48,7 +49,7 @@ const StyleSmallText = styled.Text`
 
 const DescriptionSub = styled.Text`
   color: #787878;
-  font-size: 10px;
+  font-size: ${Constants.PODCAST_ITEM_FONTSIZE - 2}px;
 `;
 
 const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`

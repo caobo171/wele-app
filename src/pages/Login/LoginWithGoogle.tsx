@@ -1,8 +1,8 @@
-import { GoogleSignin } from '@react-native-community/google-signin';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 import { firebase } from '@react-native-firebase/auth';
 import React from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { View , TouchableOpacity} from 'react-native'
+import { View , Text, TouchableOpacity, StyleSheet} from 'react-native'
 import styled from 'styled-components/native'
 import { loginWithGoogle } from './helper';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
@@ -38,6 +38,25 @@ const StyledText = styled.Text`
     font-size: 16px;
     color: #d1d1d1;
 `
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  userInfo: { fontSize: 18, fontWeight: 'bold', marginBottom: 20 },
+  pageContainer: { flex: 1 },
+});
 
 
 export interface Props{
@@ -48,14 +67,19 @@ export interface Props{
 const LoginWithGoogle = (props:Props) => {
 
 
-    return <View
-    // animation="bounce" easing="ease-out" iterationCount={Infinity}
-    >
-        <StyledButton onPress={props.loginWithGoogle }>
-            <StyledFeatherIcon name={'google'} />
-            <StyledText>Login With Google</StyledText>
-        </StyledButton>
-    </View>
+    return (
+        // <StyledButton onPress={props.loginWithGoogle }>
+        //     <StyledFeatherIcon name={'google'} />
+        //     <StyledText>Login With Google</StyledText>
+        // </StyledButton>
+        <View style={styles.container}>
+        <GoogleSigninButton
+          style={{ width: 265, height: 50 }}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Auto}
+          onPress={props.loginWithGoogle}
+        />
+      </View>);
 }
 
 export default LoginWithGoogle ;

@@ -8,6 +8,7 @@ import PodcastType from "@/store/podcast/types";
 import { getPodcast } from "@/store/podcast/functions";
 import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
 import Touchable from "@/components/UI/Touchable";
+import Constants from "@/Constants";
 
 
 const StyledPodcastWrapper = styled.View<{ size: 'big' | 'medium', theme: CustomTheme }>`
@@ -49,13 +50,13 @@ const StyledUIBackgroundImage = styled(UIBackgroundImage)`
 
 const Title = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
-  font-size: 20px;
+  font-size: ${Constants.TITLE_FONTSIZE}px;
   margin-bottom: 16px;
   color: ${props => props.theme.textColorH1};
 `;
 
 const DescriptionMain = styled.Text<{ theme: CustomTheme }>`
-  font-size: 12px;
+  font-size: ${Constants.TITLE_FONTSIZE - 8}px;
   font-weight: 600;
   margin-bottom: 10px;
   color: ${props => props.theme.textColorH2};
@@ -68,7 +69,7 @@ const StyleSmallText = styled.Text<{ theme: CustomTheme }>`
 
 const DescriptionSub = styled.Text<{ theme: CustomTheme }>`
   color: ${props => props.theme.textColorH2}
-  font-size: 10px;
+  font-size: ${Constants.TITLE_FONTSIZE -8}px;
 `;
 
 const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`

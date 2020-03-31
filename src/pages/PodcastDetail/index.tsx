@@ -27,6 +27,7 @@ import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import NetInfo from '@react-native-community/netinfo';
 import StatusBarView from '@/components/UI/StatusbarView';
 import UIBackgroundImage from '@/components/UI/UIBackgroundImage';
+import Constants from '@/Constants';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -88,7 +89,7 @@ const StyledAntDesignIcon = styled(AntDesignIcon)`
 const StyledName = styled.Text<{ theme: CustomTheme }>`
   width: 80%;
   text-align: left;
-  font-size: 20px;
+  font-size: ${Constants.TITLE_FONTSIZE}px;
   letter-spacing: 1px;
   font-weight: bold; 
   margin-bottom: 20px;
@@ -156,10 +157,11 @@ const StyledDownloadButton = styled.View`
     border-radius: 50px;
     margin-bottom: 10px;
     margin-left: 20px;
+
 `
 
 const StyledText = styled.Text`
-    font-size: 16px;
+    font-size: ${Constants.BUTTON_FONTSIZE}px;
     font-weight: bold;
     letter-spacing: 3px;
     color:  #6e6a4b;

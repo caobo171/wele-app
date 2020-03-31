@@ -15,7 +15,7 @@ import { setCurrentUser } from '@store/user/function';
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import LoginWithGoogle from './LoginWithGoogle'
 import * as Animatable from 'react-native-animatable';
-import { loginWithFacebook, validateEmail, loginWithGoogle, loginWithApple } from './helper';
+import { loginWithFacebook, validateEmail, loginWithGoogle, loginWithApple, rEmail } from './helper';
 import { useCurrentUser } from '@/store/user/hooks';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import LoadingComponent from '@/components/Loading/Loading';
@@ -196,7 +196,8 @@ const Login = () => {
 
 
   const onContinueHandle = () => {
-    if (email !== confirmEmail) {
+    const reformatEmail = rEmail(email);
+    if (email !== rEmail(confirmEmail)) {
       Alert.alert('Error', 'Confirm Email is not match');
       return
     } else if (!validateEmail(email)) {
@@ -205,7 +206,7 @@ const Login = () => {
     } else {
 
       if (currentUser) {
-        setCurrentUser(currentUser, email)
+        setCurrentUser(currentUser, reformatEmail)
       } else {
         setCurrentUser({
           id: user.user.uid,
@@ -270,10 +271,10 @@ const Login = () => {
                 <LoginWithGoogle loginWithGoogle={fetchLoginGoogle} />
 
 
-                <StyledButton onPress={fetchLogin}>
+                {Platform.OS === 'android' &&<StyledButton onPress={fetchLogin}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
-                </StyledButton>
+                </StyledButton>}
 
                 {Platform.OS === 'ios' && <View style={[styles.horizontal]} >
                   <AppleButton

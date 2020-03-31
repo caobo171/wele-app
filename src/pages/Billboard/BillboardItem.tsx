@@ -7,6 +7,7 @@ import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import { NavigationContext } from 'react-navigation';
 import { useCurrentUser } from '@/store/user/hooks';
 import Touchable from '@/components/UI/Touchable';
+import Constants from '@/Constants';
 const StyledUserSection = styled.View`
   height: 58px;
   width: 100%;
@@ -35,7 +36,7 @@ const StyledUserNameWrapper = styled.View<{ isFake?: boolean }>`
 
 const StyledName = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
-  font-size: 14px;
+  font-size: ${Constants.BILLBOARD_ITEM_FONTSIZE}px;
   letter-spacing: 1px;
   color: ${props => props.theme.textColorH1};
 `;
@@ -46,7 +47,7 @@ const StyledAvatarWrapper = styled.View`
 
 
 const StyledSubDescription = styled.Text`
-  font-size: 12px;
+  font-size: ${Constants.BILLBOARD_ITEM_FONTSIZE- 2}px;
   color: #757575;
 `;
 

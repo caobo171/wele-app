@@ -74,7 +74,7 @@ export const loginWithApple = async () => {
 
 
       const user = {
-        id: id.replace(/\./g, ''), 
+        id: id.replace(/\./g, ''),
         email,
         displayName: Object.values(fullName).filter(e=> e!==null).join(' ')
       }
@@ -138,4 +138,9 @@ export const loginWithGoogle = async () => {
 export const validateEmail = (email: string) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+
+export const rEmail = (email: string) => {
+    return email.toLowerCase().replace(/\s/g, '');
 }
