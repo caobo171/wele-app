@@ -10,6 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import PlayerSlider from './Slider'
 import { updateSliding, updatePosition } from '@/store/player/functions'
 import Constants from '@/Constants';
+import Analytics from '@/service/Analytics'
 
 const StyledView = styled.ScrollView<{ theme: CustomTheme }>`
     background-color: ${props => props.theme.backgroundColor};
@@ -115,7 +116,7 @@ const Hint = React.memo((props: Props) => {
 
 
     useEffect(()=>{
-        console.log('width, height', Constants.HEIGHT, Constants.WIDTH)
+        Analytics.trackScreenView('Hint');
     },[])
 
 

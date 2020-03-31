@@ -20,6 +20,8 @@ import BillboardMonthly from './BillboardMonthly';
 import { Dimensions } from 'react-native';
 import StatusBarView from '@/components/UI/StatusbarView';
 import Constants from '@/Constants';
+import useEffectOnce from 'react-use/lib/useEffectOnce';
+import Analytics from '@/service/Analytics';
 
 const Wrapper = styled(LinearGradient) <{ theme: CustomTheme }>`
   width: 100%;
@@ -64,6 +66,10 @@ const StyledHeader = styled.Text<{theme:CustomTheme}>`
 
 const Billboard = React.memo(() => {
 
+  useEffectOnce(()=>{
+      Analytics.trackScreenView('Billboard');
+  })
+
   const mergeResults = useResults()
 
   const theme = useTheme()
@@ -99,6 +105,8 @@ const BillboardMemo = React.memo((props: Props) => {
       colors: ['#787878', '#333333', '#000000'],
       locations: [0, 0.2, 0.5]
     }
+
+  
 
   const data = useMemo(()=> props.mergeResults.filter(e => e.user.weleEmail !== 'weenjoylearningenglish@gmail.com'),[props.mergeResults])
   return (

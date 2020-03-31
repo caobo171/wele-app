@@ -19,6 +19,8 @@ import { usePodcastList } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
 import SearchBox from './Searchbox';
 import StatusBarView from '@/components/UI/StatusbarView';
+import useEffectOnce from 'react-use/lib/useEffectOnce';
+import Analytics from '@/service/Analytics';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -56,6 +58,10 @@ const PodcastList = () => {
 
   const nav = useContext(NavigationContext)
   const searchText = nav.getParam('search', '')
+
+  useEffectOnce(()=>{
+    Analytics.trackScreenView('PodcastList');
+  })
 
   useEffect(() => {
     setSearchString(searchText)

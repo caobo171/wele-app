@@ -28,6 +28,8 @@ import NetInfo from '@react-native-community/netinfo';
 import StatusBarView from '@/components/UI/StatusbarView';
 import UIBackgroundImage from '@/components/UI/UIBackgroundImage';
 import Constants from '@/Constants';
+import useEffectOnce from 'react-use/lib/useEffectOnce';
+import Analytics from '@/service/Analytics';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -180,13 +182,21 @@ const PodcastDetail = React.memo(() => {
   const currentPodcast = useCurrentPodcast()
   const nav = useContext(NavigationContext)
 
+
+  useEffectOnce(()=>{
+    Analytics.trackScreenView('PodcastDetail');
+    Analytics.readDetail(currentPodcast);
+  })
+
   const onReadmoreHandle = useCallback(() => {
     setIsBrief(!isBrief)
   }, [isBrief])
 
   const onPressPlayHandle = useCallback(async () => {
+    Analytics.playPodcast(currentPodcast);
     try {
       const res = await globalPlayer.pickTrack(currentPodcast)
+      
       if (res !== true) {
         const {uri, ...rest} = currentPodcast
         const podcast: PodcastType = {

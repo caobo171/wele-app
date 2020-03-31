@@ -25,6 +25,7 @@ import PodcastType from '@/store/podcast/types';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import StatusBarView from '@/components/UI/StatusbarView';
 import Constants from '@/Constants';
+import Analytics from '@/service/Analytics';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -67,6 +68,7 @@ const Home = () => {
 
     Platform.OS === 'android' && requestPermissionAndroid() 
     await checkUpdate();
+    Analytics.trackScreenView('Billboard');
     await getPodcastThisWeek()
     await getRecentPodcast()
   }, [])
