@@ -4,8 +4,9 @@ import {Linking } from 'react-native';
 
 export const checkUpdate = async()=>{
     const needUpdate = await VersionCheck.needUpdate()
-            
-    true && Alert.alert(
+    
+    console.log(needUpdate);
+    needUpdate.isNeeded && Alert.alert(
         'Application Update ',
         'A new version is available. Do you want to update now ?',
         [
