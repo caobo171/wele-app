@@ -24,6 +24,7 @@ import { CustomTheme } from '@store/theme/ThemeWrapper'
 import PodcastType from '@/store/podcast/types';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import StatusBarView from '@/components/UI/StatusbarView';
+import Constants from '@/Constants';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -47,7 +48,7 @@ const StyledSection = styled.View<{ theme: CustomTheme }>`
 
 const StyledSectionTitle = styled.Text<{ position: 'top' | 'normal', theme: CustomTheme }>`
   color: ${props => props.theme.textColorH1}
-  font-size: ${props => props.position === 'top' ? '24px' : '20px'} ;
+  font-size: ${props => props.position === 'top' ? `${Constants.TITLE_FONTSIZE+4}px` : `${Constants.TITLE_FONTSIZE}px`} ;
   font-weight: ${props => props.position === 'top' ? 'bold' : '900'} ;
   padding-bottom: 16px;
   margin: ${props => props.position === 'top' ? '-4px' : '28px'} 10px 0px 10px; 

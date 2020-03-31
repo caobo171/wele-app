@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import { ThemeMode, CustomTheme } from '@/store/theme/ThemeWrapper';
 import { updateTheme } from '@/store/theme/functions';
 import { logOut } from '@/store/user/function';
+import Constants from '@/Constants';
 const StyledThemeButton = styled.TouchableOpacity<{ color: string }>`
   height: 36px;
   width: 36px;
@@ -29,6 +30,7 @@ const StyledLogOutButton = styled.TouchableOpacity`
 const StyledText = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold; 
   letter-spacing: 1px;
+  font-size: ${Constants.BUTTON_FONTSIZE}px;
   text-transform: uppercase;
   color: ${props => props.theme.textColorH1};
   

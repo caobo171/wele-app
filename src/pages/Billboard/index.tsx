@@ -19,6 +19,7 @@ import Swiper from 'react-native-swiper'
 import BillboardMonthly from './BillboardMonthly';
 import { Dimensions } from 'react-native';
 import StatusBarView from '@/components/UI/StatusbarView';
+import Constants from '@/Constants';
 
 const Wrapper = styled(LinearGradient) <{ theme: CustomTheme }>`
   width: 100%;
@@ -54,7 +55,7 @@ const StyledHeader = styled.Text<{theme:CustomTheme}>`
    margin-left: auto;
    margin-right: auto;
    font-weight:bold;
-   font-size: 28px;
+   font-size: ${Constants.BILLBOARD_FONTSIZE}px;
    margin-bottom: 12px;
    color: ${props=> props.theme.textColorH1};
 `

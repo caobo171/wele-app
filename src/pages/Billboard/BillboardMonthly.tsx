@@ -14,6 +14,7 @@ import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import { UserType, MergeResultsType } from '@store/user/types'
 import { useResultsMonthly } from '@store/user/hooks';
 import BillboardItem from './BillboardItem';
+import Constants from '@/Constants';
 
 const StyledBillboardContent = styled.View`
   flex: 2.5;
@@ -24,7 +25,7 @@ const StyledHeader = styled.Text<{theme: CustomTheme}>`
    margin-left: auto;
    margin-right: auto;
    font-weight:bold;
-   font-size: 28px;
+   font-size: ${Constants.BILLBOARD_FONTSIZE}px;
    margin-bottom: 12px;
    color: ${props=> props.theme.textColorH1};
 `

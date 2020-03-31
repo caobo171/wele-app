@@ -9,6 +9,7 @@ import ActionButtons from './ActionButtons'
 import { ScrollView } from 'react-native-gesture-handler'
 import PlayerSlider from './Slider'
 import { updateSliding, updatePosition } from '@/store/player/functions'
+import Constants from '@/Constants';
 
 const StyledView = styled.ScrollView<{ theme: CustomTheme }>`
     background-color: ${props => props.theme.backgroundColor};
@@ -18,7 +19,7 @@ const StyledView = styled.ScrollView<{ theme: CustomTheme }>`
 
 const StyledText = styled.Text<{ theme: CustomTheme }>`
     line-height: 26px;
-    font-size:  18px;
+    font-size:  ${Constants.HINT_FONTSIZE}px;
     color: ${props => props.theme.textColorH3};
 `
 
@@ -34,7 +35,7 @@ const StyledWrapper = styled.View`
 
 const StyledHighLightText = styled.Text<{ theme: CustomTheme }>`
     line-height: 26px;
-    font-size:  18px;
+    font-size:  ${Constants.HINT_FONTSIZE}px;
     color: ${props => props.theme.textColorH1};
     font-weight: 700;
 `;
@@ -110,6 +111,11 @@ const Hint = React.memo((props: Props) => {
 
     const onSlideStartHandle = useCallback(async () => {
         await updateSliding(true)
+    },[])
+
+
+    useEffect(()=>{
+        console.log('width, height', Constants.HEIGHT, Constants.WIDTH)
     },[])
 
 

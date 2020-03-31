@@ -4,6 +4,7 @@ import PodcastType from "@store/podcast/types";
 
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
+import Constants from "@/Constants";
 
 
 const StyledInfoWrapper = styled.View`
@@ -27,7 +28,7 @@ const StyleInfo = styled.View`
 
 const StyledNameText = styled.Text<{theme: CustomTheme}>`
   font-weight: bold;
-  font-size: 20px;
+  font-size: ${Constants.TITLE_FONTSIZE}px;
   margin-bottom: 12px;
   color: ${props=> props.theme.textColorH1};
 `;
