@@ -13,6 +13,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
       android:icon="@mipmap/wele_logo"
       android:roundIcon="@mipmap/wele_logo_round"
       android:allowBackup="false"
+      android:largeHeap="true"
       android:theme="@style/AppTheme">
 
       <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
