@@ -7,12 +7,12 @@
  * @flow
  */
 
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useMemo } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 //@ts-ignore
 import { connect } from "react-redux";
-import { View, TouchableOpacity, Alert, Linking } from 'react-native';
+import { View, TouchableOpacity, Alert, Linking, Platform } from 'react-native';
 
 import styled from 'styled-components/native';
 import globalPlayer from '@/service/playerService';
@@ -48,6 +48,8 @@ const StyledBodyWrapper = styled.View`
   flex: 9;
   align-items: flex-start;
   padding: 10px 10px 10px 20px;
+
+  flex-direction: column;
 `;
 
 
@@ -142,7 +144,6 @@ const StyledButtonWrapper = styled.View`
 `
 const StyledPlayButton = styled.View`
     background-color: #25bf1d;
-    width: 100px;
     height: 36px;
     align-items: center;
     justify-content: center;
@@ -171,6 +172,12 @@ const StyledText = styled.Text`
     text-transform: uppercase;
 
     padding: 8px;
+    
+`
+
+const StyledLink = styled.Text`
+  textDecorationLine: underline;
+  color: #6bed3b;
 `
 
 const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_content/'
@@ -241,8 +248,20 @@ interface Props {
 const PodcastDetailMemo = React.memo((props: Props) => {
   const nav = useContext(NavigationContext)
 
+
+  const openText = useMemo(()=>{
+    return Platform.select({
+      ios: <StyledText >Open File</StyledText>,
+      android: <StyledText >Open</StyledText>,
+    })
+  }, [])
+
   const goBackHandle = useCallback(()=>{
     nav.goBack()
+  }, [])
+
+  const openLink = useCallback(()=>{
+    Linking.openURL(props.podcast.downloadLink ? props.podcast.downloadLink : WELE_DEFAULT_LINK);
   }, [])
 
   return <React.Fragment>
@@ -280,15 +299,20 @@ const PodcastDetailMemo = React.memo((props: Props) => {
                 <StyledButtonWrapper>
                   <TouchableOpacity onPress={props.onPressPlayHandle}>
                     <StyledPlayButton>
-                      <StyledText >Open</StyledText>
+                        {openText}
                     </StyledPlayButton>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => Linking.openURL(props.podcast.downloadLink ? props.podcast.downloadLink : WELE_DEFAULT_LINK)}>
-                    <StyledDownloadButton >
-                      <StyledText >Download </StyledText>
-                    </StyledDownloadButton>
-                  </TouchableOpacity>
+                  {
+                    Platform.OS !== 'ios' && (
+                      <TouchableOpacity onPress={openLink}>
+                      <StyledDownloadButton >
+                        <StyledText >Download</StyledText>
+                      </StyledDownloadButton>
+                    </TouchableOpacity>
+                    )
+                  }
+
                 </StyledButtonWrapper>
 
 
@@ -302,12 +326,16 @@ const PodcastDetailMemo = React.memo((props: Props) => {
 
                 </DescriptionMain>
 
-                <TouchableOpacity>
-                  <StyledReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
-                </TouchableOpacity>
+                {!props.isBrief && <TouchableOpacity>
+                  <StyledLink onPress={props.onReadmoreHandle}>{'Link download'}</StyledLink>
+                </TouchableOpacity> }
+             
 
 
               </StyledDescriptionWrapper>
+              <TouchableOpacity>
+                  <StyledReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
+                </TouchableOpacity>
 
             </StyledContent>
           </StyledBodyWrapper>

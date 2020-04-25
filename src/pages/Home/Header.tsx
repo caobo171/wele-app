@@ -36,47 +36,53 @@ const StyledView = styled.View`
 `
 
 const StyledBadge = styled.Text`
-    position: absolute;
-    border-radius: 7px;
-    right: 20px;
-    top: 5px;
-    height: 14px;
-    width: 14px;
-    font-size: 10px;
-    background: #ff4f4f;
-    color: #696969;
+    color: #ffffff;
     text-align: center;
     font-weight: bold;
+`
+const StyledBadgeWrapper = styled.View`
+    background: #ff4f4f;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 8px;
+    right: 20px;
+    top: 5px;
+    height: 16px;
+    width: 16px;
+    background: #ff4f4f;
 `
 
 const Header = React.memo(() => {
 
     const unreadNumber = useUnreadNotificationNumber()
     const currentUser = useCurrentUser()
-    return <HeaderMemo unreadNumber={unreadNumber} currentUser={currentUser}/>
+    return <HeaderMemo unreadNumber={unreadNumber} currentUser={currentUser} />
 })
-interface Props{
+interface Props {
     currentUser: UserType,
     unreadNumber: number
 }
 const HeaderMemo = React.memo((props: Props) => {
 
-    const onNotificationClickHandle = useCallback(()=>{
+    const onNotificationClickHandle = useCallback(() => {
         updateNotifications()
         updateLastSeenOfUser(props.currentUser)
         nav.navigate('Notifications');
-    },[props.currentUser])
+    }, [props.currentUser])
 
     const nav = useContext(NavigationContext)
 
-    const navigateToUserProfile = useCallback(()=>{
+    const navigateToUserProfile = useCallback(() => {
         nav.navigate('UserProfile')
-    },[])
+    }, [])
     return <HeaderWrapper>
         <Touchable onPress={onNotificationClickHandle}>
             <StyledView>
                 <StyledFeatherIcon name={'bell'} />
-                {props.unreadNumber > 0 && <StyledBadge>{props.unreadNumber}</StyledBadge>}
+                {props.unreadNumber > 0 && <StyledBadgeWrapper>
+                    <StyledBadge>{props.unreadNumber}</StyledBadge>
+                </StyledBadgeWrapper>}
             </StyledView>
         </Touchable>
         <Touchable onPress={navigateToUserProfile}>
@@ -85,7 +91,7 @@ const HeaderMemo = React.memo((props: Props) => {
             </View>
         </Touchable>
     </HeaderWrapper>
-},(prev, next)=> prev.currentUser.id === next.currentUser.id && prev.unreadNumber === next.unreadNumber)
+}, (prev, next) => prev.currentUser.id === next.currentUser.id && prev.unreadNumber === next.unreadNumber)
 
 
 

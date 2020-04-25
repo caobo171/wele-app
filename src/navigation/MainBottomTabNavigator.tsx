@@ -17,18 +17,24 @@ import presenceSystem from "@/service/presenseSystem";
 
 
 const StyledBadge = styled.Text`
-    position: absolute;
+    
+
+    font-size: 10px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+`
+
+const StyledBadgeWrapper = styled.View`
+    background: #ff4f4f;
+    align-items: center;
+    justify-content: center;
     border-radius: 7px;
+    position: absolute;
     right: -4px; 
     bottom: 0px;
     height: 14px;
     width: 14px;
-    font-size: 10px;
-    background: #ff4f4f;
-    color: #696969;
-    text-align: center;
-    font-weight: bold;
-    
 `
 
 interface HomeIconProps {
@@ -40,7 +46,11 @@ const HomeIcon = React.memo((props: HomeIconProps) => {
     return (
         <View>
             <Icon name="home" color={props.tintColor} size={24} />
-            {unreadNumber > 0 && <StyledBadge>{unreadNumber}</StyledBadge>}
+            {unreadNumber > 0 &&
+                <StyledBadgeWrapper>
+                    <StyledBadge>{unreadNumber}</StyledBadge>
+                </StyledBadgeWrapper>
+            }
         </View>
     )
 })
@@ -50,18 +60,18 @@ const ConnectedHomeIcon = HomeIcon
 
 export const CustomTabbar = memo((props) => {
 
-    useEffectOnce(()=>{
+    useEffectOnce(() => {
         presenceSystem.init()
     })
     const theme = useContext(ThemeContext)
 
     //@ts-ignore
     return <BottomTabBar {...props}
-    activeTintColor={theme.name === ThemeMode.DARK ? "#bdbdbd":"#787878"}
-    inactiveTintColor = {theme.name === ThemeMode.DARK ? "#787878":"#bdbdbd"}
-    style={{
-        backgroundColor: theme.backgroundColor
-    }} ></BottomTabBar>
+        activeTintColor={theme.name === ThemeMode.DARK ? "#bdbdbd" : "#787878"}
+        inactiveTintColor={theme.name === ThemeMode.DARK ? "#787878" : "#bdbdbd"}
+        style={{
+            backgroundColor: theme.backgroundColor
+        }} ></BottomTabBar>
 })
 
 
