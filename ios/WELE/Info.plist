@@ -83,7 +83,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera usage</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMediaLibraryUsageDescription</key>
 	<string>MediaLibrary usage</string>
 	<key>NSMicrophoneUsageDescription</key>

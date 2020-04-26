@@ -68,18 +68,19 @@ const LoginWithGoogle = (props:Props) => {
 
 
     return (
-        // <StyledButton onPress={props.loginWithGoogle }>
-        //     <StyledFeatherIcon name={'google'} />
-        //     <StyledText>Login With Google</StyledText>
-        // </StyledButton>
-        <View style={styles.container}>
-        <GoogleSigninButton
-          style={{ width: 265, height: 50 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Auto}
-          onPress={props.loginWithGoogle}
-        />
-      </View>);
+        <StyledButton onPress={props.loginWithGoogle }>
+            <StyledFeatherIcon name={'google'} />
+            <StyledText>Login With Google</StyledText>
+        </StyledButton>
+      //   <View style={styles.container}>
+      //   <GoogleSigninButton
+      //     style={{ width: 260, height: 50 }}
+      //     size={GoogleSigninButton.Size.Wide}
+      //     color={GoogleSigninButton.Color.Auto}
+      //     onPress={props.loginWithGoogle}
+      //   />
+      // </View>
+      );
 }
 
 export default LoginWithGoogle ;
