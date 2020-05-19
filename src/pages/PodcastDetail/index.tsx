@@ -327,7 +327,7 @@ const PodcastDetailMemo = React.memo((props: Props) => {
                 </DescriptionMain>
 
                 {!props.isBrief && <TouchableOpacity>
-                  <StyledLink onPress={props.onReadmoreHandle}>{'Link download'}</StyledLink>
+                  <StyledLink onPress={openLink}>{'Link download'}</StyledLink>
                 </TouchableOpacity> }
              
 

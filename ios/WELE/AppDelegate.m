@@ -14,6 +14,7 @@
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
+#import "RNSplashScreen.h"
 
 
 
@@ -22,6 +23,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   
+//  [RNSplashScreen show];
   // For FB sdk
   
   [[FBSDKApplicationDelegate sharedInstance] application:application
@@ -54,6 +56,7 @@
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
   
+
   
   if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
     return YES;

@@ -5,9 +5,11 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* WELETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WELETests.m */; };
 		0B4821CF24188B73003B24D7 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4821CE24188B73003B24D7 /* dummy.swift */; };
+		0B6291362473D62A006B1227 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B6291342473D62A006B1227 /* SplashScreen.storyboard */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -55,7 +57,7 @@
 		0B4821D62418994E003B24D7 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		0B4821D72418994E003B24D7 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		0B4821D82418994E003B24D7 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		0B4821D92418994E003B24D7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		0B4821D92418994E003B24D7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		0B4821DA2418994E003B24D7 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		0B4821DB2418994E003B24D7 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		0B4821DC2418994E003B24D7 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 		0B4821E02418994E003B24D7 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		0B4821E12418994E003B24D7 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		0B4821E22418994F003B24D7 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		0B6291352473D62A006B1227 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = WELE/Base.lproj/SplashScreen.storyboard; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* WELE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WELE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = WELE/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = WELE/AppDelegate.m; sourceTree = "<group>"; };
@@ -141,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				00E356F11AD99517003FC87E /* Info.plist */,
+				0B4821D92418994E003B24D7 /* FontAwesome5_Solid.ttf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -155,7 +159,6 @@
 				0B4821DC2418994E003B24D7 /* FontAwesome.ttf */,
 				0B4821DF2418994E003B24D7 /* FontAwesome5_Brands.ttf */,
 				0B4821E12418994E003B24D7 /* FontAwesome5_Regular.ttf */,
-				0B4821D92418994E003B24D7 /* FontAwesome5_Solid.ttf */,
 				0B4821E02418994E003B24D7 /* Fontisto.ttf */,
 				0B4821DA2418994E003B24D7 /* Foundation.ttf */,
 				0B4821DB2418994E003B24D7 /* Ionicons.ttf */,
@@ -173,13 +176,14 @@
 			children = (
 				18C8128B243245C400689743 /* GoogleService-Info.plist */,
 				21AF883D24229315005F986B /* Icon-App-40x40@3x.png */,
-				21AD7910241BDB2D0002F78E /* WELE.entitlements */,
 				0B4821D2241898EF003B24D7 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				21AD7910241BDB2D0002F78E /* WELE.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				0B6291342473D62A006B1227 /* SplashScreen.storyboard */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				0B4821CE24188B73003B24D7 /* dummy.swift */,
@@ -251,12 +255,11 @@
 			sourceTree = "<group>";
 		};
 		8AA63884D6264F468196E972 /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 			);
 			name = Resources;
 			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -292,6 +295,8 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				4CBCFCFF920DABC906F47203 /* [CP] Copy Pods Resources */,
 				F94441171E218E1086DA4AF4 /* [CP-User] [RNFB] Core Configuration */,
+				59813A3E577AC69C74831B1A /* [CP-User] [RNFB] Crashlytics Configuration */,
+				0B6291312473BAA9006B1227 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -355,7 +360,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 344GLKB8TW;
+						DevelopmentTeam = ZKH63VCT4Y;
 						LastSwiftMigration = 1130;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -406,6 +411,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				18C8128C243245EB00689743 /* GoogleService-Info.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				0B6291362473D62A006B1227 /* SplashScreen.storyboard in Resources */,
 				21AF883E24229315005F986B /* Icon-App-40x40@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,6 +447,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		0B6291312473BAA9006B1227 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		22D3349EE7450560F629446C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -531,6 +554,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WELE/Pods-WELE-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -553,6 +577,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -575,6 +600,16 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WELE/Pods-WELE-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		59813A3E577AC69C74831B1A /* [CP-User] [RNFB] Crashlytics Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [RNFB] Crashlytics Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\nif [[ ${PODS_ROOT} ]]; then\n  echo \"info: Exec Fabric Run from Pods\"\n  \"${PODS_ROOT}/Fabric/run\"\nelse\n  echo \"info: Exec Fabric Run from framework\"\n  \"${PROJECT_DIR}/Fabric.framework/run\"\nfi\n";
 		};
 		F0748142831AE18C0E652B18 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -700,6 +735,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		0B6291342473D62A006B1227 /* SplashScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0B6291352473D62A006B1227 /* Base */,
+			);
+			name = SplashScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -766,7 +809,7 @@
 				CODE_SIGN_ENTITLEMENTS = WELE/WELE.entitlements;
 				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 344GLKB8TW;
+				DEVELOPMENT_TEAM = ZKH63VCT4Y;
 				INFOPLIST_FILE = WELE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -774,7 +817,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.WELEiOS;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.WELEiOScao;
 				PRODUCT_NAME = WELE;
 				SWIFT_OBJC_BRIDGING_HEADER = "WELE-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
