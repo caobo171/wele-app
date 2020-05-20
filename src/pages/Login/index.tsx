@@ -180,6 +180,8 @@ const Login = () => {
   }, [confirmEmail])
 
 
+  console.log(Platform.OS);
+
 
   const onContinueHandle = () => {
     const reformatEmail = rEmail(email);
