@@ -4,7 +4,7 @@ import useEffectOnce from 'react-use/lib/useEffectOnce'
 import SplashScreen from 'react-native-splash-screen'
 //@ts-ignore
 import { Provider } from "react-redux";
-import NavigatorTree from "./MainWrapper";
+import MainWrapper from "./MainWrapper";
 import ThemeWrapper from "@store/theme/ThemeWrapper";
 
 import {screensEnabled} from 'react-native-screens';
@@ -60,7 +60,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <ThemeWrapper>
-        <NavigatorTree />
+        <MainWrapper />
       </ThemeWrapper>
     </Provider>
   );

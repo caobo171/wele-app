@@ -30,6 +30,7 @@ import UIBackgroundImage from '@/components/UI/UIBackgroundImage';
 import Constants from '@/Constants';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
 import Analytics from '@/service/Analytics';
+import Touchable from '@/components/UI/Touchable';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -180,6 +181,11 @@ const StyledLink = styled.Text`
   color: #6bed3b;
 `
 
+const STouchable = styled(Touchable)`
+  height: 60px;
+  width: 60px;
+`
+
 const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_content/'
 
 const PodcastDetail = React.memo(() => {
@@ -270,11 +276,11 @@ const PodcastDetailMemo = React.memo((props: Props) => {
         <Wrapper>
           <StatusBarView/>
           <HeaderWrapper>
-            <TouchableOpacity onPress={goBackHandle}>
+            <STouchable onPress={goBackHandle}>
               <View>
                 <StyledAntDesignIcon name={'arrowleft'} />
               </View>
-            </TouchableOpacity>
+            </STouchable>
           </HeaderWrapper>
 
 
@@ -329,13 +335,12 @@ const PodcastDetailMemo = React.memo((props: Props) => {
                 {!props.isBrief && <TouchableOpacity>
                   <StyledLink onPress={openLink}>{'Link download'}</StyledLink>
                 </TouchableOpacity> }
-             
 
 
               </StyledDescriptionWrapper>
               <TouchableOpacity>
                   <StyledReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
-                </TouchableOpacity>
+              </TouchableOpacity>
 
             </StyledContent>
           </StyledBodyWrapper>
