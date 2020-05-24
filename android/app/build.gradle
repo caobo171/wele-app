@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: 'io.fabric'
+
 
 import com.android.build.OutputFile
 
@@ -105,6 +107,10 @@ def enableProguardInReleaseBuilds = true
  */
 def useIntlJsc = false
 
+crashlytics {
+  enableNdk true
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -117,8 +123,8 @@ android {
         applicationId "com.wele"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
-        versionName "2.3"
+        versionCode 20
+        versionName "2.5"
 
 
         // very important

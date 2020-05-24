@@ -24,7 +24,17 @@ import Touchable from '@/components/UI/Touchable';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 
 
-
+const SAppleButton = styled(AppleButton)<{theme: CustomTheme}>`
+  flex-direction: row;
+  width: 70%;
+  background-color: #ffffff;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40px;
+  border-width: 1px;
+  margin-bottom: 10px;
+  border-color: ${props=> props.theme.borderSectionColor};
+`
 
 const Wrapper = styled.View<{ theme: CustomTheme }>`
   height: 100%;
@@ -91,31 +101,7 @@ const StyledTextInput = styled.TextInput`
 const StyledTextNote = styled.Text`
 
 `
-const styles = StyleSheet.create({
-  appleButton: {
-    width: 260,
-    height: 45,
-    margin: 10,
-    marginTop: 0
-  },
-  header: {
-    margin: 10,
-    marginTop: 0,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'pink',
-  },
-  horizontal: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-  },
-});
+
 
 
 const Login = () => {
@@ -193,6 +179,8 @@ const Login = () => {
     setConfirmEmail(value)
   }, [confirmEmail])
 
+
+  console.log(Platform.OS);
 
 
   const onContinueHandle = () => {
@@ -276,14 +264,12 @@ const Login = () => {
                   <StyledText>Login With Facebook</StyledText>
                 </StyledButton>}
 
-                {Platform.OS === 'ios' && <View style={[styles.horizontal]} >
-                  <AppleButton
-                    style={styles.appleButton}
-                    buttonStyle={AppleButton.Style.BLACK}
+                {Platform.OS === 'ios' && <SAppleButton
                     buttonType={AppleButton.Type.SIGN_IN}
+                    buttonStyle={AppleButton.Style.WHITE}
                     onPress={fetchAppleLogin}
-                  />
-                </View>}
+                  />  
+                }
 
               </React.Fragment>
 

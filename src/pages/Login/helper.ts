@@ -1,6 +1,6 @@
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 import { firebase } from "@react-native-firebase/auth";
-import { GoogleSignin, User } from '@react-native-community/google-signin';
+import { GoogleSignin, User, statusCodes } from '@react-native-community/google-signin';
 import { Alert, PermissionsAndroid } from "react-native";
 import VersionCheck from 'react-native-version-check';
 import {Linking } from 'react-native';
@@ -8,8 +8,7 @@ import {Linking } from 'react-native';
 import appleAuth, {
   AppleAuthRequestOperation,
   AppleAuthRequestScope,
-  AppleAuthCredentialState,
-  AppleAuthRealUserStatus,
+
   AppleAuthError,
 } from '@invertase/react-native-apple-authentication';
 
@@ -58,12 +57,28 @@ export const loginWithApple = async () => {
   console.warn('Beginning Apple Authentication');
 
   try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: AppleAuthRequestOperation.LOGIN,
-        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-      });
 
-      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+      let appleAuthRequestResponse = null;
+      try{
+        appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: AppleAuthRequestOperation.LOGIN,
+            requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+          });
+      }catch(err){
+        if (err.code === AppleAuthError.CANCELED) {
+        }
+        if (err.code === AppleAuthError.FAILED) {
+        }
+        if (err.code === AppleAuthError.INVALID_RESPONSE) {
+        }
+        if (err.code === AppleAuthError.NOT_HANDLED) {
+        }
+        if (err.code === AppleAuthError.UNKNOWN) {
+        }
+
+        return 
+      }
+
 
       const {
         user: id,
@@ -73,6 +88,7 @@ export const loginWithApple = async () => {
         fullName,
         realUserStatus /* etc */,
       } = appleAuthRequestResponse;
+
 
 
       const user = {
@@ -119,7 +135,11 @@ export const loginWithGoogle = async () => {
     try {
         await GoogleSignin.signIn();
     } catch (err) {
-        Alert.alert(err)
+        if (err.code === statusCodes.SIGN_IN_CANCELLED) {
+        }else{
+            Alert.alert(err.message);
+        }
+        
     }
 
 

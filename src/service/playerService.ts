@@ -153,25 +153,24 @@ class GlobalPlayer {
     }
 
     async pickTrack(podcast: PodcastType) {
-        if (podcast.uri) {
-            try{
-                const res =await RNFS.stat(podcast.uri.replace(/%20/g,' ' ))
-                if(res && res.isFile()){
-                    await this.addTrack(podcast, res.path)
-                    await TrackPlayer.play()
-                    return res.path
-                }
-            }catch(e){
-            }
-
-        }
+        // if (podcast.uri) {
+        //     try{
+        //         console.log(podcast.uri);
+        //         const res =await RNFS.stat(podcast.uri.replace(/%20/g,' ' ))
+        //         if(res && res.isFile()){
+        //             await this.addTrack(podcast, res.path)
+        //             await TrackPlayer.play()
+        //             return res.path
+        //         }
+        //     }catch(e){
+        //         console.log(e)
+        //     }
+        // }
 
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.audio]
             })
-
-
             if (res && Number(res.size) === podcast.fileSize) {
                 let correctPath = res.uri;
 
@@ -183,6 +182,7 @@ class GlobalPlayer {
                     correctPath = `file://${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
                     const files = await RNFS.readDir(`${RNFS.TemporaryDirectoryPath}${inbox}`)
 
+                    console.log(files)
 
                     for (let i = 0; i < files.length; i++) {
                         if (files[i].name === name.replace(/%20/g, '')) {
@@ -193,11 +193,17 @@ class GlobalPlayer {
                         }
                     }
                     for (let i = 0; i < files.length; i++) {
-                        if (files[i].name === name.replace(/%20/g, ' ')) {
+                        if (decodeURI(files[i].name) === decodeURI(name.replace(/%20/g, ' '))) {
                             if (/\s/.test(name) || /%20/.test(name)) {
-                                const alterPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${name.replace(/%20/g, '').replace(/\s/, '')}`
+                                const alterPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${decodeURI(name).replace(/\s/g, '')}`
                                 const alterFilePath = `file://${alterPath}`;
-                                const res = await RNFS.moveFile(files[i].path, alterPath);
+                                try{
+                                    const res = await RNFS.moveFile(files[i].path, alterPath);
+                                }catch(err){
+                                    console.log(err);
+                                }
+                                console.log('check res', res);
+                                console.log('check res' , alterFilePath)
                                 await setTimeout(()=>{
                                     console.log('End TIme OUt !!')
                                 }, 500)
@@ -207,6 +213,8 @@ class GlobalPlayer {
                             }
                         }
                     }
+
+                    console.log(correctPath);
 
                     await this.addTrack(podcast, correctPath);
                     await TrackPlayer.play();

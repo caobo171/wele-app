@@ -38,6 +38,11 @@ const StyledFeatherIcon = styled(FeatherIcon) <{ theme: CustomTheme }>`
   margin: 8px 10px 8px 10px;
 `;
 
+const STouchable = styled(Touchable)`
+  height: 70px;
+  width: 70px;
+`
+
 const StyledBadge = styled.Text<{ theme: CustomTheme }>`
   font-size: 12px;
   font-weight: bold;
@@ -49,7 +54,7 @@ const StyledBadge = styled.Text<{ theme: CustomTheme }>`
   color: ${props => props.theme.textColorH2};
 `;
 
-const StyledPlayButton = styled(Touchable)`
+const StyledPlayButton = styled.View`
   background-color: #545454;
   border-radius: 35px;
   width: 70px;
@@ -77,12 +82,14 @@ const ActionButtons = React.memo((props: Props) => {
       <TouchableOpacity onPress={props.openSettings}>
         <StyledButtonText>{`${props.speed.toString()}x`}</StyledButtonText>
       </TouchableOpacity>
-
-      <StyledPlayButton onPress={props.onPausePlayHandle}>
+      <STouchable onPress={props.onPausePlayHandle}>
+      <StyledPlayButton >
         <StyledEntypoIcon sizeMode={'big'}
           name={props.playing ? "controller-paus" : "controller-play"}
         />
       </StyledPlayButton>
+      </STouchable>
+
 
       <StyledPlayBackButton onPress={props.onPlayBackHandle}>
         <StyledFeatherIcon name="corner-up-left" />

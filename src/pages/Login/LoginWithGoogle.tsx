@@ -7,7 +7,6 @@ import styled from 'styled-components/native'
 import { loginWithGoogle } from './helper';
 import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
 
-
 const StyledButton = styled(TouchableOpacity)<{theme: CustomTheme}>`
   flex-direction: row;
   width: 70%;
@@ -17,20 +16,22 @@ const StyledButton = styled(TouchableOpacity)<{theme: CustomTheme}>`
   height: 40px;
   border-width: 1px;
   margin-bottom: 10px;
-
+  justify-content: center;
   border-color: ${props=> props.theme.borderSectionColor};
 `
 
 const StyledFeatherIcon = styled(AntDesign)`
     margin: auto;
+    margin-right: 3px;
+    margin-left: 12px;
     text-align: center;
-    font-size: 24px;
-    flex: 1;
+    font-size: 12px;
+
     color: #d1d1d1;
 `
 
 const StyledText = styled.Text`
-    flex: 5;
+
     text-align: center;
     padding: 8px 5px 10px 0px;
     letter-spacing: 1px;
@@ -38,26 +39,6 @@ const StyledText = styled.Text`
     font-size: 16px;
     color: #d1d1d1;
 `
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  userInfo: { fontSize: 18, fontWeight: 'bold', marginBottom: 20 },
-  pageContainer: { flex: 1 },
-});
-
 
 export interface Props{
     loginWithGoogle: ()=>void
@@ -68,18 +49,11 @@ const LoginWithGoogle = (props:Props) => {
 
 
     return (
-        // <StyledButton onPress={props.loginWithGoogle }>
-        //     <StyledFeatherIcon name={'google'} />
-        //     <StyledText>Login With Google</StyledText>
-        // </StyledButton>
-        <View style={styles.container}>
-        <GoogleSigninButton
-          style={{ width: 265, height: 50 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Auto}
-          onPress={props.loginWithGoogle}
-        />
-      </View>);
+        <StyledButton onPress={props.loginWithGoogle }>
+            <StyledFeatherIcon name={'google'} />
+            <StyledText>Sign in with Google</StyledText>
+        </StyledButton>
+      );
 }
 
 export default LoginWithGoogle ;

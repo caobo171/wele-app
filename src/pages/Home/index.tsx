@@ -50,7 +50,7 @@ const StyledSection = styled.View<{ theme: CustomTheme }>`
 const StyledSectionTitle = styled.Text<{ position: 'top' | 'normal', theme: CustomTheme }>`
   color: ${props => props.theme.textColorH1}
   font-size: ${props => props.position === 'top' ? `${Constants.TITLE_FONTSIZE+4}px` : `${Constants.TITLE_FONTSIZE}px`} ;
-  font-weight: ${props => props.position === 'top' ? 'bold' : '900'} ;
+  font-weight: ${props => props.position === 'top' ? '600' : '700'} ;
   padding-bottom: 16px;
   margin: ${props => props.position === 'top' ? '-4px' : '28px'} 10px 0px 10px; 
   border-bottom-width: 1px;
@@ -67,7 +67,7 @@ const Home = () => {
 
 
     Platform.OS === 'android' && requestPermissionAndroid() 
-    await checkUpdate();
+    checkUpdate();
     Analytics.trackScreenView('Billboard');
     await getPodcastThisWeek()
     await getRecentPodcast()
@@ -114,7 +114,7 @@ const PodcastsThisWeek = React.memo((props: PodcastsProps) => {
 
 
   return <StyledSection>
-    <StyledSectionTitle position="top">Podcast this week</StyledSectionTitle>
+    <StyledSectionTitle position="top">Newest Podcasts</StyledSectionTitle>
     <StyledSectionContent>
       <FlatList
         refreshing={state.loading}

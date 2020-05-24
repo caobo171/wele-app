@@ -53,6 +53,11 @@ const StyledBadgeWrapper = styled.View`
     background: #ff4f4f;
 `
 
+const STouchable = styled(Touchable)`
+    height: 60px;
+    width: 60px;
+`
+
 const Header = React.memo(() => {
 
     const unreadNumber = useUnreadNotificationNumber()
@@ -77,19 +82,19 @@ const HeaderMemo = React.memo((props: Props) => {
         nav.navigate('UserProfile')
     }, [])
     return <HeaderWrapper>
-        <Touchable onPress={onNotificationClickHandle}>
+        <STouchable onPress={onNotificationClickHandle}>
             <StyledView>
                 <StyledFeatherIcon name={'bell'} />
                 {props.unreadNumber > 0 && <StyledBadgeWrapper>
                     <StyledBadge>{props.unreadNumber}</StyledBadge>
                 </StyledBadgeWrapper>}
             </StyledView>
-        </Touchable>
-        <Touchable onPress={navigateToUserProfile}>
+        </STouchable>
+        <STouchable onPress={navigateToUserProfile}>
             <View>
                 <StyledFeatherIcon name={'settings'} />
             </View>
-        </Touchable>
+        </STouchable>
     </HeaderWrapper>
 }, (prev, next) => prev.currentUser.id === next.currentUser.id && prev.unreadNumber === next.unreadNumber)
 
