@@ -7,7 +7,7 @@ import { createBottomTabNavigator, BottomTabBar } from "react-navigation-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
 import PodcastList from "../pages/PodcastList";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { useUnreadNotificationNumber } from "@/store/notification/hooks";
 import BillboardNavigator from "./BillboardNavigator";
@@ -64,7 +64,7 @@ export const CustomTabbar = memo((props) => {
 
 	return (
 		<>
-            <BannerAdComponent/>
+            {Platform.OS === 'android' &&  <BannerAdComponent/>}
             <PlayerThumbnail/>
 			<BottomTabBar
 				{...props}
