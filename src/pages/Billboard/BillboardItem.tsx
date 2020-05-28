@@ -8,13 +8,13 @@ import { NavigationContext } from 'react-navigation';
 import { useCurrentUser } from '@/store/user/hooks';
 import Touchable from '@/components/UI/Touchable';
 import Constants from '@/Constants';
-const StyledUserSection = styled.View`
+const SUserSection = styled.View`
   height: 58px;
   width: 100%;
   flex-direction: row;
 `;
 
-const StyledOrderIndicator = styled.Text<{ color: string }>`
+const SOrderIndicator = styled.Text<{ color: string }>`
   text-align: center;
   flex: 0.8;
   padding-top: 8px;
@@ -28,42 +28,42 @@ const StyledOrderIndicator = styled.Text<{ color: string }>`
   color: ${props => props.color} ;
 `;
 
-const StyledUserNameWrapper = styled.View<{ isFake?: boolean }>`
+const SUserNameWrapper = styled.View<{ isFake?: boolean }>`
   flex:8;
   flex-direction: column;
   margin-left: 12px;
 `;
 
-const StyledName = styled.Text<{ theme: CustomTheme }>`
+const SName = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
   font-size: ${Constants.BILLBOARD_ITEM_FONTSIZE}px;
   letter-spacing: 1px;
   color: ${props => props.theme.textColorH1};
 `;
 
-const StyledAvatarWrapper = styled.View`
+const SAvatarWrapper = styled.View`
   flex: 2;
 `;
 
 
-const StyledSubDescription = styled.Text`
+const SSubDescription = styled.Text`
   font-size: ${Constants.BILLBOARD_ITEM_FONTSIZE- 2}px;
   color: #757575;
 `;
 
 
 
-const StyledEntypoIcon = styled(EntypoIcon)`
+const SEntypoIcon = styled(EntypoIcon)`
   font-size: 16px;
   color: #a8a8a8;
   margin: 8px 10px 8px 10px;
 `;
 
-const StyledActionButtonGroup = styled.View`
+const SActionButtonGroup = styled.View`
   flex: 2;
 `;
 
-const StyledTouchableOpacity = styled(Touchable)`
+const STouchableOpacity = styled(Touchable)`
   height: 100%;
 `
 
@@ -97,31 +97,31 @@ const BillboardItem = React.memo((props: Props) => {
     })
   },[props.user])
   return (
-    <StyledUserSection>
-      <StyledOrderIndicator color={renderColor(props.index)}>
+    <SUserSection>
+      <SOrderIndicator color={renderColor(props.index)}>
         {props.index + 1}
-      </StyledOrderIndicator>
-      <StyledAvatarWrapper>
+      </SOrderIndicator>
+      <SAvatarWrapper>
         <UserAvatar user={props.user} index={props.index} />
-      </StyledAvatarWrapper>
-      <StyledUserNameWrapper isFake={props.user.id !== '-1'}>
-        <StyledName>{props.user.displayName} {props.user.id === user.id && '(You)'}</StyledName>
-        <StyledSubDescription>{Number(props.total).toFixed(1).toString()}{' scores'}</StyledSubDescription>
-      </StyledUserNameWrapper>
+      </SAvatarWrapper>
+      <SUserNameWrapper isFake={props.user.id !== '-1'}>
+        <SName>{props.user.displayName} {(user && props.user.id === user.id) && '(You)'}</SName>
+        <SSubDescription>{Number(props.total).toFixed(1).toString()}{' scores'}</SSubDescription>
+      </SUserNameWrapper>
 
 
-      <StyledActionButtonGroup>
+      <SActionButtonGroup>
         {
           props.user.id !== '-1' && (
-            <StyledTouchableOpacity onPress={navigateToAnotherProfile}>
-              <StyledEntypoIcon name={'dots-three-vertical'} />
-            </StyledTouchableOpacity>
+            <STouchableOpacity onPress={navigateToAnotherProfile}>
+              <SEntypoIcon name={'dots-three-vertical'} />
+            </STouchableOpacity>
           )
         }
-      </StyledActionButtonGroup>
+      </SActionButtonGroup>
 
 
-    </StyledUserSection>
+    </SUserSection>
   )
 }, (prev, next) => (prev.total === next.total && prev.user.id === next.user.id && prev.index === next.index))
 

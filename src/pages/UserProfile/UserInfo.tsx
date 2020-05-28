@@ -78,7 +78,8 @@ const UserInfoMemo = React.memo((props: PropsMemo) => {
             {props.user.displayName}
           </StyledName>
           {
-            props.currentUser.id === props.user.id &&
+            (props.currentUser && 
+            props.currentUser.id === props.user.id) &&
             <StyledEmail>
               ( {props.user.weleEmail ? props.user.weleEmail : `You dont' have WELE Email`} )
             </StyledEmail>

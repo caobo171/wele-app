@@ -7,10 +7,7 @@
  * @flow
  */
 
-import React, { useEffect, useState, useContext, useCallback } from 'react';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-
-import { View, TouchableOpacity} from 'react-native';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
 import { NavigationContext } from 'react-navigation';
 
@@ -24,6 +21,7 @@ import { ThemeMode , CustomTheme } from '@/store/theme/ThemeWrapper';
 import UserInfo from './UserInfo';
 import GroupActionsButton from './GroupActionsButton';
 import StatusBarView from '@/components/UI/StatusbarView';
+import LoginWrapper from '../LoginWrapper';
 
 
 
@@ -57,26 +55,27 @@ const UserProfile = React.memo(() => {
     if (currentUser) {
       getMyresult(currentUser)
     }
-  }, [currentUser.id])
+  }, [currentUser])
 
- const goBackHandle = useCallback(()=> nav.goBack(),[])
 
   return (
     <Wrapper>
       <StatusBarView/>
-      <StyledBodyWrapper>
-  
-        <UserInfo user={currentUser}/>
-        <StyledLineCharWrapper>
-          {
-            state.loading ? <LoadingComponent /> :
-              <ProfileChart results={myResults} />
-          }
 
-        </StyledLineCharWrapper>
+      <LoginWrapper>
+        <StyledBodyWrapper>
+            <UserInfo user={currentUser}/>
+            <StyledLineCharWrapper>
+            {
+                state.loading ? <LoadingComponent /> :
+                <ProfileChart results={myResults} />
+            }
 
-        <GroupActionsButton/>
-      </StyledBodyWrapper>
+            </StyledLineCharWrapper>
+            <GroupActionsButton/>
+        </StyledBodyWrapper>
+      </LoginWrapper>
+
 
     </Wrapper>
   );

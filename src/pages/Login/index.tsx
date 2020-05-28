@@ -24,6 +24,14 @@ import Touchable from '@/components/UI/Touchable';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 
 
+const SWarningText= styled.Text<{ theme: CustomTheme }>`
+    text-align: center;
+    margin-bottom: 32px;
+    color: ${props=> props.theme.textColorH1};
+    font-weight: 700;
+    font-size: 18px;
+`
+
 const SAppleButton = styled(AppleButton)<{theme: CustomTheme}>`
   flex-direction: row;
   width: 70%;
@@ -69,13 +77,6 @@ const StyledButton = styled(Touchable)`
 `
 
 
-const StyledFeatherIcon = styled(FeatherIcon)`
-    margin: auto;
-    text-align: center;
-    font-size: 24px;
-    flex: 1;
-    color: #d1d1d1;
-`
 
 const StyledText = styled.Text`
     flex: 5;
@@ -101,8 +102,6 @@ const StyledTextInput = styled.TextInput`
 const StyledTextNote = styled.Text`
 
 `
-
-
 
 const Login = () => {
 
@@ -180,9 +179,6 @@ const Login = () => {
   }, [confirmEmail])
 
 
-  console.log(Platform.OS);
-
-
   const onContinueHandle = () => {
     const reformatEmail = rEmail(email);
     if (email !== rEmail(confirmEmail)) {
@@ -216,6 +212,10 @@ const Login = () => {
         resizeMode={"contain"}
         source={require('@/assets/branding.jpg')}
       />
+
+      <SWarningText>
+          You need to Sign in to Use this Feature
+      </SWarningText>
 
       {condition && (
 
@@ -258,11 +258,11 @@ const Login = () => {
               >
                 <LoginWithGoogle loginWithGoogle={fetchLoginGoogle} />
 
-
+{/* 
                 {Platform.OS === 'android' &&<StyledButton onPress={fetchLogin}>
                   <StyledFeatherIcon name={'facebook-f'} />
                   <StyledText>Login With Facebook</StyledText>
-                </StyledButton>}
+                </StyledButton>} */}
 
                 {Platform.OS === 'ios' && <SAppleButton
                     buttonType={AppleButton.Type.SIGN_IN}
