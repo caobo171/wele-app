@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect } from "react";
 import { createAppContainer } from "react-navigation";
-import Login from "./pages/Login";
 import useAsync from "react-use/lib/useAsync";
 import LoadingComponent from "./components/Loading/Loading";
 
@@ -20,6 +19,7 @@ import {
 import { getAllPodcasts } from "./store/podcast/functions";
 import storage from "./service/localStorage";
 import { checkUpdate } from "./service/util";
+import { getGlobalNotifications } from "./store/notification/functions";
 
 const MainAppScreen = () => {
 	const currentUser = useCurrentUser();
@@ -36,11 +36,17 @@ const MainAppScreen = () => {
 
 	useEffect(() => {
 		getAllUsers();
-		messageSystem.init(currentUser);
 		getAllPodcasts();
 		getResults();
 		getResultsMonthly();
-	}, []);
+    }, []);
+    
+
+    useEffect(()=>{
+        if(currentUser){
+            messageSystem.init(currentUser);
+        }
+    },[currentUser])
 
 	return (
 		<React.Fragment>

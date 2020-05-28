@@ -75,7 +75,7 @@ const Home = () => {
   const podcastThisWeek = usePodcastThisWeek()
   const recentPodcasts = useRecentPodcasts()
 
-  return <React.Fragment>
+  return <>
     {state.loading ?
       (<LoadingComponent />) : (
         <Wrapper
@@ -89,7 +89,7 @@ const Home = () => {
           </StyledBodyWrapper>
         </Wrapper>
       )}
-  </React.Fragment>
+  </>
 };
 
 

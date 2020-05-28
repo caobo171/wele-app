@@ -3,7 +3,6 @@ import React, { useState, useEffect, Dispatch } from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import PlayerNavigator from "./PlayerStackNavigator";
 import MainBottomTabNavigator from "./MainBottomTabNavigator"
-import NotificationNavigator from "./NotificationNavigator";
 import AnotherProfile from "@/pages/UserProfile/AnotherUserProfile";
 import { createSwitchNavigator } from "react-navigation";
 
@@ -21,13 +20,7 @@ const RootNavigator = createSwitchNavigator(
             navigationOptions: {
                 header: null
             }
-        },
-        NotificationNavigator: {
-            screen: NotificationNavigator,
-            navigationOptions: {
-                header: null
-            }
-        },
+        }
         // AnotherProfile:{
         //     screen: AnotherProfile
         // }

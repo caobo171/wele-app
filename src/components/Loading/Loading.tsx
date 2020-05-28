@@ -16,12 +16,12 @@ const StyledWrapper = styled.View<{theme: CustomTheme}>`
   background-color: ${props=> props.theme.backgroundColor};
 
 `;
-const LoadingComponent = () => {
+const LoadingComponent = React.memo(() => {
   return (
     <StyledWrapper>
       <StyledLoading  size={'large'}/>
     </StyledWrapper>
   );
-};
+});
 
 export default LoadingComponent; 
