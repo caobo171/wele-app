@@ -47,16 +47,17 @@ class GlobalPlayer {
 
         await TrackPlayer.setupPlayer()
 
+        console.log(  'test', TrackPlayer.CAPABILITY_PLAY);
         await TrackPlayer.updateOptions({
             stopWithApp: true,
             jumpInterval: playback,
             capabilities: [
-                TrackPlayer.CAPABILITY_PAUSE,
-                TrackPlayer.CAPABILITY_SEEK_TO,
-                TrackPlayer.CAPABILITY_STOP,
-                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-                TrackPlayer.CAPABILITY_SET_RATING,
+				TrackPlayer.CAPABILITY_PAUSE,
+				TrackPlayer.CAPABILITY_SEEK_TO,
+				TrackPlayer.CAPABILITY_STOP,
+				TrackPlayer.CAPABILITY_SET_RATING,
+				TrackPlayer.CAPABILITY_JUMP_BACKWARD,
+                TrackPlayer.CAPABILITY_JUMP_FORWARD,
                 TrackPlayer.CAPABILITY_PLAY
             ],
             compactCapabilities: [

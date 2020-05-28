@@ -67,7 +67,6 @@ const Home = () => {
 
 
     Platform.OS === 'android' && requestPermissionAndroid() 
-    checkUpdate();
     Analytics.trackScreenView('Billboard');
     await getPodcastThisWeek()
     await getRecentPodcast()

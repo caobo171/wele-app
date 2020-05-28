@@ -2,10 +2,9 @@
 import React, { useEffect } from "react";
 import { createAppContainer } from "react-navigation";
 import Login from "./pages/Login";
-import { firebase } from "@react-native-firebase/auth";
 import useAsync from "react-use/lib/useAsync";
 import LoadingComponent from "./components/Loading/Loading";
-import NetInfo from "@react-native-community/netinfo";
+
 import RootNavigator from "@/navigation/AppContainer"
 import useEffectOnce from "react-use/lib/useEffectOnce";
 import globalPlayer from "@/service/playerService";
@@ -16,6 +15,7 @@ import { useCurrentUser } from "./store/user/hooks";
 import { setCurrentUser, getAllUsers, getResults, getResultsMonthly } from "./store/user/function";
 import { getAllPodcasts } from "./store/podcast/functions";
 import storage from "./service/localStorage";
+import { checkUpdate } from "./service/util";
 
 
 
@@ -32,6 +32,7 @@ const MainAppScreen = () => {
 
   useEffectOnce(() => {
     globalPlayer.init()
+    !__DEV__ && checkUpdate();
   })
 
   useEffect(() => {

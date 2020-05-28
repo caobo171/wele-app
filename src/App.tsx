@@ -12,7 +12,10 @@ import {screensEnabled} from 'react-native-screens';
 import admob, {MaxAdContentRating, InterstitialAd, TestIds , AdEventType} from '@react-native-firebase/admob';
 import { Platform } from "react-native";
 
-Platform.OS === 'android'  && admob()
+
+const shouldShowAd = ( Platform.OS === 'android' && !__DEV__ ) 
+
+shouldShowAd  && admob()
 .setRequestConfiguration({
       // Update all future requests suitable for parental guidance
       maxAdContentRating: MaxAdContentRating.PG,
@@ -31,7 +34,7 @@ Platform.OS === 'android'  && admob()
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-9321650002552239/7717497590';
 
-const interstitial = Platform.OS === 'android'  ? InterstitialAd.createForAdRequest(adUnitId, {
+const interstitial = shouldShowAd  ? InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
   keywords: ['english', 'podcast', 'learning'],
 }): null;
@@ -44,15 +47,15 @@ const App = () => {
 
   useEffect(() => {
     SplashScreen.hide()
-    const eventListener = Platform.OS === 'android' ? interstitial.onAdEvent(type => {
-      if (type === AdEventType.LOADED) {
-        interstitial.show();
-      }
-    }) : null
 
-    Platform.OS === 'android'  && interstitial.load();
+    const eventListener = shouldShowAd ? interstitial.onAdEvent(type => {
+        if (type === AdEventType.LOADED) {
+          interstitial.show();
+        }
+      }) : null
+    shouldShowAd  && interstitial.load();
     return ()=>{
-      Platform.OS === 'android'  &&  eventListener();
+        shouldShowAd  &&  eventListener();
     }
     
   },[])
