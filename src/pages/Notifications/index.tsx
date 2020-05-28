@@ -71,16 +71,6 @@ const Notifications = () => {
     <Wrapper>
       <StatusBarView/>
       <HeaderWrapper>
-        <TouchableOpacity onPress={() => { 
-          nav.navigate('Home')
-        }}>
-          <View>
-            <StyledAntDesignIcon name={'arrowleft'} />
-          </View>
-        </TouchableOpacity>
-        <StyledPageTitleText>
-            Notifications
-        </StyledPageTitleText>
       </HeaderWrapper>
       <FlatList
         getItemLayout = {getItemLayout}

@@ -33,25 +33,12 @@ const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   background-color: ${props=> props.theme.backgroundColor};
 `;
 
-const HeaderWrapper = styled.View`
-  height: 32px;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 0;
-  
-`;
 const StyledBodyWrapper = styled.View`
+  padding-top: 20px;
   flex: 9;
   align-items: flex-start;
 `;
 
-
-
-const StyledAntDesignIcon = styled(AntDesignIcon)`
-  font-size: 28px;
-  color: #a8a8a8;
-  margin: 4px 0px 0px 10px;
-`;
 
 const StyledLineCharWrapper = styled.View`
   width: 80%;
@@ -77,14 +64,6 @@ const UserProfile = React.memo(() => {
   return (
     <Wrapper>
       <StatusBarView/>
-      <HeaderWrapper>
-        <TouchableOpacity onPress={goBackHandle}>
-          
-            <StyledAntDesignIcon name={'arrowleft'} />
-        </TouchableOpacity>
-      </HeaderWrapper>
-
-
       <StyledBodyWrapper>
   
         <UserInfo user={currentUser}/>

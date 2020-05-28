@@ -14,6 +14,8 @@ import BillboardNavigator from "./BillboardNavigator";
 import { ThemeMode } from "@/store/theme/ThemeWrapper";
 import useEffectOnce from "react-use/lib/useEffectOnce";
 import presenceSystem from "@/service/presenseSystem";
+import UserProfile from "@/pages/UserProfile";
+import Notifications from "@/pages/Notifications";
 
 
 const StyledBadge = styled.Text`
@@ -41,11 +43,11 @@ interface HomeIconProps {
     tintColor: string,
 }
 
-const HomeIcon = React.memo((props: HomeIconProps) => {
+const NotificationIcon = React.memo((props: HomeIconProps) => {
     const unreadNumber = useUnreadNotificationNumber()
     return (
         <View>
-            <Icon name="home" color={props.tintColor} size={24} />
+            <Icon name="bell-o" color={props.tintColor} size={24} />
             {unreadNumber > 0 &&
                 <StyledBadgeWrapper>
                     <StyledBadge>{unreadNumber}</StyledBadge>
@@ -55,8 +57,6 @@ const HomeIcon = React.memo((props: HomeIconProps) => {
     )
 })
 
-
-const ConnectedHomeIcon = HomeIcon
 
 export const CustomTabbar = memo((props) => {
 
@@ -82,7 +82,7 @@ const MainBottomTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: "Home",
                 tabBarIcon: ({ tintColor }) => (
-                    <ConnectedHomeIcon tintColor={tintColor as string} />
+                    <Icon name="home" color={tintColor} size={24} />
                 )
             }
         },
@@ -104,7 +104,25 @@ const MainBottomTabNavigator = createBottomTabNavigator(
                     <Icon name="book" color={tintColor} size={24} />
                 )
             }
-        }
+        },
+        Notification: {
+            screen: Notifications,
+            navigationOptions: {
+                tabBarLabel: "Notification",
+                tabBarIcon: ({tintColor}) => (
+                    <NotificationIcon tintColor={tintColor}/>
+                )
+            }
+        },
+        UserProfile: {
+            screen: UserProfile,
+            navigationOptions: {
+                tabBarLabel: "You",
+                tabBarIcon: ({tintColor}) => (
+                    <Icon name="user" color={tintColor} size={24} />
+                )
+            }
+        },
     },
     {
         tabBarComponent: CustomTabbar,
