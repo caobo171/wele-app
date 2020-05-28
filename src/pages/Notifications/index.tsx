@@ -15,7 +15,7 @@ import { NavigationContext } from 'react-navigation';
 import { FlatList } from 'react-native-gesture-handler';
 import NotificationItem  from './NotificationItem';
 import { useNotifications } from '@/store/notification/hooks';
-
+import EmptyComponent from './EmptyComponent';
 import {CustomTheme } from '@store/theme/ThemeWrapper'
 import StatusBarView from '@/components/UI/StatusbarView';
 
@@ -71,24 +71,14 @@ const Notifications = () => {
     <Wrapper>
       <StatusBarView/>
       <HeaderWrapper>
-        <TouchableOpacity onPress={() => { 
-          nav.navigate('Home')
-        }}>
-          <View>
-            <StyledAntDesignIcon name={'arrowleft'} />
-          </View>
-        </TouchableOpacity>
-        <StyledPageTitleText>
-            Notifications
-        </StyledPageTitleText>
       </HeaderWrapper>
       <FlatList
         getItemLayout = {getItemLayout}
         data = {notifications}
         renderItem = {({item})=> <NotificationItem notification= {item}/>}
         keyExtractor = {item => item.id}
+        ListEmptyComponent = {EmptyComponent}
       />
-
     </Wrapper>
   );
 };

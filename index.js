@@ -20,4 +20,4 @@ firebase.messaging().setBackgroundMessageHandler(async remoteMessage => {
   await AsyncStorage.setItem("messages", JSON.stringify(messageArray));
 });
 
-TrackPlayer.registerPlaybackService(() => require("./playerService"));
+TrackPlayer.registerPlaybackService(() => require("./backgroundPlayerService"));

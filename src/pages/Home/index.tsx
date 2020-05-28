@@ -7,16 +7,14 @@
  * @flow
  */
 
-import React, { useEffect } from 'react';
-
+import React from 'react';
 import useAsync from "react-use/lib/useAsync";
 import { FlatList, Platform } from 'react-native';
-import {requestPermissionAndroid, checkUpdate} from '@/service/util' 
+import {requestPermissionAndroid} from '@/service/util' 
 import PodcastThumbnail from './PodcastThumbnail'
 
 import styled from 'styled-components/native';
 import LoadingComponent from '@components/Loading/Loading';
-import Header from './Header';
 import { getPodcastThisWeek, getRecentPodcast } from '@/store/podcast/functions';
 import { usePodcastThisWeek, useRecentPodcasts } from '@/store/podcast/hooks';
 
@@ -37,6 +35,7 @@ const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
 const StyledBodyWrapper = styled.View`
   background-color: white;
   flex: 9;
+  margin-top: 20px;
   align-items: flex-start;
 `;
 
@@ -67,7 +66,6 @@ const Home = () => {
 
 
     Platform.OS === 'android' && requestPermissionAndroid() 
-    checkUpdate();
     Analytics.trackScreenView('Billboard');
     await getPodcastThisWeek()
     await getRecentPodcast()
@@ -77,24 +75,21 @@ const Home = () => {
   const podcastThisWeek = usePodcastThisWeek()
   const recentPodcasts = useRecentPodcasts()
 
-  return <React.Fragment>
+  return <>
     {state.loading ?
       (<LoadingComponent />) : (
         <Wrapper
           keyboardShouldPersistTaps={'always'}
         >
           <StatusBarView/>
-          <Header />
 
           <StyledBodyWrapper>
-      
             <PodcastsThisWeek podcasts={podcastThisWeek}/>
-
             <RecentPodcast podcasts={recentPodcasts}/>
           </StyledBodyWrapper>
         </Wrapper>
       )}
-  </React.Fragment>
+  </>
 };
 
 

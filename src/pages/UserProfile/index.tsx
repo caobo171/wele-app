@@ -7,10 +7,7 @@
  * @flow
  */
 
-import React, { useEffect, useState, useContext, useCallback } from 'react';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-
-import { View, TouchableOpacity} from 'react-native';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
 import { NavigationContext } from 'react-navigation';
 
@@ -24,6 +21,7 @@ import { ThemeMode , CustomTheme } from '@/store/theme/ThemeWrapper';
 import UserInfo from './UserInfo';
 import GroupActionsButton from './GroupActionsButton';
 import StatusBarView from '@/components/UI/StatusbarView';
+import LoginWrapper from '../LoginWrapper';
 
 
 
@@ -33,25 +31,12 @@ const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
   background-color: ${props=> props.theme.backgroundColor};
 `;
 
-const HeaderWrapper = styled.View`
-  height: 32px;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 0;
-  
-`;
 const StyledBodyWrapper = styled.View`
+  padding-top: 20px;
   flex: 9;
   align-items: flex-start;
 `;
 
-
-
-const StyledAntDesignIcon = styled(AntDesignIcon)`
-  font-size: 28px;
-  color: #a8a8a8;
-  margin: 4px 0px 0px 10px;
-`;
 
 const StyledLineCharWrapper = styled.View`
   width: 80%;
@@ -62,42 +47,32 @@ const UserProfile = React.memo(() => {
 
   const currentUser = useCurrentUser()
   const myResults = useMyResult()
-
-  const nav = useContext(NavigationContext)
-
   const state = useAsync(async () => {
 
     if (currentUser) {
       getMyresult(currentUser)
     }
-  }, [currentUser.id])
+  }, [currentUser])
 
- const goBackHandle = useCallback(()=> nav.goBack(),[])
 
   return (
     <Wrapper>
       <StatusBarView/>
-      <HeaderWrapper>
-        <TouchableOpacity onPress={goBackHandle}>
-          
-            <StyledAntDesignIcon name={'arrowleft'} />
-        </TouchableOpacity>
-      </HeaderWrapper>
 
+      <LoginWrapper>
+        <StyledBodyWrapper>
+            <UserInfo user={currentUser}/>
+            <StyledLineCharWrapper>
+            {
+                state.loading ? <LoadingComponent /> :
+                <ProfileChart results={myResults} />
+            }
 
-      <StyledBodyWrapper>
-  
-        <UserInfo user={currentUser}/>
-        <StyledLineCharWrapper>
-          {
-            state.loading ? <LoadingComponent /> :
-              <ProfileChart results={myResults} />
-          }
+            </StyledLineCharWrapper>
+            <GroupActionsButton/>
+        </StyledBodyWrapper>
+      </LoginWrapper>
 
-        </StyledLineCharWrapper>
-
-        <GroupActionsButton/>
-      </StyledBodyWrapper>
 
     </Wrapper>
   );

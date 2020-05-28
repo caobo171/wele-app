@@ -25,7 +25,7 @@ const StyledSearchWrapper = styled.View<{ theme: CustomTheme }>`
     align-items: flex-start;
     border-bottom-width: 1px;
     border-color: ${props => props.theme.borderSectionColor}
-    margin: 0px 10px 0px 10px;
+    margin: 10px 10px 0px 10px;
 `
 
 
@@ -37,11 +37,9 @@ interface Props {
 }
 const SearchBox = React.memo((props: Props) => {
     return (<React.Fragment>
-        {!props.startSearch && <StyledSectionTitle >Podcasts</StyledSectionTitle>}
         <StyledSearchWrapper>
             <StyledSearchInput
-
-                size={props.startSearch ? 'big' : 'normal'}
+                size={'big'}
                 onTouchStart={props.onStartSearchHandle}
                 placeholderTextColor={'white'}
                 onChangeText={props.onTextChangeHandler}

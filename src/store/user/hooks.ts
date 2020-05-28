@@ -117,7 +117,7 @@ const transformResult = (result: ResultType | undefined) => {
 }
 
 const myResultSelector = createSelector(
-  ((state: { user: State }) => state.user.currentUser.result),
+  ((state: { user: State }) => state.user.currentUser ? state.user.currentUser.result: null),
   (result) => transformResult(result)
 )
 
@@ -197,5 +197,6 @@ const createSentPodcastReducer = (user: UserType) => {
 }
 
 export const useIsSentPodcast = (user: UserType ) => {
+  if(!user) return null
   return useSelector(createSentPodcastReducer(user))
 }

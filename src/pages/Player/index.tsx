@@ -13,9 +13,9 @@ import Header from "./Header";
 import { connect } from 'react-redux';
 import PodcastType from '@store/podcast/types';
 import AnimatedWrapper from './AnimatedWrapper';
-import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import {CustomTheme} from '@store/theme/ThemeWrapper'
 import StatusBarView from '@/components/UI/StatusbarView';
-import { useAnotherUserResult, useCurrentUser, useIsSentPodcast } from '@/store/user/hooks';
+import {  useCurrentUser, useIsSentPodcast } from '@/store/user/hooks';
 const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
@@ -32,8 +32,6 @@ const Main = React.memo((props: Props) => {
 
     const user = useCurrentUser()
     const currentResult = useIsSentPodcast(user);
-
-
     const podcastNumber = useMemo(()=>  Number(props.podcast.name.match(/(\d+)/)[0]), [props.podcast]);
     const isSent = useMemo(()=>  (currentResult && currentResult[podcastNumber]) ? true: false , [podcastNumber]);
 

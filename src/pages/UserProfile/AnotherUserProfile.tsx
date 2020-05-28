@@ -60,9 +60,7 @@ const AnotherProfile = (props: Props) => {
 
   const user = props.navigation.getParam('user', null)
   const results = useAnotherUserResult(user)
-
   const nav = useContext(NavigationContext)
-
   const onGobackHandle = useCallback(()=>{
     nav.navigate('Billboard')
   },[])
