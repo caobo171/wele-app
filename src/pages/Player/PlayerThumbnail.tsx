@@ -7,6 +7,8 @@ import globalPlayer from "../../service/playerService";
 import { NavigationContext } from "react-navigation";
 import { usePlayer } from "@/store/player/hooks";
 import { CustomTheme, ThemeMode } from "@store/theme/ThemeWrapper";
+import Touchable from "@/components/UI/Touchable";
+import BannerAdComponent from "@/components/Ad/BannerAdComponent";
 
 const StyledView = styled.View`
 	height: 32px;
@@ -17,8 +19,6 @@ const StyledView = styled.View`
 	margin: 0;
 `;
 const Wrapper = styled.View<{ theme: CustomTheme }>`
-	height: 100%;
-	width: 100%;
 	background-color: ${(props) => props.theme.backgroundColor};
 `;
 
@@ -73,8 +73,6 @@ const PlayerThumbnail = React.memo((props: any) => {
 	}, []);
 	return (
 		<Wrapper>
-			{props.children}
-
 			{track && (
 				<React.Fragment>
 					<StyledProgressBarAndroid
@@ -86,16 +84,12 @@ const PlayerThumbnail = React.memo((props: any) => {
 								: position.position / position.duration
 						}
 					/>
-					<TouchableOpacity onPress={navigateToPlayer}>
+					<Touchable onPress={navigateToPlayer}>
 						<StyledView>
-							{/* <TouchableOpacity onPress = {navigateToPlayer}> */}
 							<StyledAntEntypoIcon name={"chevron-thin-up"} />
-							{/* </TouchableOpacity> */}
-
 							<StyledText>
 								{trimText(track ? track.title : "")}
 							</StyledText>
-
 							<StyledPlayButton onPress={playPauseHandle}>
 								<StyledEntypoIcon
 									name={
@@ -106,7 +100,7 @@ const PlayerThumbnail = React.memo((props: any) => {
 								/>
 							</StyledPlayButton>
 						</StyledView>
-					</TouchableOpacity>
+					</Touchable>
 				</React.Fragment>
 			)}
 		</Wrapper>

@@ -9,11 +9,12 @@ import ThemeWrapper from "@store/theme/ThemeWrapper";
 
 import {screensEnabled} from 'react-native-screens';
 
-import admob, {MaxAdContentRating, InterstitialAd, TestIds , AdEventType} from '@react-native-firebase/admob';
+import admob, {MaxAdContentRating, InterstitialAd, TestIds , AdEventType, BannerAd} from '@react-native-firebase/admob';
 import { Platform } from "react-native";
+import BannerAdComponent from "./components/Ad/BannerAdComponent";
 
 
-const shouldShowAd = ( Platform.OS === 'android' && !__DEV__ ) 
+const shouldShowAd = ( Platform.OS === 'android' ) 
 
 shouldShowAd  && admob()
 .setRequestConfiguration({
@@ -32,12 +33,14 @@ shouldShowAd  && admob()
 })
 .catch(err=> console.log('Request error: ', err))
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-9321650002552239/7717497590';
 
-const interstitial = shouldShowAd  ? InterstitialAd.createForAdRequest(adUnitId, {
-  requestNonPersonalizedAdsOnly: true,
-  keywords: ['english', 'podcast', 'learning'],
-}): null;
+
+
+
+// const interstitial = shouldShowAd  ? InterstitialAd.createForAdRequest(adUnitId, {
+//   requestNonPersonalizedAdsOnly: true,
+//   keywords: ['english', 'podcast', 'learning'],
+// }): null;
 
 screensEnabled();
 
@@ -48,14 +51,14 @@ const App = () => {
   useEffect(() => {
     SplashScreen.hide()
 
-    const eventListener = shouldShowAd ? interstitial.onAdEvent(type => {
-        if (type === AdEventType.LOADED) {
-          interstitial.show();
-        }
-      }) : null
-    shouldShowAd  && interstitial.load();
+    // const eventListener = shouldShowAd ? interstitial.onAdEvent(type => {
+    //     if (type === AdEventType.LOADED) {
+    //       interstitial.show();
+    //     }
+    //   }) : null
+    // shouldShowAd  && interstitial.load();
     return ()=>{
-        shouldShowAd  &&  eventListener();
+        // shouldShowAd  &&  eventListener();
     }
     
   },[])
@@ -64,6 +67,7 @@ const App = () => {
     <Provider store={store}>
       <ThemeWrapper>
         <MainWrapper />
+        {/* <BannerAdComponent/> */}
       </ThemeWrapper>
     </Provider>
   );
