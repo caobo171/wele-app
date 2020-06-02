@@ -17,7 +17,7 @@ import styled from 'styled-components/native';
 
 const adUnitId = __DEV__
 	? TestIds.BANNER
-    : "ca-app-pub-9321650002552239/7717497590";
+    : ( Platform.OS === 'android' ? "ca-app-pub-9321650002552239/7717497590" : "ca-app-pub-9321650002552239~7453967236" ) ;
     
 
 
