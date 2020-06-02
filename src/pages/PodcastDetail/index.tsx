@@ -45,7 +45,7 @@ const HeaderWrapper = styled.View`
   padding: 0;
   
 `;
-const StyledBodyWrapper = styled.View`
+const SBodyWrapper = styled.View`
   flex: 9;
   align-items: flex-start;
   padding: 10px 10px 10px 20px;
@@ -54,7 +54,7 @@ const StyledBodyWrapper = styled.View`
 `;
 
 
-const StyledContent = styled.View`
+const SContent = styled.View`
   width: 100%;
   margin: 0 ;
   flex-direction: column;
@@ -62,7 +62,7 @@ const StyledContent = styled.View`
 
 
 
-const StyledUserWrapper = styled.View`
+const SUserWrapper = styled.View`
   width: 100%;
   flex-direction: column;
   border-style: solid;
@@ -71,27 +71,27 @@ const StyledUserWrapper = styled.View`
 `;
 
 
-const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
+const SPodcastImage = styled.Image<{ theme: CustomTheme }>`
   height: 100%;
   width: 100%;
   border-radius: 10;
 `;
 
 
-const StyledUIBackgroundImage = styled(UIBackgroundImage)`
+const SUIBackgroundImage = styled(UIBackgroundImage)`
   height: 200px;
   width: 100%;
   border-radius: 10;
   margin: 10px 0px 20px 0px;
 `
 
-const StyledAntDesignIcon = styled(AntDesignIcon)`
+const SAntDesignIcon = styled(AntDesignIcon)`
   font-size: 28px;
   color: #a8a8a8;
   margin: 4px 0px 0px 10px;
 `;
 
-const StyledName = styled.Text<{ theme: CustomTheme }>`
+const SName = styled.Text<{ theme: CustomTheme }>`
   width: 80%;
   text-align: left;
   font-size: ${Constants.TITLE_FONTSIZE}px;
@@ -126,24 +126,24 @@ const trimText = (text: string) => {
   return text.substr(0, Math.min(text.length, 180)) + '...';
 }
 
-const StyledDescriptionWrapper = styled.View`
+const SDescriptionWrapper = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1;
 `
 
-const StyledReadmore = styled.Text<{ theme: CustomTheme }>`
+const SReadmore = styled.Text<{ theme: CustomTheme }>`
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 20px;
     color: ${props => props.theme.textColorH1};
 `;
 
-const StyledButtonWrapper = styled.View`
+const SButtonWrapper = styled.View`
     flex-direction: row;
     width:100%;
 `
-const StyledPlayButton = styled.View`
+const SPlayButton = styled.View`
     background-color: #25bf1d;
     height: 36px;
     align-items: center;
@@ -152,7 +152,7 @@ const StyledPlayButton = styled.View`
     margin-bottom: 10px;
 `
 
-const StyledDownloadButton = styled.View`
+const SDownloadButton = styled.View`
     background-color: #e0d051;
     width: 160px;
     height: 36px;
@@ -164,7 +164,7 @@ const StyledDownloadButton = styled.View`
 
 `
 
-const StyledText = styled.Text`
+const SText = styled.Text`
     font-size: ${Constants.BUTTON_FONTSIZE}px;
     font-weight: bold;
     letter-spacing: 3px;
@@ -176,7 +176,7 @@ const StyledText = styled.Text`
     
 `
 
-const StyledLink = styled.Text`
+const SLink = styled.Text`
   textDecorationLine: underline;
   color: #6bed3b;
 `
@@ -268,7 +268,7 @@ const PodcastDetailMemo = React.memo((props: Props) => {
 
   const openLink = useCallback(()=>{
     Linking.openURL(props.podcast.downloadLink ? props.podcast.downloadLink : WELE_DEFAULT_LINK);
-  }, [])
+  }, [props.podcast])
 
   return <React.Fragment>
     {
@@ -278,53 +278,53 @@ const PodcastDetailMemo = React.memo((props: Props) => {
           <HeaderWrapper>
             <STouchable onPress={goBackHandle}>
               <View>
-                <StyledAntDesignIcon name={'arrowleft'} />
+                <SAntDesignIcon name={'arrowleft'} />
               </View>
             </STouchable>
           </HeaderWrapper>
 
 
-          <StyledBodyWrapper>
-            <StyledContent>
-              <StyledUserWrapper >
-                <StyledUIBackgroundImage>
-                  <StyledPodcastImage
+          <SBodyWrapper>
+            <SContent>
+              <SUserWrapper >
+                <SUIBackgroundImage>
+                  <SPodcastImage
                     resizeMode={"stretch"}
                     source={{ uri: props.podcast.imgUrl }}
                   />
-                </StyledUIBackgroundImage>
+                </SUIBackgroundImage>
 
-                <StyledName>
+                <SName>
                   {props.podcast.name}
-                </StyledName>
+                </SName>
 
                 <DescriptionInfo>
                   {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
                 </DescriptionInfo>
 
-                <StyledButtonWrapper>
+                <SButtonWrapper>
                   <TouchableOpacity onPress={props.onPressPlayHandle}>
-                    <StyledPlayButton>
+                    <SPlayButton>
                         {openText}
-                    </StyledPlayButton>
+                    </SPlayButton>
                   </TouchableOpacity>
 
                   {
                     Platform.OS !== 'ios' && (
                       <TouchableOpacity onPress={openLink}>
-                      <StyledDownloadButton >
-                        <StyledText >Download</StyledText>
-                      </StyledDownloadButton>
+                      <SDownloadButton >
+                        <SText >Download</SText>
+                      </SDownloadButton>
                     </TouchableOpacity>
                     )
                   }
 
-                </StyledButtonWrapper>
+                </SButtonWrapper>
 
 
-              </StyledUserWrapper>
+              </SUserWrapper>
 
-              <StyledDescriptionWrapper>
+              <SDescriptionWrapper>
                 <DescriptionMain>
                   {/* { trimText(reFormatText(PODCAST.description)) } */}
                   {props.isBrief ? trimText(reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))) :
@@ -333,22 +333,22 @@ const PodcastDetailMemo = React.memo((props: Props) => {
                 </DescriptionMain>
 
                 {!props.isBrief && <TouchableOpacity>
-                  <StyledLink onPress={openLink}>{'Link download'}</StyledLink>
+                  <SLink onPress={openLink}>{'Link download'}</SLink>
                 </TouchableOpacity> }
 
 
-              </StyledDescriptionWrapper>
+              </SDescriptionWrapper>
               <TouchableOpacity>
-                  <StyledReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</StyledReadmore>
+                  <SReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</SReadmore>
               </TouchableOpacity>
 
-            </StyledContent>
-          </StyledBodyWrapper>
+            </SContent>
+          </SBodyWrapper>
         </Wrapper>
       )
     }
   </React.Fragment>
-}, (next, prev) => next.podcast.id === prev.podcast.id && next.isBrief === prev.isBrief)
+})
 
 //@ts-ignore
 PodcastDetail.navigationOptions = {
