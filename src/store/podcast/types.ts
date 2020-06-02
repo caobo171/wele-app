@@ -11,14 +11,15 @@ export default interface PodcastType {
     name: string,
     narrator: NarratorType,
     downloadLink: string,
-    postDate: Date,
+    postDate: number,
     description: string,
     id: string,
     fileSize: number,
     uri?: string,
     hint?: string,
     result?:string,
-    timeListen?: number
+    timeListen?: number,
+    order: number
 }
 
 export interface State {
