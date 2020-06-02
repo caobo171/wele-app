@@ -257,8 +257,8 @@ const PodcastDetailMemo = React.memo((props: Props) => {
 
   const openText = useMemo(()=>{
     return Platform.select({
-      ios: <StyledText >Open File</StyledText>,
-      android: <StyledText >Open</StyledText>,
+      ios: <SText >Open File</SText>,
+      android: <SText >Open</SText>,
     })
   }, [])
 

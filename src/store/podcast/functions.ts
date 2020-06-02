@@ -7,7 +7,7 @@ import PodcastType from "./types";
 
 
 export const PODCAST_COLLECTION = "podcasts";
-export const POSTDATE_PROPERTY = "postDate";
+export const ORDER_PROPERTY = "order";
 export const getPodcast = (id: string, storex = store) => {
   return storex.dispatch(actions.getPodcast(id))
 }
@@ -28,14 +28,17 @@ export const getPodcastThisWeek = async (storex = store) => {
 
     const querySnapshots = await firestore()
       .collection(PODCAST_COLLECTION)
-      .orderBy(POSTDATE_PROPERTY)
-      .startAt(getStartDate(new Date()))
+      .orderBy(ORDER_PROPERTY, 'desc')
+      .limit(4)
       .get();
 
+    console.log(getStartDate(new Date()));
     let data = new Map<string, PodcastType>();
     querySnapshots.forEach((doc: any) => {
-      data = data.set(doc.id, { id: doc.id, ...doc.data() })
+      data = data.set(doc.id, { id: doc.id, ...doc.data(), postDate: new Date(doc.data().postDate._seconds * 1000) })
     });
+
+   
 
     return await storex.dispatch(actions.getPodcastThisWeek(data))
   }else{
@@ -74,18 +77,19 @@ export const getAllPodcasts = async (storex = store) => {
 
   const netState = await NetInfo.fetch()
   let data = new Map<string, PodcastType>();
+
   if (netState.isConnected) {
     const querySnapshots = await firestore()
       .collection(PODCAST_COLLECTION)
-      .orderBy(POSTDATE_PROPERTY)
+      .orderBy(ORDER_PROPERTY)
       .get();
 
-
-    querySnapshots.forEach((doc: any) => {
+    querySnapshots.forEach(async (doc: any) => {
       data = data.set(doc.id, { id: doc.id, ...doc.data() })
     });
 
     storage.setPodcastList([...data.values()])
+    
 
   } else {
     const podcasts = await storage.getPodcastList()

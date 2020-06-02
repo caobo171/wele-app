@@ -7,18 +7,19 @@
  * @flow
  */
 
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useContext, useCallback } from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationContext, NavigationScreenProp } from 'react-navigation';
 
 import { useAnotherUserResult } from '@/store/user/hooks';
-import { ThemeMode, CustomTheme } from '@/store/theme/ThemeWrapper';
+import {CustomTheme } from '@/store/theme/ThemeWrapper';
 import ProfileChart from './Chart';
 import UserInfo from './UserInfo';
 import StatusBarView from '@/components/UI/StatusbarView';
+import Touchable from '@/components/UI/Touchable';
 
 
 
@@ -28,6 +29,11 @@ const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   background-color: ${props => props.theme.backgroundColor};
 `;
 
+const STouchable = styled(Touchable)`
+    height : 70px;
+    width: 70px;
+`
+
 const HeaderWrapper = styled.View`
   height: 32px;
   flex-direction: row;
@@ -35,20 +41,20 @@ const HeaderWrapper = styled.View`
   padding: 0;
   
 `;
-const StyledBodyWrapper = styled.View`
+const SBodyWrapper = styled.View`
   flex: 9;
   align-items: flex-start;
 `;
 
 
-const StyledAntDesignIcon = styled(AntDesignIcon)`
+const SAntDesignIcon = styled(AntDesignIcon)`
   font-size: 28px;
   color: #a8a8a8;
   margin: 4px 0px 0px 10px;
 `;
 
 
-const StyledLineCharWrapper = styled.View`
+const SLineCharWrapper = styled.View`
   width: 80%;
 `
 
@@ -56,11 +62,13 @@ interface Props {
   navigation: NavigationScreenProp<any>
 }
 
-const AnotherProfile = (props: Props) => {
+const AnotherProfile = React.memo((props: Props) => {
 
   const user = props.navigation.getParam('user', null)
+
   const results = useAnotherUserResult(user)
   const nav = useContext(NavigationContext)
+
   const onGobackHandle = useCallback(()=>{
     nav.navigate('Billboard')
   },[])
@@ -69,29 +77,28 @@ const AnotherProfile = (props: Props) => {
     <Wrapper>
       <StatusBarView/>
       <HeaderWrapper>
-        <TouchableOpacity onPress={onGobackHandle}>
+        <STouchable onPress={onGobackHandle}>
           <View>
-            <StyledAntDesignIcon name={'arrowleft'} />
+            <SAntDesignIcon name={'arrowleft'} />
           </View>
-        </TouchableOpacity>
+        </STouchable>
       </HeaderWrapper>
 
 
-      <StyledBodyWrapper>
+      <SBodyWrapper>
         <UserInfo user={user} />
 
-        <StyledLineCharWrapper>
+        <SLineCharWrapper>
           <ProfileChart results={results} />
-        </StyledLineCharWrapper>
+        </SLineCharWrapper>
 
-      </StyledBodyWrapper>
-
+      </SBodyWrapper>
     </Wrapper>
   );
-};
+});
 
 
-
+//@ts-ignore
 AnotherProfile.navigationOptions = {
   header: null
 };
