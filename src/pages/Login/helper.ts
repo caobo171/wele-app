@@ -126,7 +126,7 @@ export const loginWithGoogle = async () => {
             webClientId: '703244105810-o70qus4ri8berr02vlhkaa4dvvqa62ng.apps.googleusercontent.com', // required
         });
     } catch (err) {
-        Alert.alert(err)
+        Alert.alert('ERROR: CONFIG' + err.toString());
     }
 
 
@@ -135,7 +135,7 @@ export const loginWithGoogle = async () => {
     } catch (err) {
         if (err.code === statusCodes.SIGN_IN_CANCELLED) {
         }else{
-            Alert.alert(err.message);
+            Alert.alert('ERROR: SIGNIN' + err.toString());
         }
         
     }

@@ -1,76 +1,41 @@
 import React, { useCallback, useEffect } from "react";
+import {Alert} from 'react-native';
 import store from "./store/store";
-import useEffectOnce from 'react-use/lib/useEffectOnce'
-import SplashScreen from 'react-native-splash-screen'
+import InAppBilling from "react-native-billing";
+import SplashScreen from "react-native-splash-screen";
 //@ts-ignore
 import { Provider } from "react-redux";
 import MainWrapper from "./MainWrapper";
 import ThemeWrapper from "@store/theme/ThemeWrapper";
-
-import {screensEnabled} from 'react-native-screens';
-
-import admob, {MaxAdContentRating, InterstitialAd, TestIds , AdEventType, BannerAd} from '@react-native-firebase/admob';
-import { Platform } from "react-native";
-import BannerAdComponent from "./components/Ad/BannerAdComponent";
-
-
-const shouldShowAd = ( Platform.OS === 'android' ) 
-
-shouldShowAd  && admob()
-.setRequestConfiguration({
-      // Update all future requests suitable for parental guidance
-      maxAdContentRating: MaxAdContentRating.PG,
-
-      // Indicates that you want your content treated as child-directed for purposes of COPPA.
-      tagForChildDirectedTreatment: true,
-  
-      // Indicates that you want the ad request to be handled in a
-      // manner suitable for users under the age of consent.
-      tagForUnderAgeOfConsent: true,
-})
-.then(()=>{
-  console.log('request successfull for admob');
-})
-.catch(err=> console.log('Request error: ', err))
-
-
-
-
-
-// const interstitial = shouldShowAd  ? InterstitialAd.createForAdRequest(adUnitId, {
-//   requestNonPersonalizedAdsOnly: true,
-//   keywords: ['english', 'podcast', 'learning'],
-// }): null;
+import { screensEnabled } from "react-native-screens";
 
 screensEnabled();
-
+// const purchase = async () => {
+// 	try {
+// 		await InAppBilling.open();
+// 		const details = await InAppBilling.purchase("1_inapp.wele");
+// 		Alert.alert("You purchased: ", JSON.stringify(details));
+// 	} catch (err) {
+// 		console.log(err);
+// 	} finally {
+// 		await InAppBilling.close();
+// 	}
+// };
 
 console.disableYellowBox = true;
 const App = () => {
+	useEffect(() => {
+        SplashScreen.hide();
+        // purchase();
+	}, []);
 
-  useEffect(() => {
-    SplashScreen.hide()
-
-    // const eventListener = shouldShowAd ? interstitial.onAdEvent(type => {
-    //     if (type === AdEventType.LOADED) {
-    //       interstitial.show();
-    //     }
-    //   }) : null
-    // shouldShowAd  && interstitial.load();
-    return ()=>{
-        // shouldShowAd  &&  eventListener();
-    }
-    
-  },[])
-
-  return (
-    <Provider store={store}>
-      <ThemeWrapper>
-        <MainWrapper />
-        {/* <BannerAdComponent/> */}
-      </ThemeWrapper>
-    </Provider>
-  );
+	return (
+		<Provider store={store}>
+			<ThemeWrapper>
+				<MainWrapper />
+			</ThemeWrapper>
+		</Provider>
+	);
 };
 
 export default App;

@@ -56,7 +56,7 @@ const ProfileChart = React.memo((props: Props) => {
                 stroke: "#ffa726"
             }
         }}
-        bezier
+        bezier={true}
         style={{
             marginVertical: 8,
             borderRadius: 16,

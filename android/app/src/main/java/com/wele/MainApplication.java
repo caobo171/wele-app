@@ -12,6 +12,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.react.PackageList;
 
+import com.idehub.Billing.InAppBillingBridgePackage;
+
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {

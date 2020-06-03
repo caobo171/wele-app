@@ -18,6 +18,28 @@ import UserProfile from "@/pages/UserProfile";
 import Notifications from "@/pages/Notifications";
 import BannerAdComponent from "@/components/Ad/BannerAdComponent";
 import PlayerThumbnail from "@/pages/Player/PlayerThumbnail";
+import admob, {MaxAdContentRating} from '@react-native-firebase/admob';
+
+
+const shouldShowAd = ( Platform.OS === 'android' ) 
+
+shouldShowAd  && admob()
+.setRequestConfiguration({
+      // Update all future requests suitable for parental guidance
+      maxAdContentRating: MaxAdContentRating.PG,
+
+      // Indicates that you want your content treated as child-directed for purposes of COPPA.
+      tagForChildDirectedTreatment: true,
+  
+      // Indicates that you want the ad request to be handled in a
+      // manner suitable for users under the age of consent.
+      tagForUnderAgeOfConsent: true,
+})
+.then(()=>{
+  console.log('request successfull for admob');
+})
+.catch(err=> console.log('Request error: ', err))
+
 
 const StyledBadge = styled.Text`
 	font-size: 10px;
@@ -37,6 +59,9 @@ const StyledBadgeWrapper = styled.View`
 	height: 14px;
 	width: 14px;
 `;
+
+
+
 
 interface HomeIconProps {
 	tintColor: string;
@@ -64,7 +89,7 @@ export const CustomTabbar = memo((props) => {
 
 	return (
 		<>
-            {Platform.OS === 'android' &&  <BannerAdComponent/>}
+            {shouldShowAd &&  <BannerAdComponent/>}
             <PlayerThumbnail/>
 			<BottomTabBar
 				{...props}

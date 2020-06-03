@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Wele</string>
     <string name="facebook_app_id">466646053929673</string>
+    <string name="RNB_GOOGLE_PLAY_LICENSE_KEY">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAj7W975msAFc39a7Q5f543rY4Y5Ra360LMQwvZL8aAX+FvHVmmYlJMns1z+VEFbYz6lvIWz30UhI83xJAy/Sp6npq7qYYFgf2sb958X639cBYDyY7mAGWB8HoNlrWrWv3Yl+LBNELdKgE/r4o+U1G+PYNzT/rAX0j+j57tLaEATqQfzFaxzJxndjzXi3S4bSynnyz/lVD7eO0LTlwCY+RbrOPl9KLTHj47E1SlSiB/vAmIjc4HZMqKCx3tB2SOfSIb/+N4LloFXcIARYkKnfQEqRghLm2h7SuUidCRflJDfeeGNesS/AnTgmmlclgMgPVLE3Ec+2Vqa0Je5/DHP2KcwIDAQAB</string>
+    
 </resources>

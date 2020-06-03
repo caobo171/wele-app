@@ -8,7 +8,6 @@ import { NavigationContext } from "react-navigation";
 import { usePlayer } from "@/store/player/hooks";
 import { CustomTheme, ThemeMode } from "@store/theme/ThemeWrapper";
 import Touchable from "@/components/UI/Touchable";
-import BannerAdComponent from "@/components/Ad/BannerAdComponent";
 
 const StyledView = styled.View`
 	height: 32px;
