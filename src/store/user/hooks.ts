@@ -133,7 +133,8 @@ const renderFakeUser = (email: string, name?: string): UserType => {
     id: '-1',
     displayName: name ? name : email,
     email,
-    photoURL: FAKE_IMAGE
+    photoURL: FAKE_IMAGE,
+    upgraded: false
   }
 }
 

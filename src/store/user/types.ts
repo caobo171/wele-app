@@ -25,7 +25,8 @@ export interface UserType{
     weleEmail?: string,
     online?: boolean,
     result? : ResultType,
-    lastSeen? : number
+    lastSeen? : number,
+    upgraded?: boolean
 }
 
 export interface State {

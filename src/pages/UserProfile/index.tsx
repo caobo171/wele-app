@@ -22,7 +22,7 @@ import UserInfo from './UserInfo';
 import GroupActionsButton from './GroupActionsButton';
 import StatusBarView from '@/components/UI/StatusbarView';
 import LoginWrapper from '../LoginWrapper';
-
+import UpgradeButton from '@/components/InAppPurchase/UpgradeButton';
 
 
 const Wrapper = styled.ScrollView<{theme: CustomTheme}>`
@@ -62,6 +62,8 @@ const UserProfile = React.memo(() => {
       <LoginWrapper>
         <StyledBodyWrapper>
             <UserInfo user={currentUser}/>
+
+            <UpgradeButton/>
             <StyledLineCharWrapper>
             {
                 state.loading ? <LoadingComponent /> :

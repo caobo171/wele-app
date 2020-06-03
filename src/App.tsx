@@ -10,23 +10,11 @@ import ThemeWrapper from "@store/theme/ThemeWrapper";
 import { screensEnabled } from "react-native-screens";
 
 screensEnabled();
-// const purchase = async () => {
-// 	try {
-// 		await InAppBilling.open();
-// 		const details = await InAppBilling.purchase("1_inapp.wele");
-// 		Alert.alert("You purchased: ", JSON.stringify(details));
-// 	} catch (err) {
-// 		console.log(err);
-// 	} finally {
-// 		await InAppBilling.close();
-// 	}
-// };
 
 console.disableYellowBox = true;
 const App = () => {
 	useEffect(() => {
         SplashScreen.hide();
-        // purchase();
 	}, []);
 
 	return (

@@ -34,12 +34,10 @@ module.exports = async function() {
 		});
 
 		TrackPlayer.addEventListener("remote-play", () => {
-			console.log("aaaa remote- play");
 			TrackPlayer.play();
 		});
 
 		TrackPlayer.addEventListener("remote-pause", () => {
-			console.log("aaaa remote- pause");
 			TrackPlayer.pause();
 		});
 

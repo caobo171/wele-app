@@ -19,7 +19,6 @@ import {
 import { getAllPodcasts } from "./store/podcast/functions";
 import storage from "./service/localStorage";
 import { checkUpdate } from "./service/util";
-import { getGlobalNotifications } from "./store/notification/functions";
 
 const MainAppScreen = () => {
 	const currentUser = useCurrentUser();

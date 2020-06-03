@@ -31,6 +31,17 @@ const validateKey = (email: string) => {
 } 
 
 
+export const upgradeUser = async (userId: string, storex = store)=>{
+    const res =  await database().ref(`/${USERS_COLLECTION}/${userId}`)
+    .update({
+        upgraded: true
+    })
+    await storex.dispatch(actions.upgradedUser())
+
+    return res 
+}
+
+
 const getCurrentUserAsync = (id: string): Promise<UserType> => {
     return new Promise((resolve, reject) => {
         const ref = database().ref(`/${USERS_COLLECTION}/${id}`);
@@ -83,7 +94,7 @@ export const setCurrentUser = async (user: UserType, isNew?: boolean | string, s
 
         const userData: UserType = await getCurrentUserAsync(user.id)
         if (userData.email) {
-            const setUser = { ...userData, ...user }
+            const setUser = {...user, ...userData }
             CurrentUser.setUser(setUser);
             await storage.setCurrentUser(setUser)
             return storex.dispatch(actions.setCurrentUser(setUser))
@@ -186,13 +197,7 @@ const getMyResultAsync = (user: UserType): Promise<ResultType> => {
 }
 
 export const getMyresult = async (user: UserType, storex = store) => {
-    const result = await getMyResultAsync({
-        photoURL: 'blbal',
-        id: 'agaga', 
-        displayName:'a',
-        email: 'damyenndc47@gmail.com',
-        weleEmail:'damyenndc47@gmail.com'
-    })
+    const result = await getMyResultAsync(user)
     return storex.dispatch(actions.getMyResult(result))
 }
 

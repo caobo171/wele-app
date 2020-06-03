@@ -47,7 +47,6 @@ class GlobalPlayer {
 
         await TrackPlayer.setupPlayer()
 
-        console.log(  'test', TrackPlayer.CAPABILITY_PLAY);
         await TrackPlayer.updateOptions({
             stopWithApp: true,
             jumpInterval: playback,
@@ -154,19 +153,6 @@ class GlobalPlayer {
     }
 
     async pickTrack(podcast: PodcastType) {
-        // if (podcast.uri) {
-        //     try{
-        //         console.log(podcast.uri);
-        //         const res =await RNFS.stat(podcast.uri.replace(/%20/g,' ' ))
-        //         if(res && res.isFile()){
-        //             await this.addTrack(podcast, res.path)
-        //             await TrackPlayer.play()
-        //             return res.path
-        //         }
-        //     }catch(e){
-        //         console.log(e)
-        //     }
-        // }
 
         try {
             const res = await DocumentPicker.pick({
@@ -183,7 +169,6 @@ class GlobalPlayer {
                     correctPath = `file://${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
                     const files = await RNFS.readDir(`${RNFS.TemporaryDirectoryPath}${inbox}`)
 
-                    console.log(files)
 
                     for (let i = 0; i < files.length; i++) {
                         if (files[i].name === name.replace(/%20/g, '')) {
@@ -203,8 +188,6 @@ class GlobalPlayer {
                                 }catch(err){
                                     console.log(err);
                                 }
-                                console.log('check res', res);
-                                console.log('check res' , alterFilePath)
                                 await setTimeout(()=>{
                                     console.log('End TIme OUt !!')
                                 }, 500)
