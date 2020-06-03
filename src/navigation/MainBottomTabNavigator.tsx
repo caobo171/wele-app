@@ -19,6 +19,7 @@ import Notifications from "@/pages/Notifications";
 import BannerAdComponent from "@/components/Ad/BannerAdComponent";
 import PlayerThumbnail from "@/pages/Player/PlayerThumbnail";
 import admob, {MaxAdContentRating} from '@react-native-firebase/admob';
+import { useCurrentUser } from "@/store/user/hooks";
 
 
 const shouldShowAd = ( Platform.OS === 'android' ) 
@@ -85,11 +86,12 @@ export const CustomTabbar = memo((props) => {
 	useEffectOnce(() => {
 		presenceSystem.init();
 	});
-	const theme = useContext(ThemeContext);
+    const theme = useContext(ThemeContext);
+    const user = useCurrentUser();
 
 	return (
 		<>
-            {shouldShowAd &&  <BannerAdComponent/>}
+            {shouldShowAd && (!user || !user.upgraded) &&  <BannerAdComponent/>}
             <PlayerThumbnail/>
 			<BottomTabBar
 				{...props}

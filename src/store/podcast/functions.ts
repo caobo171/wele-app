@@ -31,8 +31,6 @@ export const getPodcastThisWeek = async (storex = store) => {
       .orderBy(ORDER_PROPERTY, 'desc')
       .limit(4)
       .get();
-
-    console.log(getStartDate(new Date()));
     let data = new Map<string, PodcastType>();
     querySnapshots.forEach((doc: any) => {
       data = data.set(doc.id, { id: doc.id, ...doc.data(), postDate: new Date(doc.data().postDate._seconds * 1000) })

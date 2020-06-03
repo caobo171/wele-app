@@ -2,6 +2,7 @@ import { createReducer, ActionType } from 'typesafe-actions'
 
 import * as actions from './actions'
 import { UserType, ResultType, State, ResultV2Type } from './types'
+import CurrentUser from '@/service/CurrentUser'
 
 const initialState: State = {
     byWeleEmail: new Map<string, UserType>(),
@@ -51,4 +52,11 @@ export default createReducer<State, ActionType<typeof actions>>(initialState)
     .handleAction(actions.getResultsMonthly,(state,action)=>({
         ...state,
         listResultMonthly: action.payload
+    }))
+    .handleAction(actions.upgradedUser, (state,action)=>({
+        ...state,
+        currentUser: {
+            ...state.currentUser,
+            upgraded: true
+        }
     }))

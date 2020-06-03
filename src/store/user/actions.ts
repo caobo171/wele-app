@@ -8,6 +8,10 @@ export const setCurrentUser = createAction('user/SET_CURRENT_USER',
 export const updateUser = createAction('user/UPDATE_USER', 
 (user: UserType)=> user)<UserType>()
 
+
+export const upgradedUser = createAction('user/UPGRADED_USER', 
+()=> null)<null>()
+
 export const logOut = createAction('user/LOG_OUT',()=> null)<null>()
 
 export type getAllUserParams = {
