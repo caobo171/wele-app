@@ -6382,6 +6382,11 @@ react-native-apple-authentication@^1.0.6:
   resolved "https://registry.yarnpkg.com/react-native-apple-authentication/-/react-native-apple-authentication-1.0.6.tgz#1105bcedf8ce5d0dc41ba4725284724f7ba5ca70"
   integrity sha512-RIPS5Fz2/Jc9RJYReXE8/uClZqhurtwRcXu4SZ8hOOdb6mxCM1r9FfbWg280Ndk9m2pXI6lup8hMi1ONVBmw+g==
 
+react-native-billing@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-billing/-/react-native-billing-3.0.0.tgz#746d51f7c0e32dfa6888a13b58a32eccedee4460"
+  integrity sha512-M4atiPpeQpp4CUBy6WWFJEvOiizBDOetGhLFs3oTljIzMeUjCke0dza+9V5j4xPEPmncP1uiNlWrYy2uYcbuEQ==
+
 react-native-chart-kit@^3.11.0:
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/react-native-chart-kit/-/react-native-chart-kit-3.13.0.tgz#6bb6eba2c70deab74d99a51cd4b91f21f0171e01"

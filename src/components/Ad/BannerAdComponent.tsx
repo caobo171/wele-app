@@ -4,8 +4,8 @@ import  {
 	BannerAd,
 	BannerAdSize,
 } from "@react-native-firebase/admob";
-import { Platform } from "react-native";
 
+import { Platform } from "react-native";
 
 const adUnitId = __DEV__
 	? TestIds.BANNER
