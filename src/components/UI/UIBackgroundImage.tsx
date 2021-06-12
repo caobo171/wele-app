@@ -18,6 +18,7 @@ const StyledImage = styled.Image`
     height: 100%;
     left: 0;
     top: 0 ;
+    background: #f8f8f8;
 `
 
 const UIBackgroundImage = React.memo((props: Props)=>{

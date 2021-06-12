@@ -58,9 +58,6 @@ target 'WELE' do
   pod 'Firebase/Auth', '~> 6.13.0'
 	
   
-  
-
-  pod 'react-native-apple-authentication', :path => '../node_modules/react-native-apple-authentication'
 
   target 'WELETests' do
     inherit! :search_paths

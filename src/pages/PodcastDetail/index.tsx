@@ -171,7 +171,6 @@ const SText = styled.Text`
     color:  #6e6a4b;
     text-align: center;
     text-transform: uppercase;
-
     padding: 8px;
     
 `

@@ -45,6 +45,7 @@ const StyledUIBackgroundImage = styled(UIBackgroundImage)`
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
+  background: #f8f8f8;
 `
 
 
