@@ -19,6 +19,7 @@ import PodcastType from '@/store/podcast/types';
 import { updateSliding, updatePosition } from '@/store/player/functions';
 import { usePlayer } from '@/store/player/hooks';
 import StatusBarView from '@/components/UI/StatusbarView';
+import { RawPodcast } from '@/store/types';
 
 
 const StyledContent = styled.View`
@@ -38,7 +39,7 @@ const StyledDescriptionWrapper = styled.View`
 
 
 interface Props {
-    podcast: PodcastType
+    podcast: RawPodcast
 }
 
 

@@ -1,82 +1,73 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import PodcastType from '@/store/podcast/types';
 import NotificationType from '@/store/notification/types';
 import { ThemeMode } from '@/store/theme/ThemeWrapper';
+import { RawPodcast, RawUser } from '@/store/types';
 import { UserType } from '@/store/user/types';
 
 class WeleLocalStorage {
-    constructor(){
+    constructor() {
 
     }
 
-    set = async (key:string, value: string)=>{
-        await AsyncStorage.setItem(`@wele-${key}`, value )
+    set = async (key: string, value: string) => {
+        await AsyncStorage.setItem(`@wele-${key}`, value)
     }
 
-    removeItem = async(key:string)=>{
+    removeItem = async (key: string) => {
         return await AsyncStorage.removeItem(`@wele-${key}`)
     }
 
-    get = async (key:string , type : string , defaultValue?:any)=>{
+    get = async (key: string, type: string, defaultValue?: any) => {
         const data = await AsyncStorage.getItem(`@wele-${key}`)
 
-        if(!data){
-            return defaultValue ? defaultValue: null
-        } 
-        switch(type){
-            case 'string':{
+        if (!data) {
+            return defaultValue ? defaultValue : null
+        }
+        switch (type) {
+            case 'string': {
                 return data
             }
-            case 'number':{
+            case 'number': {
                 return Number(data)
             }
-            case 'object':{
+            case 'object': {
                 return JSON.parse(data)
             }
-            default :
-                return data 
+            default:
+                return data
         }
     }
 
-    setPodcastList = async(podcastList : PodcastType[]) => {
-        return await this.set('postcastlist',JSON.stringify(podcastList))
+    setPodcastList = async (podcastList: RawPodcast[]) => {
+        return await this.set('postcastlist', JSON.stringify(podcastList))
     }
 
 
 
-    getPodcastList = async(): Promise<PodcastType[]>=>{
-        return await this.get('postcastlist','object',[])
+    getPodcastList = async (): Promise<RawPodcast[]> => {
+        return await this.get('postcastlist', 'object', [])
     }
 
-    setRecentPodcasts = async (podcast:PodcastType, uri: string )=>{
+    setRecentPodcasts = async (podcast: RawPodcast) => {
 
-        const podcastsStorage = await this.get('recent-podcasts', 'object', []) as PodcastType[]
+        const podcastsStorage = await this.get('recent-podcasts', 'object', []) as RawPodcast[]
         let podcasts = [...podcastsStorage]
 
-        let savePodcast: PodcastType  = podcast 
-        if(uri.indexOf('file://') !== -1){
-            savePodcast.uri = uri
-        }else{
-            if(savePodcast.uri){
-                delete savePodcast.uri
-            }
-        }
+        let savePodcast: RawPodcast = podcast;
 
-
-
-        const existPodcast = podcasts.find(e=> e.id === savePodcast.id)
-        if(existPodcast){
-            podcasts = podcasts.filter(e=> e.id === existPodcast.id)
+        const existPodcast = podcasts.find(e => e.id === savePodcast.id)
+        if (existPodcast) {
+            podcasts = podcasts.filter(e => e.id === existPodcast.id)
         }
         podcasts.unshift(savePodcast)
 
-        await this.set('recent-podcasts',JSON.stringify(podcasts))
+        await this.set('recent-podcasts', JSON.stringify(podcasts))
     }
 
-    getRecentPodcasts = async ()=>{
-        const podcastsStorage = await this.get('recent-podcasts', 'object', []) as PodcastType[]
-        let podcasts = new Map<string, PodcastType>();
-        for(let i = 0 ; i< podcastsStorage.length; i++){
+    getRecentPodcasts = async () => {
+        const podcastsStorage = await this.get('recent-podcasts', 'object', []) as RawPodcast[]
+        let podcasts = new Map<number, RawPodcast>();
+        for (let i = 0; i < podcastsStorage.length; i++) {
             podcasts = await podcasts.set(podcastsStorage[i].id, podcastsStorage[i])
         }
 
@@ -85,42 +76,42 @@ class WeleLocalStorage {
 
 
     setNotifications = async (notifications: NotificationType[]) => {
-        return await this.set('notifications',JSON.stringify(notifications))
+        return await this.set('notifications', JSON.stringify(notifications))
     }
 
-    getLastSeenNotification = async ()=>{
+    getLastSeenNotification = async () => {
         let defaultDate = new Date()
 
-        defaultDate.setDate(defaultDate.getDate() - 7 )
-        const lastSeen = await this.get('lastseen-notifications','object', defaultDate)
+        defaultDate.setDate(defaultDate.getDate() - 7)
+        const lastSeen = await this.get('lastseen-notifications', 'object', defaultDate)
         return new Date(lastSeen.toString())
     }
 
 
-    setLastSeenNotification = async ()=>{
+    setLastSeenNotification = async () => {
         return this.set('lastseen-notifications', JSON.stringify(new Date()))
     }
 
 
-    saveTheme = async (theme: ThemeMode)=>{
+    saveTheme = async (theme: ThemeMode) => {
         return await this.set('theme', theme)
     }
 
-    getTheme = async ()=>{
-        return await this.get('theme','string',ThemeMode.LIGHT)
+    getTheme = async () => {
+        return await this.get('theme', 'string', ThemeMode.LIGHT)
     }
 
 
-    setCurrentUser = async(user: UserType)=>{
+    setCurrentUser = async (user: RawUser) => {
         return await this.set('user', JSON.stringify(user))
     }
 
-    removeCurrentUser = async()=>{
+    removeCurrentUser = async () => {
         return await this.removeItem('user')
     }
 
-    getCurrentUser = async() : Promise<UserType | null >=>{
-        const res = this.get('user','object',  null)
+    getCurrentUser = async (): Promise<UserType | null> => {
+        const res = this.get('user', 'object', null)
         return res
     }
 

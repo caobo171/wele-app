@@ -13,6 +13,8 @@ import { updatePodcast, getPodcast } from "@/store/podcast/functions"
 
 import RNFS from 'react-native-fs'
 import { Platform } from "react-native"
+import { RawPodcast } from "@/store/types"
+import Constants, { PodcastSource } from "@/Constants"
 
 const PLAYING_STATE = [
     TrackPlayer.STATE_PLAYING,
@@ -86,7 +88,7 @@ class GlobalPlayer {
             const nextTrack = event.nextTrack
             const track = await this.getTrack(nextTrack)
             updateTrack(track)
-            getPodcast(track.id)
+            getPodcast(Number(track.id))
         })
     }
 
@@ -120,19 +122,17 @@ class GlobalPlayer {
         await TrackPlayer.pause()
     }
 
-    async addTrack(podcast: PodcastType, uri: string) {
+    async addTrack(podcast: RawPodcast) {
         await TrackPlayer.add({
-            id: podcast.id,
-            url: encodeURI(uri),
+            id: podcast.id.toString(),
+            url: encodeURI(Constants.IMAGE_URL + podcast.file_path),
             title: podcast.name,
-            artist: podcast.source,
-            artwork: podcast.imgUrl,
+            artist: PodcastSource.find(e => e.source_key == podcast.source_key) ? PodcastSource.find(e => e.source_key == podcast.source_key).source_name : 'Others',
+            artwork: Constants.IMAGE_URL +  podcast.image_url,
             description: podcast.description,
-        })
+        });
 
-        await updatePodcast({ ...podcast, uri })
-
-        await TrackPlayer.skip(podcast.id)
+        await TrackPlayer.skip(podcast.id.toString())
     }
 
     async playBack(playback: number) {
@@ -152,87 +152,9 @@ class GlobalPlayer {
         updatePosition(newPosition.duration, newPosition.position)
     }
 
-    async pickTrack(podcast: PodcastType) {
-
-        try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.audio]
-            })
-            if (res && Number(res.size) === podcast.fileSize) {
-                let correctPath = res.uri;
-
-                if (Platform.OS === 'ios') {
-                    const split = res.uri.split('/');
-                    const name = split.pop();
-                    const inbox = split.pop();
-
-                    correctPath = `file://${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
-                    const files = await RNFS.readDir(`${RNFS.TemporaryDirectoryPath}${inbox}`)
-
-
-                    for (let i = 0; i < files.length; i++) {
-                        if (files[i].name === name.replace(/%20/g, '')) {
-                            await this.addTrack(podcast, 'file://' + files[i].path)
-                            await TrackPlayer.play();
-                            return 'file://' + files[i].path;
-
-                        }
-                    }
-                    for (let i = 0; i < files.length; i++) {
-                        if (decodeURI(files[i].name) === decodeURI(name.replace(/%20/g, ' '))) {
-                            if (/\s/.test(name) || /%20/.test(name)) {
-                                const alterPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${decodeURI(name).replace(/\s/g, '')}`
-                                const alterFilePath = `file://${alterPath}`;
-                                try{
-                                    const res = await RNFS.moveFile(files[i].path, alterPath);
-                                }catch(err){
-                                    console.log(err);
-                                }
-                                await setTimeout(()=>{
-                                    console.log('End TIme OUt !!')
-                                }, 500)
-                                await this.addTrack(podcast, alterFilePath);
-                                await TrackPlayer.play();
-                                return alterFilePath;
-                            }
-                        }
-                    }
-
-                    console.log(correctPath);
-
-                    await this.addTrack(podcast, correctPath);
-                    await TrackPlayer.play();
-                    return correctPath;
-                } else {
-
-                    if (res.uri.indexOf('com.android.providers') !== -1) {
-                        const stats = await RNGRP.getRealPathFromURI(res.uri)// Relative path obtained from document picker
-                        var str1 = "file://";
-                        var str2 = stats
-                        correctPath = str1.concat(str2);
-                        await this.addTrack(podcast, correctPath)
-                        await TrackPlayer.play();
-
-                        return correctPath
-                    }
-
-                }
-
-                await this.addTrack(podcast, correctPath)
-                await TrackPlayer.play();
-
-                return true;
-            } else {
-                throw Error('File Size is invalid !! \n Please choose another file \n or download file again ! ')
-            }
-        } catch (err) {
-            if (!DocumentPicker.isCancel(err)) {
-                throw (err)
-            } else {
-                return true
-            }
-        }
-
+    async pickTrack(podcast: RawPodcast) {          
+        await this.addTrack(podcast)
+        await TrackPlayer.play();
     }
 }
 

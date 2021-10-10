@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components/native";
 import PodcastType from "@store/podcast/types";
 
-import {CustomTheme, ThemeMode} from '@store/theme/ThemeWrapper'
+import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
-import Constants from "@/Constants";
+import Constants, { PodcastSource } from "@/Constants";
+import { RawPodcast } from "@/store/types";
 
 
 const StyledInfoWrapper = styled.View`
@@ -26,11 +27,11 @@ const StyleInfo = styled.View`
   margin-right: auto;
 `;
 
-const StyledNameText = styled.Text<{theme: CustomTheme}>`
+const StyledNameText = styled.Text<{ theme: CustomTheme }>`
   font-weight: bold;
   font-size: ${Constants.TITLE_FONTSIZE}px;
   margin-bottom: 12px;
-  color: ${props=> props.theme.textColorH1};
+  color: ${props => props.theme.textColorH1};
 `;
 
 const StyleSmallText = styled.Text`
@@ -42,7 +43,7 @@ const DescriptionSub = styled.Text`
   font-size: 10px;
 `;
 
-const StyledUIBackgroundImage= styled(UIBackgroundImage)`
+const StyledUIBackgroundImage = styled(UIBackgroundImage)`
   height: 200;
   width: 96%;
   margin-left: auto;
@@ -52,26 +53,25 @@ const StyledUIBackgroundImage= styled(UIBackgroundImage)`
 `
 
 
-const Info = React.memo((props: PodcastType) => {
+const Info = React.memo((props: RawPodcast) => {
 
   return (
     <StyledInfoWrapper>
       <StyledUIBackgroundImage>
-      <StyledPodcastImage
-        resizeMode={"contain"}
-        source={{ uri: props.imgUrl }}
-      />
+        <StyledPodcastImage
+          resizeMode={"contain"}
+          source={{ uri: Constants.IMAGE_URL + props.image_url }}
+        />
       </StyledUIBackgroundImage>
 
       <StyleInfo>
         <StyledNameText>{props.name}</StyledNameText>
         <DescriptionSub>
-          {props.source} <StyleSmallText>dẫn bởi </StyleSmallText>
-          {props.narrator.displayName}
+          {PodcastSource.find(e => e.source_key == props.source_key) ? PodcastSource.find(e => e.source_key == props.source_key).source_name : 'Others'}
         </DescriptionSub>
       </StyleInfo>
     </StyledInfoWrapper>
   );
-},(prev,next)=> prev.id === next.id);
+}, (prev, next) => prev.id === next.id);
 
 export default Info;

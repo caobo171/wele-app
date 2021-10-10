@@ -8,17 +8,18 @@ import PodcastType from "@/store/podcast/types";
 import { getPodcast } from "@/store/podcast/functions";
 import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
 import Touchable from "@/components/UI/Touchable";
-import Constants from "@/Constants";
+import Constants, { PodcastSource } from "@/Constants";
+import { RawPodcast } from "@/store/types";
 
 
 const StyledPodcastWrapper = styled.View<{ size: 'big' | 'medium', theme: CustomTheme }>`
     background-color: ${props => props.theme.backgroundColor};
     height: ${props =>
-    props.size === "big"
-      ? "200px"
-      : props.size === "medium"
-        ? "180px"
-        : "160px"};
+		props.size === "big"
+			? "200px"
+			: props.size === "medium"
+				? "180px"
+				: "160px"};
     width: 100%;
     flex-direction: row;
     margin: 0;
@@ -70,7 +71,7 @@ const StyleSmallText = styled.Text<{ theme: CustomTheme }>`
 
 const DescriptionSub = styled.Text<{ theme: CustomTheme }>`
   color: ${props => props.theme.textColorH2}
-  font-size: ${Constants.TITLE_FONTSIZE -8}px;
+  font-size: ${Constants.TITLE_FONTSIZE - 8}px;
 `;
 
 const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
@@ -79,47 +80,50 @@ const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
 `;
 
 
-interface Props extends PodcastType {
+interface Props extends RawPodcast {
 
 }
 
 
 const TrimText = (text: string) => {
-  return text.substr(0, Math.min(text.length, 60)) + "...";
+	if (text.length <= 60) {
+		return text;
+	}
+	return text.substr(0, Math.min(text.length, 60)) + "...";
 };
 const PodcastThumbnail = (props: Props) => {
 
-  const nav = useContext(NavigationContext)
-  const openPodcastDetailHandle = () => {
-    getPodcast(props.id)
-    nav.navigate('PodcastDetail')
-  }
+	const nav = useContext(NavigationContext)
+	const openPodcastDetailHandle = () => {
+		getPodcast(props.id)
+		nav.navigate('PodcastDetail')
+	}
 
-  return (
-    <Touchable
-      onPress={openPodcastDetailHandle}
-    >
-      <StyledPodcastWrapper size="big">
-        <StyledPodcastContent>
-          <Title>{props.name}</Title>
-          <DescriptionMain>{TrimText(props.description)}</DescriptionMain>
-          <DescriptionSub>
-            {props.source} <StyleSmallText>dẫn bởi </StyleSmallText>
-            {props.narrator.displayName}
-          </DescriptionSub>
-        </StyledPodcastContent>
-        <StyledImageWrapper>
-          <StyledUIBackgroundImage>
-            <StyledPodcastImage
-              resizeMode={"contain"}
-              source={{ uri: props.imgUrl }}
-            />
-          </StyledUIBackgroundImage>
+	return (
+		<Touchable
+			onPress={openPodcastDetailHandle}
+		>
+			<StyledPodcastWrapper size="big">
+				<StyledPodcastContent>
+					<Title>[ESL {props.sub_name}] {props.name}</Title>
+					<DescriptionMain>{TrimText(props.description)}</DescriptionMain>
+					<DescriptionSub>
+						Nguồn <StyleSmallText>dẫn bởi </StyleSmallText>
+						{PodcastSource.find(e => e.source_key == props.source_key) ? PodcastSource.find(e => e.source_key == props.source_key).source_name : 'Others'}
+					</DescriptionSub>
+				</StyledPodcastContent>
+				<StyledImageWrapper>
+					<StyledUIBackgroundImage>
+						<StyledPodcastImage
+							resizeMode={"contain"}
+							source={{ uri: Constants.IMAGE_URL + props.image_url }}
+						/>
+					</StyledUIBackgroundImage>
 
-        </StyledImageWrapper>
-      </StyledPodcastWrapper>
-    </Touchable>
-  );
+				</StyledImageWrapper>
+			</StyledPodcastWrapper>
+		</Touchable>
+	);
 };
 
 

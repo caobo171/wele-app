@@ -20,17 +20,18 @@ import storage from '@/service/localStorage';
 import PodcastType from '@/store/podcast/types';
 import { useCurrentPodcast } from '@/store/podcast/hooks';
 import { NavigationContext } from 'react-navigation';
-import { updateRecentPodcast, updatePodcastNumber } from '@/store/podcast/functions';
+import { updateRecentPodcast } from '@/store/podcast/functions';
 
 
 import { CustomTheme, ThemeMode } from '@store/theme/ThemeWrapper'
 import NetInfo from '@react-native-community/netinfo';
 import StatusBarView from '@/components/UI/StatusbarView';
 import UIBackgroundImage from '@/components/UI/UIBackgroundImage';
-import Constants from '@/Constants';
+import Constants, { PodcastSource } from '@/Constants';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
 import Analytics from '@/service/Analytics';
 import Touchable from '@/components/UI/Touchable';
+import { RawPodcast } from '@/store/types';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -119,11 +120,11 @@ const StyleSmallText = styled.Text`
 `
 
 const reFormatText = (text: string) => {
-  return text.replace(/\n/g, '\n\n')
+	return text.replace(/\n/g, '\n\n')
 }
 
 const trimText = (text: string) => {
-  return text.substr(0, Math.min(text.length, 180)) + '...';
+	return text.substr(0, Math.min(text.length, 180)) + '...';
 }
 
 const SDescriptionWrapper = styled.View`
@@ -189,182 +190,145 @@ const WELE_DEFAULT_LINK = 'https://www.facebook.com/groups/WELEVN/learning_conte
 
 const PodcastDetail = React.memo(() => {
 
-  const [isBrief, setIsBrief] = useState(true)
+	const [isBrief, setIsBrief] = useState(true)
 
-  const currentPodcast = useCurrentPodcast()
-  const nav = useContext(NavigationContext)
+	const currentPodcast = useCurrentPodcast()
+	const nav = useContext(NavigationContext)
 
 
-  useEffectOnce(()=>{
-    Analytics.trackScreenView('PodcastDetail');
-    Analytics.readDetail(currentPodcast);
-  })
+	useEffectOnce(() => {
+		Analytics.trackScreenView('PodcastDetail');
+		Analytics.readDetail(currentPodcast);
+	})
 
-  const onReadmoreHandle = useCallback(() => {
-    setIsBrief(!isBrief)
-  }, [isBrief])
+	const onReadmoreHandle = useCallback(() => {
+		setIsBrief(!isBrief)
+	}, [isBrief])
 
-  const onPressPlayHandle = useCallback(async () => {
-    Analytics.playPodcast(currentPodcast);
-    try {
-      const res = await globalPlayer.pickTrack(currentPodcast)
-      
-      if (res !== true) {
-        const {uri, ...rest} = currentPodcast
-        const podcast: PodcastType = {
-          ...rest,
-          timeListen: currentPodcast.timeListen ? currentPodcast.timeListen + 1 : 1,
-          uri: res
-        }
+	const onPressPlayHandle = useCallback(async () => {
+		Analytics.playPodcast(currentPodcast);
+		try {
+			const res = await globalPlayer.pickTrack(currentPodcast)
+			await storage.setRecentPodcasts(currentPodcast)
+			await nav.navigate('Player')
+		} catch (err) {
+			Alert.alert('Fail to open File ', err.toString())
+		}
 
-        const netState = await NetInfo.fetch()
-        if(netState.isConnected){
-          await updatePodcastNumber(podcast)
-        }
-       
+	}, [currentPodcast.id])
+	return <PodcastDetailMemo
+		podcast={currentPodcast}
+		isBrief={isBrief}
+		onReadmoreHandle={onReadmoreHandle}
 
-        await storage.setRecentPodcasts(currentPodcast, podcast.uri as string)
-        updateRecentPodcast(podcast)
-        await nav.navigate('Player')
-      }
-
-    } catch (err) {
-      Alert.alert('Fail to open File ', err.toString())
-    }
-
-  }, [currentPodcast.id])
-  return <PodcastDetailMemo
-    podcast={currentPodcast}
-    isBrief={isBrief}
-    onReadmoreHandle={onReadmoreHandle}
-
-    onPressPlayHandle={onPressPlayHandle}
-  />
+		onPressPlayHandle={onPressPlayHandle}
+	/>
 })
 
 
 interface Props {
-  podcast: PodcastType,
-  isBrief: boolean,
-  onReadmoreHandle: () => void,
-  onPressPlayHandle: () => void
+	podcast: RawPodcast,
+	isBrief: boolean,
+	onReadmoreHandle: () => void,
+	onPressPlayHandle: () => void
 }
 
 const PodcastDetailMemo = React.memo((props: Props) => {
-  const nav = useContext(NavigationContext)
+	const nav = useContext(NavigationContext)
 
 
-  const openText = useMemo(()=>{
-    return Platform.select({
-      ios: <SText >Open File</SText>,
-      android: <SText >Open</SText>,
-    })
-  }, [])
+	const openText = useMemo(() => {
+		return Platform.select({
+			ios: <SText >Open File</SText>,
+			android: <SText >Open</SText>,
+		})
+	}, [])
 
-  const goBackHandle = useCallback(()=>{
-    nav.goBack()
-  }, [])
+	const goBackHandle = useCallback(() => {
+		nav.goBack()
+	}, [])
 
-  const openLink = useCallback(()=>{
-    Linking.openURL(props.podcast.downloadLink ? props.podcast.downloadLink : WELE_DEFAULT_LINK);
-  }, [props.podcast])
-
-  return <React.Fragment>
-    {
-      props.podcast && (
-        <Wrapper>
-          <StatusBarView/>
-          <HeaderWrapper>
-            <STouchable onPress={goBackHandle}>
-              <View>
-                <SAntDesignIcon name={'arrowleft'} />
-              </View>
-            </STouchable>
-          </HeaderWrapper>
+	return <React.Fragment>
+		{
+			props.podcast && (
+				<Wrapper>
+					<StatusBarView />
+					<HeaderWrapper>
+						<STouchable onPress={goBackHandle}>
+							<View>
+								<SAntDesignIcon name={'arrowleft'} />
+							</View>
+						</STouchable>
+					</HeaderWrapper>
 
 
-          <SBodyWrapper>
-            <SContent>
-              <SUserWrapper >
-                <SUIBackgroundImage>
-                  <SPodcastImage
-                    resizeMode={"stretch"}
-                    source={{ uri: props.podcast.imgUrl }}
-                  />
-                </SUIBackgroundImage>
+					<SBodyWrapper>
+						<SContent>
+							<SUserWrapper >
+								<SUIBackgroundImage>
+									<SPodcastImage
+										resizeMode={"stretch"}
+										source={{ uri: Constants.IMAGE_URL + props.podcast.image_url }}
+									/>
+								</SUIBackgroundImage>
 
-                <SName>
-                  {props.podcast.name}
-                </SName>
+								<SName>
+									{props.podcast.name}
+								</SName>
 
-                <DescriptionInfo>
-                  {props.podcast.source} <StyleSmallText>dẫn bởi </StyleSmallText>{props.podcast.narrator.displayName}
-                </DescriptionInfo>
+								<DescriptionInfo>
+									{PodcastSource.find(e => e.source_key == props.podcast.source_key) ? PodcastSource.find(e => e.source_key == props.podcast.source_key).source_name : 'Others'}
+								</DescriptionInfo>
 
-                <SButtonWrapper>
-                  <TouchableOpacity onPress={props.onPressPlayHandle}>
-                    <SPlayButton>
-                        {openText}
-                    </SPlayButton>
-                  </TouchableOpacity>
-
-                  {
-                    Platform.OS !== 'ios' && (
-                      <TouchableOpacity onPress={openLink}>
-                      <SDownloadButton >
-                        <SText >Download</SText>
-                      </SDownloadButton>
-                    </TouchableOpacity>
-                    )
-                  }
-
-                </SButtonWrapper>
+								<SButtonWrapper>
+									<TouchableOpacity onPress={props.onPressPlayHandle}>
+										<SPlayButton>
+											{openText}
+										</SPlayButton>
+									</TouchableOpacity>
+								</SButtonWrapper>
 
 
-              </SUserWrapper>
+							</SUserWrapper>
 
-              <SDescriptionWrapper>
-                <DescriptionMain>
-                  {/* { trimText(reFormatText(PODCAST.description)) } */}
-                  {props.isBrief ? trimText(reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))) :
-                    reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))}
+							<SDescriptionWrapper>
+								<DescriptionMain>
+									{/* { trimText(reFormatText(PODCAST.description)) } */}
+									{props.isBrief ? trimText(reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))) :
+										reFormatText(props.podcast.description.replace(new RegExp('<br>', 'g'), '\n'))}
 
-                </DescriptionMain>
-
-                {!props.isBrief && <TouchableOpacity>
-                  <SLink onPress={openLink}>{'Link download'}</SLink>
-                </TouchableOpacity> }
+								</DescriptionMain>
 
 
-              </SDescriptionWrapper>
-              <TouchableOpacity>
-                  <SReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</SReadmore>
-              </TouchableOpacity>
+							</SDescriptionWrapper>
+							<TouchableOpacity>
+								<SReadmore onPress={props.onReadmoreHandle}>{props.isBrief ? 'Read more ' : 'See less'}</SReadmore>
+							</TouchableOpacity>
 
-            </SContent>
-          </SBodyWrapper>
-        </Wrapper>
-      )
-    }
-  </React.Fragment>
+						</SContent>
+					</SBodyWrapper>
+				</Wrapper>
+			)
+		}
+	</React.Fragment>
 })
 
 //@ts-ignore
 PodcastDetail.navigationOptions = {
-  header: null
+	header: null
 };
 
 
 function mapStateToProps(state: any) {
-  return {
-    podcast: state.podcast.currentPodcast
-  }
+	return {
+		podcast: state.podcast.currentPodcast
+	}
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-  return {
-    updateRecentPodcast: (podcast: PodcastType) => dispatch(updateRecentPodcast(podcast))
-  }
+	return {
+		updateRecentPodcast: (podcast: RawPodcast) => dispatch(updateRecentPodcast(podcast))
+	}
 }
 
 

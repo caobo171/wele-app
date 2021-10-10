@@ -1,3 +1,6 @@
+// OLD TYPES    
+
+
 export  interface ResultType{
     Email_ad?: string,
     Facebook?: string,

@@ -16,6 +16,7 @@ import AnimatedWrapper from './AnimatedWrapper';
 import {CustomTheme} from '@store/theme/ThemeWrapper'
 import StatusBarView from '@/components/UI/StatusbarView';
 import {  useCurrentUser, useIsSentPodcast } from '@/store/user/hooks';
+import { RawPodcast } from '@/store/types';
 const Wrapper = styled.View<{theme: CustomTheme}>`
   height: 100%;
   width: 100%;
@@ -24,7 +25,7 @@ const Wrapper = styled.View<{theme: CustomTheme}>`
 
 
 interface Props {
-    podcast: PodcastType
+    podcast: RawPodcast
 }
 
 
@@ -32,8 +33,7 @@ const Main = React.memo((props: Props) => {
 
     const user = useCurrentUser()
     const currentResult = useIsSentPodcast(user);
-    const podcastNumber = useMemo(()=>  Number(props.podcast.name.match(/(\d+)/)[0]), [props.podcast]);
-    const isSent = useMemo(()=>  (currentResult && currentResult[podcastNumber]) ? true: false , [podcastNumber]);
+    const isSent = true;
 
 
     return (

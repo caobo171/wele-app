@@ -21,6 +21,11 @@ import SearchBox from './Searchbox';
 import StatusBarView from '@/components/UI/StatusbarView';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
 import Analytics from '@/service/Analytics';
+import useAsync from 'react-use/lib/useAsync';
+import useThrottle from 'react-use/lib/useThrottle';
+import Fetch from '@/service/Fetch';
+import { Code } from '@/Constants';
+import { RawPodcastSubmit, RawPodcast } from '@/store/types';
 
 const Wrapper = styled.ScrollView<{ theme: CustomTheme }>`
   height: 100%;
@@ -43,110 +48,132 @@ const StyledSection = styled.View`
 
 const StyledSectionContent = styled.View``;
 
-const matchSearchString = (searchString: string, podcast: PodcastType) => {
-  const rSearchString = searchString.replace(/\s/g, '').toLowerCase()
-
-  const infoString = `${podcast.source}${podcast.name}${podcast.narrator}`.replace(/\s/g, '').toLowerCase()
-
-  return infoString.indexOf(rSearchString) >= 0
-}
 
 let timer: any = null
 const TYPING_TIMEOUT = 1000;
 
+type ResponseType = {
+	podcasts: RawPodcast[],
+	podcast_num: number,
+	code: number,
+	podcast_submits: RawPodcastSubmit[]
+}
+
 const PodcastList = () => {
 
-  const nav = useContext(NavigationContext)
-  const searchText = nav.getParam('search', '')
+	const [podcasts, setPodcasts] = useState<RawPodcast[]>([]);
+	const nav = useContext(NavigationContext)
+	const searchText = nav.getParam('search', '');
+	useEffectOnce(() => {
+		Analytics.trackScreenView('PodcastList');
+	})
 
-  useEffectOnce(()=>{
-    Analytics.trackScreenView('PodcastList');
-  })
+	useEffect(() => {
+		setSearchString(searchText)
+	}, [searchText])
 
-  useEffect(() => {
-    setSearchString(searchText)
-  }, [searchText])
+	const [startSearch, setStartSearch] = useState(false)
 
-  const [startSearch, setStartSearch] = useState(false)
+	const [searchString, setSearchString] = useState(searchText)
 
-  const [searchString, setSearchString] = useState(searchText)
+	const throttle_search = useThrottle(() => searchString, 500);
+	const state = useAsync(async () => {
+		const res = await Fetch.postWithAccessToken<ResponseType>('/api/podcasts/list', {
+			q: throttle_search,
+			page_size: 30
+		});
 
+		if (res.status == 200) {
+			if (res.data && res.data.code == Code.SUCCESS) {
+				return {
+					podcasts: res.data.podcasts,
+					podcast_num: res.data.podcast_num,
+					podcast_submits: res.data.podcast_submits
+				}
+			}
+		}
 
-  const podcastList = usePodcastList()
+		return {
+			podcasts: [],
+			podcast_num: 0,
+			podcast_submits: []
+		}
+	}, [throttle_search]);
 
-  let displayData = podcastList
-  if (searchString.replace(/\s/g, '').length > 0) {
-    displayData = displayData.filter(data => matchSearchString(searchString, data))
-  }
+	useEffect(() => {
+		if (state.value) {
+			setPodcasts(state.value.podcasts)
+		}
+	}, [state])
 
-  const onStartSearchHandle = useCallback(() => {
-    setStartSearch(true)
-    timer = setTimeout(() => {
-      setStartSearch(false)
-    }, TYPING_TIMEOUT)
-  }, [startSearch])
+	const onStartSearchHandle = useCallback(() => {
+		setStartSearch(true)
+		timer = setTimeout(() => {
+			setStartSearch(false)
+		}, TYPING_TIMEOUT)
+	}, [startSearch])
 
-  const onTextChangeHandler = useCallback((value: string) => {
-    setStartSearch(true)
-    timer && clearTimeout(timer)
-    timer = null
-    timer = setTimeout(() => {
-      setStartSearch(false)
-    }, TYPING_TIMEOUT)
-    setSearchString(value)
-  }, [searchString, startSearch])
+	const onTextChangeHandler = useCallback((value: string) => {
+		setStartSearch(true)
+		timer && clearTimeout(timer)
+		timer = null
+		timer = setTimeout(() => {
+			setStartSearch(false)
+		}, TYPING_TIMEOUT)
+		setSearchString(value)
+	}, [searchString, startSearch])
 
-  return <React.Fragment>
-    {(
-      <Wrapper
-        keyboardShouldPersistTaps={'always'}
-      >
-        <StatusBarView/>
-        <StyledBodyWrapper>
-          <StyledSection>
-            <SearchBox
-              searchString={searchString}
-              startSearch={startSearch}
-              onStartSearchHandle={onStartSearchHandle}
-              onTextChangeHandler={onTextChangeHandler}
-            />
-            <PodcastListMemo podcasts={displayData}/>
-          </StyledSection>
-        </StyledBodyWrapper>
-      </Wrapper>
-    )}
-  </React.Fragment>
+	return <React.Fragment>
+		{(
+			<Wrapper
+				keyboardShouldPersistTaps={'always'}
+			>
+				<StatusBarView />
+				<StyledBodyWrapper>
+					<StyledSection>
+						<SearchBox
+							searchString={searchString}
+							startSearch={startSearch}
+							onStartSearchHandle={onStartSearchHandle}
+							onTextChangeHandler={onTextChangeHandler}
+						/>
+						<PodcastListMemo podcasts={podcasts} />
+					</StyledSection>
+				</StyledBodyWrapper>
+			</Wrapper>
+		)}
+	</React.Fragment>
 };
 
 interface Props {
-  podcasts: PodcastType[]
+	podcasts: RawPodcast[]
 }
 
 const ITEM_HEIGHT = 64;
 
 const PodcastListMemo = React.memo((props: Props) => {
 
-  const getItemLayout = useCallback((data, index)=>(
-    {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index})
-    
-  , [])
+	const getItemLayout = useCallback((data, index) => (
+		{ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index })
 
-  const renderItem = useCallback(({ item, index })=>{
-    return <PodcastItem {...item} />
-  },[])
+		, [])
 
-  return (
-    <StyledSectionContent>
-      <FlatList
-        data={props.podcasts}
-        getItemLayout = {getItemLayout}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </StyledSectionContent>
-  )
+	const renderItem = useCallback(({ item, index }) => {
+		return <PodcastItem {...item} />
+	}, [])
+
+	return (
+		<StyledSectionContent>
+			<FlatList
+				data={props.podcasts}
+				getItemLayout={getItemLayout}
+				renderItem={renderItem}
+				keyExtractor={item => item.id.toString()}
+			/>
+		</StyledSectionContent>
+	)
 },
-  (prev, next) => prev.podcasts === next.podcasts)
+	(prev, next) => prev.podcasts === next.podcasts)
 
 
 export default PodcastList

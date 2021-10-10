@@ -162,6 +162,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
+            matchingFallbacks = ['release', 'debug']
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -192,7 +193,7 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-apple-authentication')
+    // implementation project(':react-native-apple-authentication')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-track-player')
     implementation fileTree(dir: "libs", include: ["*.jar"])

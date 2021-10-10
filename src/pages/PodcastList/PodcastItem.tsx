@@ -7,7 +7,8 @@ import PodcastType from "@/store/podcast/types";
 import { getPodcast } from "@/store/podcast/functions";
 import { NavigationContext } from "react-navigation";
 import UIBackgroundImage from "@/components/UI/UIBackgroundImage";
-import Constants from "@/Constants";
+import Constants, { PodcastSource } from "@/Constants";
+import { RawPodcast } from "@/store/types";
 
 const StyledPodcastWrapper = styled.View<{ size: 'big' | 'medium', theme: CustomTheme }>`
   background-color: ${props => props.theme.backgroundColor};
@@ -58,10 +59,13 @@ const StyledPodcastImage = styled.Image<{ theme: CustomTheme }>`
 `;
 
 
-interface Props extends PodcastType {
+interface Props extends RawPodcast {
 }
 
 const TrimText = (text: string) => {
+  if (text.length <= 50) {
+    return text;
+  }
   return text.substr(0, Math.min(text.length, 50)) + "...";
 };
 
@@ -74,6 +78,8 @@ const PodcastItem = (props: Props) => {
     nav.navigate("PodcastDetail")
   }
 
+  console.log('podcast', Constants.IMAGE_URL + props.image_url)
+
   return (
     <TouchableOpacity
       onPress={openPodcastDetailHandle}
@@ -83,7 +89,7 @@ const PodcastItem = (props: Props) => {
           <StyledUIBackgroundImage>
             <StyledPodcastImage
               resizeMode={"contain"}
-              source={{ uri: props.imgUrl }}
+              source={{ uri: Constants.IMAGE_URL + props.image_url }}
             />
           </StyledUIBackgroundImage>
 
@@ -91,10 +97,10 @@ const PodcastItem = (props: Props) => {
 
 
         <StyledPodcastContent>
-          <Title>{TrimText(props.name)}</Title>
+          <Title>[ESL {props.sub_name}] {TrimText(props.name)}</Title>
           <DescriptionSub>
-            {props.source} <StyleSmallText>dẫn bởi </StyleSmallText>
-            {props.narrator.displayName}
+            Nguồn <StyleSmallText>dẫn bởi </StyleSmallText>
+            {PodcastSource.find(e => e.source_key == props.source_key) ? PodcastSource.find(e => e.source_key == props.source_key).source_name : 'Others'}
           </DescriptionSub>
         </StyledPodcastContent>
 

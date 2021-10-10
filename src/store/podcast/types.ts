@@ -1,3 +1,4 @@
+import { RawPodcast } from "../types";
 
 export interface NarratorType {
     displayName: string,
@@ -6,7 +7,7 @@ export interface NarratorType {
 }
 
 export default interface PodcastType {
-    source : string,
+    source: string,
     imgUrl: string,
     name: string,
     narrator: NarratorType,
@@ -17,15 +18,15 @@ export default interface PodcastType {
     fileSize: number,
     uri?: string,
     hint?: string,
-    result?:string,
+    result?: string,
     timeListen?: number,
     order: number
 }
 
 export interface State {
-    currentPodcast: null | PodcastType,
-    listPodcast: Map<string, PodcastType>,
-    recentPodcasts: Map<string, PodcastType>,
-    podcastThisWeek: Map<string, PodcastType>,
+    currentPodcast: null | RawPodcast,
+    listPodcast: Map<string, RawPodcast>,
+    recentPodcasts: Map<string, RawPodcast>,
+    podcastThisWeek: Map<string, RawPodcast>,
     lastFetchDate: null | Date
 }

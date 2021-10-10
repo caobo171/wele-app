@@ -18,28 +18,28 @@ import UserProfile from "@/pages/UserProfile";
 import Notifications from "@/pages/Notifications";
 import BannerAdComponent from "@/components/Ad/BannerAdComponent";
 import PlayerThumbnail from "@/pages/Player/PlayerThumbnail";
-import admob, {MaxAdContentRating} from '@react-native-firebase/admob';
+import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 import { useCurrentUser } from "@/store/user/hooks";
 
 
-const shouldShowAd = ( Platform.OS === 'android' ) 
+const shouldShowAd = (Platform.OS === 'android')
 
-shouldShowAd  && admob()
-.setRequestConfiguration({
-      // Update all future requests suitable for parental guidance
-      maxAdContentRating: MaxAdContentRating.PG,
+shouldShowAd && admob()
+	.setRequestConfiguration({
+		// Update all future requests suitable for parental guidance
+		maxAdContentRating: MaxAdContentRating.PG,
 
-      // Indicates that you want your content treated as child-directed for purposes of COPPA.
-      tagForChildDirectedTreatment: true,
-  
-      // Indicates that you want the ad request to be handled in a
-      // manner suitable for users under the age of consent.
-      tagForUnderAgeOfConsent: true,
-})
-.then(()=>{
-  console.log('request successfull for admob');
-})
-.catch(err=> console.log('Request error: ', err))
+		// Indicates that you want your content treated as child-directed for purposes of COPPA.
+		tagForChildDirectedTreatment: true,
+
+		// Indicates that you want the ad request to be handled in a
+		// manner suitable for users under the age of consent.
+		tagForUnderAgeOfConsent: true,
+	})
+	.then(() => {
+		console.log('request successfull for admob');
+	})
+	.catch(err => console.log('Request error: ', err))
 
 
 const StyledBadge = styled.Text`
@@ -86,25 +86,20 @@ export const CustomTabbar = memo((props) => {
 	useEffectOnce(() => {
 		presenceSystem.init();
 	});
-    const theme = useContext(ThemeContext);
-    const user = useCurrentUser();
+	const theme = useContext(ThemeContext);
+	const user = useCurrentUser();
 
 	return (
 		<>
-            {shouldShowAd && (!user || !user.upgraded) &&  <BannerAdComponent/>}
-            <PlayerThumbnail/>
+			{shouldShowAd && (!user || !user.upgraded) && <BannerAdComponent />}
+			<PlayerThumbnail />
 			<BottomTabBar
-				{...props}
-				activeTintColor={
-					theme.name === ThemeMode.DARK ? "#bdbdbd" : "#787878"
-				}
-				inactiveTintColor={
-					theme.name === ThemeMode.DARK ? "#787878" : "#bdbdbd"
-				}
+				navigation={undefined} getLabelText={undefined} getAccessibilityLabel={undefined} getTestID={undefined} renderIcon={undefined} onTabPress={undefined} onTabLongPress={undefined} screenProps={undefined} getAccessibilityRole={undefined} getAccessibilityStates={undefined} getButtonComponent={undefined} jumpTo={undefined} {...props}
+				activeTintColor={theme.name === ThemeMode.DARK ? "#bdbdbd" : "#787878"}
+				inactiveTintColor={theme.name === ThemeMode.DARK ? "#787878" : "#bdbdbd"}
 				style={{
 					backgroundColor: theme.backgroundColor,
-				}}
-			/>
+				}} />
 		</>
 	);
 });
@@ -120,15 +115,15 @@ const MainBottomTabNavigator = createBottomTabNavigator(
 				),
 			},
 		},
-		BillboardNavigator: {
-			screen: BillboardNavigator,
-			navigationOptions: {
-				tabBarLabel: "BillBoard",
-				tabBarIcon: ({ tintColor }) => (
-					<Icon name="bar-chart" color={tintColor} size={24} />
-				),
-			},
-		},
+		// BillboardNavigator: {
+		// 	screen: BillboardNavigator,
+		// 	navigationOptions: {
+		// 		tabBarLabel: "BillBoard",
+		// 		tabBarIcon: ({ tintColor }) => (
+		// 			<Icon name="bar-chart" color={tintColor} size={24} />
+		// 		),
+		// 	},
+		// },
 		PodcastList: {
 			screen: PodcastList,
 			navigationOptions: {
@@ -138,15 +133,15 @@ const MainBottomTabNavigator = createBottomTabNavigator(
 				),
 			},
 		},
-		Notification: {
-			screen: Notifications,
-			navigationOptions: {
-				tabBarLabel: "Notification",
-				tabBarIcon: ({ tintColor }) => (
-					<NotificationIcon tintColor={tintColor} />
-				),
-			},
-		},
+		// Notification: {
+		// 	screen: Notifications,
+		// 	navigationOptions: {
+		// 		tabBarLabel: "Notification",
+		// 		tabBarIcon: ({ tintColor }) => (
+		// 			<NotificationIcon tintColor={tintColor} />
+		// 		),
+		// 	},
+		// },
 		UserProfile: {
 			screen: UserProfile,
 			navigationOptions: {

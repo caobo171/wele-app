@@ -12,7 +12,7 @@
     "prepare": "patch-package"
   },
   "dependencies": {
-    "@invertase/react-native-apple-authentication": "^2.1.2",
+    "@invertase/react-native-apple-authentication": "^2.1.5",
     "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/google-signin": "^3.0.3",
     "@react-native-community/netinfo": "^5.3.2",
