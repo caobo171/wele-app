@@ -1,5 +1,4 @@
-package com.wele;
-import com.idehub.Billing.InAppBillingBridgePackage;
+package com.welelearn;
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;
 import com.facebook.react.ReactActivity;
@@ -13,7 +12,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "WELE";
+        return "Welelearn";
     }
 
     @Override

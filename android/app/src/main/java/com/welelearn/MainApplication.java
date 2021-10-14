@@ -1,4 +1,4 @@
-package com.wele;
+package com.welelearn;
 
 import android.app.Application;
 
@@ -11,7 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.react.PackageList;
-import com.facebook.react.BuildConfig;
 
 import java.util.List;
 

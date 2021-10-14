@@ -120,11 +120,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.wele"
+        applicationId "com.welelearn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 26
-        versionName "3.0.1"
+        versionCode 28
+        versionName "3.0.3"
 
 
         // very important

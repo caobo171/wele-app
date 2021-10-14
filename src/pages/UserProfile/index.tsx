@@ -63,7 +63,7 @@ const UserProfile = React.memo(() => {
         <StyledBodyWrapper>
             <UserInfo user={currentUser}/>
 
-            <UpgradeButton/>
+            {/* <UpgradeButton/> */}
             <StyledLineCharWrapper>
             {
                 state.loading ? <LoadingComponent /> :

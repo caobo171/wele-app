@@ -6,8 +6,8 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 # $FabricSDKVersion = '1.6.0'
 # $CrashlyticsSDKVersion = '3.1.0'
 
-target 'WELE' do
-  # Pods for WELE
+target 'Welelearn' do
+  # Pods for Welelearn
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -59,7 +59,7 @@ target 'WELE' do
 	
   
 
-  target 'WELETests' do
+  target 'WelelearnTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -67,10 +67,10 @@ target 'WELE' do
   use_native_modules!
 end
 
-target 'WELE-tvOS' do
-  # Pods for WELE-tvOS
+target 'Welelearn-tvOS' do
+  # Pods for Welelearn-tvOS
 
-  target 'WELE-tvOSTests' do
+  target 'Welelearn-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
