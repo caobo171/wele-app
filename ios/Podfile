@@ -1,8 +1,13 @@
-platform :ios, '9.0'
+platform :ios, '10.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'AwesomeProject' do
-  # Pods for AwesomeProject
+# To override the React Native Firebase iOS SDK versions used uncomment any of the below and change the version
+# $FirebaseSDKVersion = '6.8.1'
+# $FabricSDKVersion = '1.6.0'
+# $CrashlyticsSDKVersion = '3.1.0'
+
+target 'WELE' do
+  # Pods for WELE
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -34,7 +39,27 @@ target 'AwesomeProject' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'AwesomeProjectTests' do
+  pod 'react-native-track-player', :path => '../packages/react-native-track-player'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+  pod 'GoogleSignIn', '~> 5.0.2'
+  
+  
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+#  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+
+  pod 'FBSDKCoreKit', '5.8.0'
+  pod 'FBSDKLoginKit', '5.8.0'
+  pod 'FBSDKShareKit', '5.8.0'
+
+  pod 'Firebase/Auth', '~> 6.13.0'
+	
+  
+
+  target 'WELETests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -42,10 +67,10 @@ target 'AwesomeProject' do
   use_native_modules!
 end
 
-target 'AwesomeProject-tvOS' do
-  # Pods for AwesomeProject-tvOS
+target 'WELE-tvOS' do
+  # Pods for WELE-tvOS
 
-  target 'AwesomeProject-tvOSTests' do
+  target 'WELE-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

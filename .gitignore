@@ -20,6 +20,10 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+<<<<<<< HEAD
+=======
+project.xcworkspace
+>>>>>>> admob
 
 # Android/IntelliJ
 #
@@ -32,6 +36,10 @@ local.properties
 # node.js
 #
 node_modules/
+<<<<<<< HEAD
+=======
+android/app/google-services.json
+>>>>>>> admob
 npm-debug.log
 yarn-error.log
 
@@ -39,7 +47,10 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
+<<<<<<< HEAD
 !debug.keystore
+=======
+>>>>>>> admob
 
 # fastlane
 #
