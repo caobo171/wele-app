@@ -1,7 +1,5 @@
 module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
-<<<<<<< HEAD
-=======
   plugins: [
     ['module-resolver', {
       'root': ['./'],
@@ -13,5 +11,4 @@ module.exports = {
       }
     }]
   ],
->>>>>>> admob
 };

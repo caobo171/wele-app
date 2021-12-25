@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 Skip to content
 
 Search or jump to…
@@ -22,7 +20,6 @@ react-native/template/_flowconfig
 @gabelevi @nmote @samwgoldman @dsainati1 @panagosg7 @charpeni @mroch @jbrown215 @kassens @ide @hramos @gkz @pakoito @cpojer @avikchaudhuri
 100 lines (79 sloc)  3.16 KB
 
->>>>>>> admob
 [ignore]
 ; We fork some components by platform
 .*/*[.]android.js
@@ -74,13 +71,6 @@ module.file_ext=.js
 module.file_ext=.json
 module.file_ext=.ios.js
 
-<<<<<<< HEAD
-munge_underscores=true
-
-module.name_mapper='^react-native$' -> '<PROJECT_ROOT>/node_modules/react-native/Libraries/react-native/react-native-implementation'
-module.name_mapper='^react-native/\(.*\)$' -> '<PROJECT_ROOT>/node_modules/react-native/\1'
-module.name_mapper='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> '<PROJECT_ROOT>/node_modules/react-native/Libraries/Image/RelativeImageStub'
-=======
 module.system=haste
 module.system.haste.use_name_reducers=true
 # get basename
@@ -102,7 +92,6 @@ module.system.haste.paths.blacklist=<PROJECT_ROOT>/node_modules/react-native/Lib
 munge_underscores=true
 
 module.name_mapper='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> 'RelativeImageStub'
->>>>>>> admob
 
 suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
@@ -136,9 +125,6 @@ untyped-import
 untyped-type-import
 
 [version]
-<<<<<<< HEAD
-^0.105.0
-=======
 ^0.98.0
 Terms
 Privacy
@@ -151,4 +137,3 @@ API
 Training
 Blog
 About
->>>>>>> admob

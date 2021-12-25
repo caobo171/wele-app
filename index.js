@@ -2,13 +2,6 @@
  * @format
  */
 
-<<<<<<< HEAD
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
-
-AppRegistry.registerComponent(appName, () => App);
-=======
 import { AppRegistry } from "react-native";
 import App from "./src/App";
 import { firebase } from "@react-native-firebase/messaging";
@@ -28,4 +21,3 @@ firebase.messaging().setBackgroundMessageHandler(async remoteMessage => {
 });
 
 TrackPlayer.registerPlaybackService(() => require("./backgroundPlayerService"));
->>>>>>> admob
